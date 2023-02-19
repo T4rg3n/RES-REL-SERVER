@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('piece_jointe', function (Blueprint $table) {
+        Schema::create('piece_jointes', function (Blueprint $table) {
             $table->id('id_piece_jointe');
             $table->enum('type_pj', ['IMAGE', 'VIDEO', 'PDF']);
             $table->string('titre_pj');
@@ -22,13 +22,13 @@ return new class extends Migration
             
             $table->foreign('fk_id_uti')
                 ->references('id_uti')
-                ->on('utilisateur')
+                ->on('utilisateurs')
                 ->onDelete('cascade');
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('piece_jointe');
+        Schema::dropIfExists('piece_jointes');
     }
 };

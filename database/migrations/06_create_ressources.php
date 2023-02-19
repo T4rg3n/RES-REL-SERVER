@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('ressource', function (Blueprint $table) {
+        Schema::create('ressources', function (Blueprint $table) {
             $table->id('id_ressource');
             $table->timestamp('date_creation_ressource')->useCurrent();
             $table->enum('status', ['PENDING', 'APPROVED', 'REJECTED', 'DELETED']);
@@ -22,18 +22,18 @@ return new class extends Migration
 
             $table->foreign('fk_id_uti')
                 ->references('id_uti')
-                ->on('utilisateur')
+                ->on('utilisateurs')
                 ->onDelete('cascade');
 
             $table->foreign('fk_id_categorie')
                 ->references('id_categorie')
-                ->on('categorie')
+                ->on('categories')
                 ->onDelete('cascade');  
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('ressource');
+        Schema::dropIfExists('ressources');
     }
 };

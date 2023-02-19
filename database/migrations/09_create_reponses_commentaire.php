@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('reponses_commentaire', function (Blueprint $table) {
+        Schema::create('reponses_commentaires', function (Blueprint $table) {
             $table->id('id_reponse');
             $table->text('contenu_reponse');
             $table->timestamp('date_publication_reponse')->useCurrent();
@@ -19,18 +19,18 @@ return new class extends Migration
 
             $table->foreign('fk_id_uti')
                 ->references('id_uti')
-                ->on('utilisateur')
+                ->on('utilisateurs')
                 ->onDelete('cascade');
 
             $table->foreign('fk_id_commentaire')
                 ->references('id_commentaire')
-                ->on('commentaire')
+                ->on('commentaires')
                 ->onDelete('cascade');
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('reponses_commentaire');
+        Schema::dropIfExists('reponses_commentaires');
     }
 };
