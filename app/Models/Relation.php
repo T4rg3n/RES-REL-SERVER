@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Relation extends Model
 {
     use HasFactory;
+    protected $table = 'relation';
+
+    public function TypeRelation ()
+    {
+        return $this->belongsTo(TypeRelation::class);
+    }
 }

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Commentaire extends Model
 {
     use HasFactory;
-    protected $table = 'commentaires';
+    protected $table = 'commentaire';
 
     public function Ressource()
     {
@@ -18,5 +18,10 @@ class Commentaire extends Model
     public function Utilisateur()
     {
         return $this->belongsTo(Utilisateur::class);
+    }
+
+    public function ReponseCommentaire()
+    {
+        return $this->hasMany(ReponseCommentaire::class);
     }
 }

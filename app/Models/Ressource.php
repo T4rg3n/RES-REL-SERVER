@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Ressource extends Model
 {
     use HasFactory;
-    protected $table = 'ressources';
+    protected $table = 'ressource';
 
     public function Utilisateur()
     {

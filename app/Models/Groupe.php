@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Groupe extends Model
 {
     use HasFactory;
+    protected $table = 'groupe';
+
+    public function Utilisateur()
+    {
+        return $this->hasMany(Utilisateur::class);
+    }
 }

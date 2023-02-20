@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Favoris extends Model
 {
     use HasFactory;
+    protected $table = 'favoris';
+
+    public function Utilisateur()
+    {
+        return $this->belongsTo(Utilisateur::class);
+    }
+
+    public function Ressource()
+    {
+        return $this->belongsTo(Ressource::class);
+    }
 }

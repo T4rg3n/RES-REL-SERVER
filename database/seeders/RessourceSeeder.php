@@ -23,7 +23,7 @@ class RessourceSeeder extends Seeder
             3. has(Categorie::factory()->count(1)) means that for each ressource, one category will be created
             4. has(Utilisateur::factory()->count(1)) means that for each ressource, one user will be created
             5. create() is a method of the Laravel Eloquent ORM */
-       Resource::factory()
+       Ressource::factory()
             ->count(100)
             ->has(Categorie::factory()->count(1))
             ->has(Utilisateur::factory()->count(1))
