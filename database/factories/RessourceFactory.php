@@ -40,7 +40,7 @@ class RessourceFactory extends Factory
             'raison_refus_ressource' => $this->faker->sentence,
             'fk_id_categorie' => function () {
                 return factory(Categorie::class)->create()->id_categorie;
-            },
+            }
         ];
     }
 }

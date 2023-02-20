@@ -24,7 +24,7 @@ class UtilisateurSeeder extends Seeder
         Utilisateur::factory()
             ->count(100)
             ->has(Role::factory()->count(1))
-            ->has(Groupe::factory()->count(1))
+            ->has(Groupe::factory()->count(5))
             ->has(Ressource::factory()->count(20))
             ->has(Favoris::factory()->count(10))
             ->has(Commentaire::factory()->count(5))

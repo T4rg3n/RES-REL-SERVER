@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\PieceJointe;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +15,9 @@ class PieceJointeSeeder extends Seeder
      */
     public function run()
     {
-        //
+        PieceJointe::factory()
+            ->has(Utilisateur::factory()->count(1))
+            ->count(10)
+            ->create();
     }
 }

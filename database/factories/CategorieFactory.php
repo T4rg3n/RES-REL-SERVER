@@ -26,7 +26,7 @@ class CategorieFactory extends Factory
     {
         return [
             'id_categorie' => Categorie::factory(),
-            'nom_categorie' => $this->faker->word,
+            'nom_categorie' => $this->faker->word
         ];
     }
 }
