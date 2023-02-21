@@ -17,7 +17,6 @@ class GroupeFactory extends Factory
     public function definition()
     {
         return [
-            'id_groupe' => Groupe::factory(),
             'nom_groupe' => $this->faker->text,
             'description_groupe' => $this->faker->text,
             'est_prive_groupe' => $this->faker->boolean

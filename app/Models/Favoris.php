@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Favoris extends Model
 {
     use HasFactory;
+    
     protected $table = 'favoris';
+    public $timestamps = false;
 
     public function Utilisateur()
     {

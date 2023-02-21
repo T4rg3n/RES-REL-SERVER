@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\PieceJointe;
+use App\Models\Utilisateur;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\PieceJointe>
@@ -16,8 +18,9 @@ class PieceJointeFactory extends Factory
      */
     public function definition()
     {
+        static $incrementingId = 1;
+
         return [
-            'id_piece_jointe' => PieceJointe::factory(),
             'type_piece_jointe' => $this->faker->randomElement('IMAGE', 'VIDEO', 'PDF'),
             'titre_pj' => $this->faker->text,
             'date_creation_pj' => $this->faker->dateTimeBetween('-1 year', 'now'),
@@ -26,9 +29,8 @@ class PieceJointeFactory extends Factory
             'date_activite_pj' => $this->faker->dateTimeBetween('-1 year', 'now'),
             'lieu_pj' => $this->faker->text,
             'code_postal_pj' => $this->faker->text,
-            'fk_id_uti' => function () {
-                return factory(Utilisateur::class)->create()->id_uti;
-            }
+            //One to many (user_id exist)
+            'fk_id_uti' => $this->faker->unique()->numberBetween(1, Utilisateur::count())
         ];
     }
 }

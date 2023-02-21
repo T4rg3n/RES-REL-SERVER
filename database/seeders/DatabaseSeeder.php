@@ -2,10 +2,7 @@
 
 namespace Database\Seeders;
 
-
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,16 +14,17 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            /*CategorieSeeder::class,
-            CommentaireSeeder::class,
-            FavorisSeeder::class,
-            GroupeSeeder::class,
-            PieceJointeSeeder::class,*/
-            RelationSeeder::class
-            /*ReponseCommentaireSeeder::class,
-            //RessourceSeeder::class,
+            UtilisateurSeeder::class,
             RoleSeeder::class,
-            UtilisateurSeeder::class*/
+            GroupeSeeder::class,
+            CategorieSeeder::class,
+            RelationSeeder::class,
+            RessourceSeeder::class,
+            //type relation
+            CommentaireSeeder::class,
+            ReponseCommentaireSeeder::class,
+            PieceJointeSeeder::class,
+            FavorisSeeder::class,
         ]);
     }
 }

@@ -17,7 +17,6 @@ class RoleFactory extends Factory
     public function definition()
     {
         return [
-            'id_role' => Role::factory(),
             'nom_role' => $this->faker->word
         ];
     }

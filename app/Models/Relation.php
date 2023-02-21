@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Relation extends Model
 {
     use HasFactory;
+    
+    public $timestamps = false;
     protected $table = 'relation';
 
     public function TypeRelation ()

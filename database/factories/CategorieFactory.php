@@ -25,8 +25,7 @@ class CategorieFactory extends Factory
     public function definition()
     {
         return [
-            'id_categorie' => Categorie::factory(),
-            'nom_categorie' => $this->faker->word
+           'nom_categorie' => $this->faker->word
         ];
     }
 }

@@ -2,13 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Favoris;
-use App\Models\Utilisateur;
-use App\Models\Ressource;
-
-use App\Factories\FavorisFactory;
-
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Relation;
 use Illuminate\Database\Seeder;
 
 class RelationSeeder extends Seeder
@@ -20,10 +14,8 @@ class RelationSeeder extends Seeder
      */
     public function run()
     {
-        Favoris::factory()
-            ->has(Utilisateur::factory()->count(1))
-            ->has(Ressource::factory()->count(1))
-            ->count(10)
+        Relation::factory()
+            ->count(100)
             ->create();
     }
 }

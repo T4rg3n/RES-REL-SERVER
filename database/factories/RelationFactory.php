@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-
+use App\Models\Relation;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Relation>
  */
@@ -17,7 +17,6 @@ class RelationFactory extends Factory
     public function definition()
     {
         return [
-            'id_relation' => Relation::factory(),
             'demandeur_id' => $this->faker->randomNumber(2),
             'receveur_id' => $this->faker->randomNumber(2),
             'accepte' => $this->faker->boolean

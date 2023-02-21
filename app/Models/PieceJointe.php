@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class PieceJointe extends Model
 {
     use HasFactory;
+    
+    public $timestamps = false;
     protected $table = 'piece_jointe';
 
     public function Ressource()

@@ -17,7 +17,6 @@ class TypeRelationFactory extends Factory
     public function definition()
     {
         return [
-            'id_type_relation' => TypeRelation::factory(),
             'nom_type_relation' => $this->faker->word,
             'date_creation' => $this->faker->dateTimeBetween('-1 year', 'now')
         ];

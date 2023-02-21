@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Commentaire extends Model
 {
     use HasFactory;
+
+    public $timestamps = false;
     protected $table = 'commentaire';
 
     public function Ressource()

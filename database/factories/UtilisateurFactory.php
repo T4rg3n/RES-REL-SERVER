@@ -24,7 +24,6 @@ class UtilisateurFactory extends Factory
     public function definition()
     {
         return [
-            'id_uti' => Utilisateur::factory(),
             'mail_uti' => $this->faker->email,
             'mdp_uti' => $this->faker->password,
             'date_inscription_uti' => now(),
@@ -35,7 +34,7 @@ class UtilisateurFactory extends Factory
             'photo_uti' => $this->faker->imageUrl(),
             'bio_uti' => $this->faker->text,
             'url_profil_uti' => $this->faker->url,
-            'compte_actif_uti' => true,
+            'compte_actif_uti' => $this->faker->boolean,
             'raison_banni_uti' => $this->faker->sentence,
         ];
     }

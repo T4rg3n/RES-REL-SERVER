@@ -17,17 +17,12 @@ class ReponseCommentaireFactory extends Factory
     public function definition()
     {
         return [
-            'id_reponse' => ReponseCommentaire::factory(),
             'contenu_reponse' => $this->faker->text,
             'date_publication_reponse' => $this->faker->dateTimeBetween('-1 year', 'now'),
             'reponse_supprime' => $this->faker->boolean,
             'nombre_signalement_commentaire' => $this->faker->randomNumber(2),
-            'fk_id_uti' => function () {
-                return factory(Utilisateur::class)->create()->id_uti;
-            },
-            'fk_id_commentaire' => function () {
-                return factory(Commentaire::class)->create()->id_commentaire;
-            }
+            'fk_id_uti' => $this->faker->randomNumber(2),
+            'fk_id_commentaire' => $this->faker->randomNumber(2)
         ];
     }
 }
