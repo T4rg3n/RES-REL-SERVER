@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Favoris;
 use App\Models\Utilisateur;
 use App\Models\Ressource;
+
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Favoris>
  */
@@ -20,8 +21,8 @@ class FavorisFactory extends Factory
     {
         return [
             'date_fav' => $this->faker->dateTimeBetween('-1 year', 'now'),
-            'fk_id_uti' => $this->faker->randomNumber(2),
-            'fk_id_ressource' => $this->faker->randomNumber(2)
+            'fk_id_uti' => Utilisateur::all()->random()->id_uti,
+            'fk_id_ressource' => Ressource::all()->random()->id_ressource,
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Utilisateur;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,13 +10,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class UtilisateurFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
-    protected $model = Utilisateur::class;
-
     /**
      * Define the model's default state.
      *
@@ -26,7 +20,7 @@ class UtilisateurFactory extends Factory
         return [
             'mail_uti' => $this->faker->email,
             'mdp_uti' => $this->faker->password,
-            'date_inscription_uti' => now(),
+            'date_inscription_uti' => $this->faker->date(),
             'date_naissance_uti' => $this->faker->date(),
             'code_postal_uti' => $this->faker->postcode,
             'nom_uti' => $this->faker->lastName,

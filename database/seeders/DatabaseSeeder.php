@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             CategorieSeeder::class,
             RelationSeeder::class,
             RessourceSeeder::class,
-            //type relation
+            TypeRelationSeeder::class,
             CommentaireSeeder::class,
             ReponseCommentaireSeeder::class,
             PieceJointeSeeder::class,

@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Utilisateur;
+use App\Models\Commentaire;
+use App\Models\ReponseCommentaire;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,8 +24,8 @@ class ReponseCommentaireFactory extends Factory
             'date_publication_reponse' => $this->faker->dateTimeBetween('-1 year', 'now'),
             'reponse_supprime' => $this->faker->boolean,
             'nombre_signalement_commentaire' => $this->faker->randomNumber(2),
-            'fk_id_uti' => $this->faker->randomNumber(2),
-            'fk_id_commentaire' => $this->faker->randomNumber(2)
+            'fk_id_uti' => Utilisateur::all()->random()->id_uti,
+            'fk_id_commentaire' => Commentaire::all()->random()->id_commentaire,
         ];
     }
 }

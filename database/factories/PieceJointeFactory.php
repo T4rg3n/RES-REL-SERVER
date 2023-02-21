@@ -18,10 +18,10 @@ class PieceJointeFactory extends Factory
      */
     public function definition()
     {
-        static $incrementingId = 1;
+        $typesPj = ['IMAGE', 'VIDEO', 'PDF'];
 
         return [
-            'type_piece_jointe' => $this->faker->randomElement('IMAGE', 'VIDEO', 'PDF'),
+            'type_pj' => $typesPj[rand(0,2)],
             'titre_pj' => $this->faker->text,
             'date_creation_pj' => $this->faker->dateTimeBetween('-1 year', 'now'),
             'description_pj' => $this->faker->text,
@@ -29,8 +29,7 @@ class PieceJointeFactory extends Factory
             'date_activite_pj' => $this->faker->dateTimeBetween('-1 year', 'now'),
             'lieu_pj' => $this->faker->text,
             'code_postal_pj' => $this->faker->text,
-            //One to many (user_id exist)
-            'fk_id_uti' => $this->faker->unique()->numberBetween(1, Utilisateur::count())
+            'fk_id_uti' => Utilisateur::all()->random()->id_uti,
         ];
     }
 }

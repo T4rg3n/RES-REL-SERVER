@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Commentaire;
+use App\Models\TypeRelation;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class CommentaireSeeder extends Seeder
+class TypeRelationSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,8 +15,8 @@ class CommentaireSeeder extends Seeder
      */
     public function run()
     {
-        Commentaire::factory()
-            ->count(250)
+        TypeRelation::factory()
+            ->count(5)
             ->create();
     }
 }

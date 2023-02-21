@@ -24,8 +24,8 @@ class CommentaireFactory extends Factory
             'nombre_reponses_commentaire' => $this->faker->randomNumber(2),
             'commentaire_supprime' => $this->faker->boolean,
             'nombre_signalement_commentaire' => $this->faker->randomNumber(2),
-            'fk_id_uti' => $this->faker->unique()->numberBetween(1, Utilisateur::count()),
-            'fk_id_ressource' => $this->faker->unique()->numberBetween(1, Ressource::count())
+            'fk_id_uti' => Utilisateur::all()->random()->id_uti,
+            'fk_id_ressource' => Ressource::all()->random()->id_ressource,
         ];
     }
 }
