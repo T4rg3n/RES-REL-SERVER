@@ -16,3 +16,6 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+database/migrations/.old/2014_10_12_100000_create_password_resets_table.php.old
+database/migrations/.old/2019_08_19_000000_create_failed_jobs_table.php.old
+database/migrations/.old/2019_12_14_000001_create_personal_access_tokens_table.php.old
