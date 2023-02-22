@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Ressource;
 use App\Models\Utilisateur;
 use App\Models\Categorie;
 

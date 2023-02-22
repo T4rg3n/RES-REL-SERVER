@@ -5,10 +5,7 @@ namespace App\Http\Controllers\V1;
 use App\Http\Requests\StoreCategorieRequest;
 use App\Http\Requests\UpdateCategorieRequest;
 use App\Models\Categorie;
-
-
 use App\Http\Controllers\Controller;
-
 
 class CategorieController extends Controller
 {
@@ -19,7 +16,7 @@ class CategorieController extends Controller
      */
     public function index()
     {
-        //
+        return Categorie::all();
     }
 
     /**
