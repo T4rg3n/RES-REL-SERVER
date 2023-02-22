@@ -6,6 +6,9 @@ use App\Models\TypeRelation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+/**
+ * @OA\Info(title="Search API", version="1.0.0")
+ */
 class TypeRelationController extends Controller
 {
     /**
