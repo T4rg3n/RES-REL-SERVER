@@ -5,6 +5,8 @@ namespace App\Http\Controllers\V1;
 use App\Models\Favoris;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\FavorisResource;
+use App\Http\Resources\V1\FavorisCollection;
 
 class FavorisController extends Controller
 {
@@ -15,6 +17,19 @@ class FavorisController extends Controller
      */
     public function index()
     {
-        return Favoris::all();
+        return new FavorisCollection(Favoris::paginate());
+    }
+    
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id_favoris
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id_favoris)
+    {
+        $favoris = Favoris::where('id_favoris', $id_favoris)->first();
+
+        return new FavorisResource($favoris);
     }
 }

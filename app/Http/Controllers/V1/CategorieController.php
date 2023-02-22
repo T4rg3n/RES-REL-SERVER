@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\V1;
 
-use App\Http\Requests\StoreCategorieRequest;
-use App\Http\Requests\UpdateCategorieRequest;
 use App\Models\Categorie;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\CategorieResource;
+use App\Http\Resources\V1\CategorieCollection;
+use App\Http\Requests\StoreCategorieRequest;
+use App\Http\Requests\UpdateCategorieRequest;
 
 class CategorieController extends Controller
 {
@@ -16,7 +18,7 @@ class CategorieController extends Controller
      */
     public function index()
     {
-        return Categorie::all();
+        return new CategorieCollection(Categorie::paginate());
     }
 
     /**
@@ -43,12 +45,14 @@ class CategorieController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Categorie  $categorie
+     * @param  int  $id_categorie
      * @return \Illuminate\Http\Response
      */
-    public function show(Categorie $categorie)
+    public function show($id_categorie)
     {
-        //
+        $categorie = Categorie::where('id_categorie', $id_categorie)->first();
+
+        return new CategorieResource($categorie);
     }
 
     /**

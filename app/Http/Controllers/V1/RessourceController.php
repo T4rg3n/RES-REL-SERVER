@@ -5,6 +5,8 @@ namespace App\Http\Controllers\V1;
 use App\Models\Ressource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\RessourceResource;
+use App\Http\Resources\V1\RessourceCollection;
 
 class RessourceController extends Controller
 {
@@ -15,72 +17,19 @@ class RessourceController extends Controller
      */
     public function index()
     {
-        return Ressource::all();
+        return new RessourceCollection(Ressource::paginate());
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    /*public function create()
-    {
-        //
-    }
-*/
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreCategorieRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-   /* public function store(StoreCategorieRequest $request)
-    {
-        //
-    }*/
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Categorie  $categorie
+     * @param  int  $id_ressource
      * @return \Illuminate\Http\Response
      */
-    /*public function show(Categorie $categorie)
+    public function show($id_ressource)
     {
-        //
+        $ressource = Ressource::where('id_ressource', $id_ressource)->first();
+
+        return new RessourceResource($ressource);
     }
-*/
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Categorie  $categorie
-     * @return \Illuminate\Http\Response
-     */
-  /*  public function edit(Categorie $categorie)
-    {
-        //
-    }
-*/
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateCategorieRequest  $request
-     * @param  \App\Models\Categorie  $categorie
-     * @return \Illuminate\Http\Response
-     */
-  /*  public function update(UpdateCategorieRequest $request, Categorie $categorie)
-    {
-        //
-    }
-*/
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Categorie  $categorie
-     * @return \Illuminate\Http\Response
-     */
-  /*  public function destroy(Categorie $categorie)
-    {
-        //
-    }*/
 }
