@@ -10,7 +10,7 @@ class PieceJointe extends Model
     use HasFactory;
     
     public $timestamps = false;
-    protected $table = 'piece_jointe';
+    protected $table = 'piece_jointes';
 
     public function Ressource()
     {

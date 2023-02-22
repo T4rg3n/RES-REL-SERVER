@@ -10,7 +10,7 @@ class Commentaire extends Model
     use HasFactory;
 
     public $timestamps = false;
-    protected $table = 'commentaire';
+    protected $table = 'commentaires';
 
     public function Ressource()
     {

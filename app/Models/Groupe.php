@@ -10,7 +10,7 @@ class Groupe extends Model
     use HasFactory;
 
     public $timestamps = false;
-    protected $table = 'groupe';
+    protected $table = 'groupes';
     
     public function Utilisateur()
     {

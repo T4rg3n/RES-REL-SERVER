@@ -10,7 +10,7 @@ class Ressource extends Model
     use HasFactory;
 
     public $timestamps = false;
-    protected $table = 'ressource';
+    protected $table = 'ressources';
 
     public function Utilisateur()
     {

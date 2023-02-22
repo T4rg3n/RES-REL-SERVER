@@ -10,7 +10,7 @@ class Categorie extends Model
     use HasFactory;
 
     public $timestamps = false;
-    protected $table = 'categorie';
+    protected $table = 'categories';
 
     public function Ressource()
     {

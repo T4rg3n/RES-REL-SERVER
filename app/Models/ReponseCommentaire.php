@@ -10,7 +10,7 @@ class ReponseCommentaire extends Model
     use HasFactory;
 
     public $timestamps = false;
-    protected $table = 'reponses_commentaire';
+    protected $table = 'reponses_commentaires';
 
     public function Utilisateur()
     {

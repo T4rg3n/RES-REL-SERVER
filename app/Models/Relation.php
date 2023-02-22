@@ -10,7 +10,7 @@ class Relation extends Model
     use HasFactory;
     
     public $timestamps = false;
-    protected $table = 'relation';
+    protected $table = 'relations';
 
     public function TypeRelation ()
     {
