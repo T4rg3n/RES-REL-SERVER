@@ -15,7 +15,7 @@ class RessourceResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
+            'id' => $this->id_ressource,
             'dateCreation' => $this->date_creation_ressource,
             'status' => $this->status,
             'idUtilisateur' => $this->fk_id_uti,
