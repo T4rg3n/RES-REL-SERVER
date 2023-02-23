@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\V1;
 
+
 use App\Models\Categorie;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\CategorieResource;
 use App\Http\Resources\V1\CategorieCollection;
 use App\Http\Requests\StoreCategorieRequest;
 use App\Http\Requests\UpdateCategorieRequest;
+use Illuminate\Http\Request;
+use App\Services\V1\CategorieQuery;
 
 class CategorieController extends Controller
 {
@@ -16,9 +19,24 @@ class CategorieController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new CategorieCollection(Categorie::paginate());
+        $filter = new CategorieQuery();
+        $queryItems = $filter->transform($request);
+
+        //WIP for test
+        return new CategorieCollection(Categorie::where($queryItems));
+        
+/*
+        if(count($queryItems) == 0) {
+            //return $request;
+            //return new CategorieCollection(Categorie::paginate());
+            return new CategorieCollection(Categorie::where($queryItems)->paginate());
+        } else {
+            //return $queryItems;
+            return new CategorieCollection(Categorie::where($queryItems)->paginate());
+        }    
+        */
     }
 
     /**
