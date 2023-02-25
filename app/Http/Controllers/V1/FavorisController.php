@@ -7,17 +7,43 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\FavorisResource;
 use App\Http\Resources\V1\FavorisCollection;
+use App\Services\V1\QueryFilter;
 
 class FavorisController extends Controller
 {
+    /**
+     * Allowed parameters for filtering
+     */
+    protected $allowedParams = [
+        'id' => ['equals'],
+        'dateFav' => ['equals', 'lowerThan', 'lowerThanEquals', 'greaterThan', 'greaterThanEquals'],
+        'idUtilisateur' => ['equals'],
+        'idRessource' => ['equals'],
+    ];
+
+    /**
+     * Translate request parameters to database columns for filtering
+     */
+    protected $columnMap = [
+        'id' => 'id_favoris',
+        'dateFav' => 'date_fav',
+        'idUtilisateur' => 'fk_id_uti',
+        'idRessource' => 'fk_id_ressource',
+    ];
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new FavorisCollection(Favoris::paginate());
+        $queryContent = $request->all();
+        $filter = new QueryFilter();
+        $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
+        $favoris = Favoris::where($eloquentQuery)->paginate();
+        
+        return new FavorisCollection($favoris->appends($request->query()));
     }
     
     /**

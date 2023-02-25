@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\V1;
 
-
 use App\Models\Categorie;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\CategorieResource;
@@ -10,10 +9,26 @@ use App\Http\Resources\V1\CategorieCollection;
 use App\Http\Requests\StoreCategorieRequest;
 use App\Http\Requests\UpdateCategorieRequest;
 use Illuminate\Http\Request;
-use App\Services\V1\CategorieQuery;
+use App\Services\V1\QueryFilter;
 
 class CategorieController extends Controller
 {
+    /**
+     * Allowed parameters for filtering
+     */
+    protected $allowedParams = [
+        'id' => ['equals'],
+        'nom' => ['equals'],
+    ];
+
+    /**
+     * Translate request parameters to database columns for filtering
+     */
+    protected $columnMap = [
+        'id' => 'id_categorie',
+        'nom' => 'nom_categorie',
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -21,22 +36,12 @@ class CategorieController extends Controller
      */
     public function index(Request $request)
     {
-        $filter = new CategorieQuery();
-        $queryItems = $filter->transform($request);
+        $queryContent = $request->all();
+        $filter = new QueryFilter();
+        $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
+        $categories = Categorie::where($eloquentQuery)->paginate();
 
-        //WIP for test
-        return new CategorieCollection(Categorie::where($queryItems));
-        
-/*
-        if(count($queryItems) == 0) {
-            //return $request;
-            //return new CategorieCollection(Categorie::paginate());
-            return new CategorieCollection(Categorie::where($queryItems)->paginate());
-        } else {
-            //return $queryItems;
-            return new CategorieCollection(Categorie::where($queryItems)->paginate());
-        }    
-        */
+        return new CategorieCollection($categories->appends($request->query()));
     }
 
     /**
