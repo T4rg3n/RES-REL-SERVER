@@ -8,17 +8,40 @@ use App\Http\Resources\V1\CategorieResource;
 use App\Http\Resources\V1\CategorieCollection;
 use App\Http\Requests\StoreCategorieRequest;
 use App\Http\Requests\UpdateCategorieRequest;
+use Illuminate\Http\Request;
+use App\Services\V1\QueryFilter;
 
 class CategorieController extends Controller
 {
+    /**
+     * Allowed parameters for filtering
+     */
+    protected $allowedParams = [
+        'id' => ['equals'],
+        'nom' => ['equals'],
+    ];
+
+    /**
+     * Translate request parameters to database columns for filtering
+     */
+    protected $columnMap = [
+        'id' => 'id_categorie',
+        'nom' => 'nom_categorie',
+    ];
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new CategorieCollection(Categorie::paginate());
+        $queryContent = $request->all();
+        $filter = new QueryFilter();
+        $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
+        $categories = Categorie::where($eloquentQuery)->paginate();
+
+        return new CategorieCollection($categories->appends($request->query()));
     }
 
     /**

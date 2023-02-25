@@ -7,19 +7,38 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\RoleResource;
 use App\Http\Resources\V1\RoleCollection;
+use App\Services\V1\QueryFilter;
 
 class RoleController extends Controller
 {
+    /**
+     * Allowed parameters for filtering
+     */
+    protected $allowedParams = [
+        'nom' => ['equals'],
+    ];
+
+    /**
+     * Translate request parameters to database columns for filtering
+     */
+    protected $columnMap = [
+        'nom' => 'nom_role',
+    ];
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new RoleCollection(Role::paginate());
-    }
+        $queryContent = $request->all();
+        $filter = new QueryFilter();
+        $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
+        $roles = Role::where($eloquentQuery)->paginate();
 
+        return new RoleCollection($roles->appends($request->query()));
+    }
     
     /**
      * Display the specified resource.
