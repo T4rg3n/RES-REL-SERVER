@@ -1,24 +1,4 @@
 <?php
-
-use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/hook', function () {
-    //load the deploy script
     /**
      * GIT DEPLOYMENT SCRIPT
      *
@@ -45,6 +25,20 @@ Route::get('/hook', function () {
         $output .= "<span style=\"color: #6BE234;\">\$</span><span style=\"color: #729FCF;\">{$command}\n</span><br />";
         $output .= htmlentities(trim($tmp)) . "\n<br /><br />";
     }
-    echo $output;
+?>
 
-});
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title>GIT DEPLOYMENT SCRIPT</title>
+</head>
+<body style="background-color: #000000; color: #FFFFFF; font-weight: bold; padding: 0 10px;">
+<div style="width:700px">
+    <div style="float:left;width:350px;">
+    <p style="color:white;">Git Deployment Script</p>
+    <?php echo $output; ?>
+    </div>
+</div>
+</body>
+</html>
