@@ -44,14 +44,16 @@ The API supports filtering on all the endpoints. The filtering is done by adding
 For example, if you want to get all the resources that were posted before January 1st 2023 you can do the following request:
 
 ```
-<api-server>/api/V1/commentaires?datePublication[lowerThan]=2023-01-01
+<api-server>/api/v1/commentaires?datePublication[lowerThan]=2023-01-01
 ```
 
 You can also filter on multiple fields at the same time by adding a "&" between the filters. For example, if you want to get all the resources that were posted before January 1st 2023 and that have the status 'APPROVED', you can do the following request:
 
 ```
-<api-server>/api/V1/commentaires?datePublication[lowerThan]=2023-01-01&status[equals]=APPROVED
+<api-server>/api/v1/commentaires?datePublication[lowerThan]=2023-01-01&status[equals]=APPROVED
 ```
+
+**Note that the 'v1' is in lowercase.** I'm also working on getting rid of the /api/ as it's already declared in the subdomain.
 
 The API supports the following operators for filtering :
 
