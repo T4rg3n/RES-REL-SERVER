@@ -9,6 +9,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('ressources', function (Blueprint $table) {
+        //TODO Ajouter champ DATETIME modification
+        //TODO Ajouter vrais chemins de 
+        //TODO Foreign key sur pieces jointes
+        //TODO Type text sur contenu_texte_ressource
+        
             $table->id('id_ressource');
             $table->timestamp('date_creation_ressource')->useCurrent();
             $table->enum('status', ['PENDING', 'APPROVED', 'REJECTED', 'DELETED']);
