@@ -22,13 +22,13 @@ class PieceJointeFactory extends Factory
 
         return [
             'type_pj' => $typesPj[rand(0,2)],
-            'titre_pj' => $this->faker->text,
+            'titre_pj' => $this->faker->word,
             'date_creation_pj' => $this->faker->dateTimeBetween('-1 year', 'now'),
             'description_pj' => $this->faker->text,
             'contenu_pj' => $this->faker->text,
             'date_activite_pj' => $this->faker->dateTimeBetween('-1 year', 'now'),
-            'lieu_pj' => $this->faker->text,
-            'code_postal_pj' => $this->faker->text,
+            'lieu_pj' => $this->faker->word,
+            'code_postal_pj' => $this->faker->numberBetween(10000, 95000),
             'fk_id_uti' => Utilisateur::all()->random()->id_uti,
         ];
     }
