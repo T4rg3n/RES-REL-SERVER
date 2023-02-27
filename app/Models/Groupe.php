@@ -13,9 +13,9 @@ class Groupe extends Model
     protected $table = 'groupes';
 
     protected $fillable = [
-        'nom',
-        'description',
-        'prive',
+        'nom_groupe',
+        'description_groupe',
+        'est_prive_groupe',
     ];
     
     public function Utilisateur()

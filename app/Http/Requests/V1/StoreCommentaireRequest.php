@@ -4,7 +4,7 @@ namespace App\Http\Requests\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRessourceRequest extends FormRequest
+class StoreCommentaireRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,34 +25,30 @@ class StoreRessourceRequest extends FormRequest
     public function rules()
     {
         return [
-            'titre' => ['required', 'string', 'max:255'],
-            'contenu' => ['required', 'string', 'max:65535'],
+            'contenu' => ['required', 'string', 'max:255'],
             'idUtilisateur' => ['required', 'integer'],
-            'idCategorie' => ['required', 'integer'],
-            'idPieceJointe' => ['nullable', 'integer'],
+            'idRessource' => ['required', 'integer'],
         ];
     }
 
     /**
      * Get the error messages for the defined validation rules.
+     * 
+     * @return array<string, string>
      */
     public function messages()
     {
         return [
-            'titre.required' => 'Titre is required',
-            'titre.string' => 'Titre must be a string',
-            'titre.max' => 'Titre must be less than 255 characters',
             'contenu.required' => 'Contenu is required',
             'contenu.string' => 'Contenu must be a string',
-            'contenu.max' => 'Contenu must be less than 65535 characters',
+            'contenu.max' => 'Contenu must be less than 255 characters',
             'idUtilisateur.required' => 'IdUtilisateur is required',
             'idUtilisateur.integer' => 'IdUtilisateur must be an integer',
-            'idCategorie.required' => 'IdCategorie is required',
-            'idCategorie.integer' => 'IdCategorie must be an integer',
-            'idPieceJointe.integer' => 'IdPieceJointe must be an integer',
+            'idRessource.required' => 'IdRessource is required',
+            'idRessource.integer' => 'IdRessource must be an integer',
         ];
     }
-    
+
     /**
      * Translate request parameters to database columns 
      * for the columns that need to be translated
@@ -60,11 +56,9 @@ class StoreRessourceRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'titre_ressource' => $this->titre,
-            'contenu_texte_ressource' => $this->contenu,
+            'contenu_commentaire' => $this->contenu,
             'fk_id_uti' => $this->idUtilisateur,
-            'fk_id_categorie' => $this->idCategorie,
-            'fk_id_piece_jointe' => $this->idPieceJointe,
+            'fk_id_ressource' => $this->idRessource,
         ]);
     }
 }

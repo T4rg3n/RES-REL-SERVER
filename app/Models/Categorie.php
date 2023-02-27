@@ -13,7 +13,7 @@ class Categorie extends Model
     protected $table = 'categories';
 
     protected $fillable = [
-        'nomCategorie',
+        'nom_categorie',
     ];
 
     public function Ressource()

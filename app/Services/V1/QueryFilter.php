@@ -39,7 +39,7 @@ class QueryFilter
                     }
                 }
             } else {
-                if($param == 'page') {
+                if($param == 'page' || 'perPage') {
                     continue;
                 }
                 

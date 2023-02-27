@@ -17,6 +17,7 @@ class Ressource extends Model
         'contenu_texte_ressource',
         'fk_id_uti',
         'fk_id_categorie',
+        'fk_id_piece_jointe',
         'status',
         'partage_ressource',
         'date_publication_ressource',

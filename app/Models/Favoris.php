@@ -12,6 +12,11 @@ class Favoris extends Model
     protected $table = 'favoris';
     public $timestamps = false;
 
+    protected $fillable = [
+        'fk_id_uti',
+        'fk_id_ressource',
+    ];
+
     public function Utilisateur()
     {
         return $this->belongsTo(Utilisateur::class);

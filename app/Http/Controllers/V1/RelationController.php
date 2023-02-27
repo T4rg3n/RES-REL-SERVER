@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\RelationResource;
 use App\Http\Resources\V1\RelationCollection;
+use App\Http\Requests\V1\StoreRelationRequest;
 use App\Services\V1\QueryFilter;
 
 class RelationController extends Controller
@@ -38,12 +39,28 @@ class RelationController extends Controller
      */
     public function index(Request $request)
     {
+        $perPage = request()->input('perPage', 15);
         $queryContent = $request->all();
         $filter = new QueryFilter();
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
-        $relations = Relation::where($eloquentQuery)->paginate();
+        $relations = Relation::where($eloquentQuery)->paginate($perPage);
         
         return new RelationCollection($relations->appends($request->query()));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     * 
+     * @param  \Illuminate\Http\StoreRelationRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(StoreRelationRequest $request)
+    {
+        $relation = Relation::create($request->all());
+        $relation->save();
+        $id = $relation->id;
+        
+        return response()->json($this->show($id), 201);
     }
 
     /**

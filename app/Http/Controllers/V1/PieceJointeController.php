@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\PieceJointeResource;
 use App\Http\Resources\V1\PieceJointeCollection;
+use App\Http\Requests\V1\StorePieceJointeRequest;
 use App\Services\V1\QueryFilter;
 
 class PieceJointeController extends Controller
@@ -44,12 +45,28 @@ class PieceJointeController extends Controller
      */
     public function index(Request $request)
     {
+        $perPage = request()->input('perPage', 15);
         $queryContent = $request->all();
         $filter = new QueryFilter();
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
-        $piecesJointes = PieceJointe::where($eloquentQuery)->paginate();
+        $piecesJointes = PieceJointe::where($eloquentQuery)->paginate($perPage);
         
         return new PieceJointeCollection($piecesJointes->appends($request->query()));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     * 
+     * @param  \Illuminate\Http\StorePieceJointeRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(StorePieceJointeRequest $request)
+    {
+        $piece_jointe = PieceJointe::create($request->all());
+        $piece_jointe->save();
+        $id = $piece_jointe->id;
+
+        return response()->json($this->show($id), 201);
     }
 
     /**

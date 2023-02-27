@@ -4,7 +4,7 @@ namespace App\Http\Requests\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCategorieRequest extends FormRequest
+class StoreFavorisRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,31 +25,35 @@ class StoreCategorieRequest extends FormRequest
     public function rules()
     {
         return [
-            'nom' => ['required', 'string', 'max:255'],
+            'idUtilisateur' => ['required', 'integer'],
+            'idRessource' => ['required', 'integer'],
         ];
     }
 
     /**
      * Get the error messages for the defined validation rules.
+     *
+     * @return array<string, string>
      */
     public function messages()
     {
         return [
-            'nom.required' => 'Nom is required',
-            'nom.string' => 'Nom must be a string',
-            'nom.max' => 'Nom must be less than 255 characters',
+            'idUtilisateur.required' => 'idUtilisateur is required',
+            'idUtilisateur.integer' => 'idUtilisateur must be an integer',
+            'idRessource.required' => 'idRessource is required',
+            'idRessource.integer' => 'idRessource must be an integer',
         ];
     }
 
     /**
-     * Translate request parameters to database columns 
+     * Translate request parameters to database columns
      * for the columns that need to be translated
      */
     protected function prepareForValidation()
     {
         $this->merge([
-            'nom_categorie' => $this->nom,
+            'fk_id_uti' => $this->idUtilisateur,
+            'fk_id_ressource' => $this->idRessource,
         ]);
     }
-
 }

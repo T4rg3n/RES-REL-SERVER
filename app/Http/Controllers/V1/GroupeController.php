@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\GroupeResource;
 use App\Http\Resources\V1\GroupeCollection;
+use App\Http\Requests\V1\StoreGroupeRequest;
 use App\Services\V1\QueryFilter;
 
 class GroupeController extends Controller
@@ -36,12 +37,28 @@ class GroupeController extends Controller
      */
     public function index(Request $request)
     {
+        $perPage = request()->input('perPage', 15);
         $queryContent = $request->all();
         $filter = new QueryFilter();
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
-        $groupe = Groupe::where($eloquentQuery)->paginate();    
+        $groupe = Groupe::where($eloquentQuery)->paginate($perPage);    
 
         return new GroupeCollection($groupe->appends($request->query()));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     * 
+     * @param  \Illuminate\Http\StoreGroupeRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(StoreGroupeRequest $request)
+    {
+        $groupe = Groupe::create($request->all());
+        $groupe->save();
+        $id = $groupe->id;
+
+        return response()->json($this->show($id), 201);
     }
 
     /**

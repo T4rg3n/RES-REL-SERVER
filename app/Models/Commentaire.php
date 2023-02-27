@@ -13,8 +13,10 @@ class Commentaire extends Model
     protected $table = 'commentaires';
 
     protected $fillable = [
-        'contenu',
-        'supprime',
+        'contenu_commentaire',
+        'fk_id_uti',
+        'fk_id_ressource',
+        'commentaire_supprime',
     ];
 
     public function Ressource()

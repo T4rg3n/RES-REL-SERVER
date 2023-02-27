@@ -6,8 +6,8 @@ use App\Models\Categorie;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\CategorieResource;
 use App\Http\Resources\V1\CategorieCollection;
-use App\Http\Requests\StoreCategorieRequest;
-use App\Http\Requests\UpdateCategorieRequest;
+use App\Http\Requests\V1\StoreCategorieRequest;
+use App\Http\Requests\V1\UpdateCategorieRequest;
 use Illuminate\Http\Request;
 use App\Services\V1\QueryFilter;
 
@@ -36,10 +36,11 @@ class CategorieController extends Controller
      */
     public function index(Request $request)
     {
+        $perPage = request()->input('perPage', 15);
         $queryContent = $request->all();
         $filter = new QueryFilter();
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
-        $categories = Categorie::where($eloquentQuery)->paginate();
+        $categories = Categorie::where($eloquentQuery)->paginate($perPage);
 
         return new CategorieCollection($categories->appends($request->query()));
     }
@@ -62,7 +63,11 @@ class CategorieController extends Controller
      */
     public function store(StoreCategorieRequest $request)
     {
-        //
+        $categorie = Categorie::create($request->all());
+        $categorie->save();
+        $id = $categorie->id;
+
+        return response()->json($this->show($id), 201);
     }
 
     /**
@@ -96,10 +101,10 @@ class CategorieController extends Controller
      * @param  \App\Models\Categorie  $categorie
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCategorieRequest $request, Categorie $categorie)
+   /* public function update(UpdateCategorieRequest $request, Categorie $categorie)
     {
         //
-    }
+    }*/
 
     /**
      * Remove the specified resource from storage.

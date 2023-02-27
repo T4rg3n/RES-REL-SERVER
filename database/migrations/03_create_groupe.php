@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id('id_groupe');
             $table->string('nom_groupe');
             $table->text('description_groupe');
-            $table->boolean('est_prive_groupe');
+            $table->boolean('est_prive_groupe')->default(true);
         });
     }
 

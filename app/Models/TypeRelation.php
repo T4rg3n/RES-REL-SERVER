@@ -13,7 +13,7 @@ class TypeRelation extends Model
     protected $table = 'type_relations';
     
     protected $fillable = [
-        'nom',
+        'nom_type_relation',
     ];
 
     public function Relation()

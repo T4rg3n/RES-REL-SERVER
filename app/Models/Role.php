@@ -11,8 +11,9 @@ class Role extends Model
 
     public $timestamps = false;
     protected $table = 'roles';
+    
     protected $fillable = [
-        'nom',
+        'nom_role',
     ];
 
     public function Utilisateur()

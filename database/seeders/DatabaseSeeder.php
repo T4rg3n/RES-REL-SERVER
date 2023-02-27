@@ -19,11 +19,11 @@ class DatabaseSeeder extends Seeder
             GroupeSeeder::class,
             CategorieSeeder::class,
             RelationSeeder::class,
-            RessourceSeeder::class,
-            TypeRelationSeeder::class,
-            CommentaireSeeder::class,
-            ReponseCommentaireSeeder::class,
             PieceJointeSeeder::class,
+            RessourceSeeder::class,
+            CommentaireSeeder::class,
+            TypeRelationSeeder::class,
+            ReponseCommentaireSeeder::class,
             FavorisSeeder::class,
         ]);
     }

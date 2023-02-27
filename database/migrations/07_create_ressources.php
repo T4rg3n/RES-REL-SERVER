@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('raison_refus_ressource')->nullable();
             $table->unsignedBigInteger('fk_id_categorie');
             $table->dateTime('date_modification')->nullable();
-            $table->unsignedBigInteger('fk_id_piece_jointe');
+            $table->unsignedBigInteger('fk_id_piece_jointe')->nullable();
 
             $table->foreign('fk_id_uti')
                 ->references('id_uti')
@@ -32,10 +32,13 @@ return new class extends Migration
                 ->on('categories')
                 ->onDelete('cascade');
             
+                //TODO: Allow null value for fk_id_piece_jointe
+                //TODO: Update methods down()
             $table->foreign('fk_id_piece_jointe')
                 ->references('id_piece_jointe')
                 ->on('piece_jointes')
-                ->onDelete('cascade');
+                ->onDelete('set null')
+                ->onUpdate('cascade');
                 
         });
     }

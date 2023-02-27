@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\UtilisateurResource;
 use App\Http\Resources\V1\UtilisateurCollection;
+use App\Http\Requests\V1\StoreUtilisateurRequest;
 use App\Services\V1\QueryFilter;
 
 class UtilisateurController extends Controller
@@ -50,12 +51,28 @@ class UtilisateurController extends Controller
      */
     public function index(Request $request)
     {
+        $perPage = request()->input('perPage', 15);
         $queryContent = $request->all();
         $filter = new QueryFilter();
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
-        $utilisateurs = Utilisateur::where($eloquentQuery)->paginate();
+        $utilisateurs = Utilisateur::where($eloquentQuery)->paginate($perPage);
 
         return new UtilisateurCollection($utilisateurs->appends($request->query()));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     * 
+     * @param  \Illuminate\Http\StoreUtilisateurRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(StoreUtilisateurRequest $request)
+    {
+        $utilisateur = Utilisateur::create($request->all());
+        $utilisateur->save();
+        $id = $utilisateur->id;
+
+        return response()->json($this->show($id), 201);
     }
     
     /**

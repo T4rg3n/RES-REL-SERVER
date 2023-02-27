@@ -11,16 +11,39 @@ class Utilisateur extends Model
 
     public $timestamps = false;
     protected $table = 'utilisateurs';
+
     protected $fillable = [
-        'mail',
-        'motDePasse',
-        'dateNaissance',
-        'codePostal',
-        'nom',
-        'prenom',
-        'photo',
-        'bio'
+        'mail_uti',
+        'mdp_uti',
+        'date_naissance_uti',
+        'code_postal_uti',
+        'nom_uti',
+        'prenom_uti',
+        'photo_uti',
+        'bio_uti'
     ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<string>
+     */
+    /*
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+    */
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    /*
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+    */
 
     public function Role()
     {

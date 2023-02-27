@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('piece_jointes', function (Blueprint $table) {
             $table->id('id_piece_jointe');
-            $table->enum('type_pj', ['IMAGE', 'VIDEO', 'PDF']);
+            $table->enum('type_pj', ['IMAGE', 'VIDEO', 'PDF', 'ACTIVITE']);
             $table->string('titre_pj');
             $table->timestamp('date_creation_pj')->useCurrent();
             $table->string('description_pj');

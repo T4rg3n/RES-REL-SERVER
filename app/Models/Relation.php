@@ -13,8 +13,8 @@ class Relation extends Model
     protected $table = 'relations';
 
     protected $fillable = [
-        'idDemandeur',
-        'idReceveur',
+        'demandeur_id',
+        'receveur_id',
         'accepte',
     ];
 
