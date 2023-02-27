@@ -11,6 +11,16 @@ class Utilisateur extends Model
 
     public $timestamps = false;
     protected $table = 'utilisateurs';
+    protected $fillable = [
+        'mail',
+        'motDePasse',
+        'dateNaissance',
+        'codePostal',
+        'nom',
+        'prenom',
+        'photo',
+        'bio'
+    ];
 
     public function Role()
     {

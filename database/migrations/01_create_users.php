@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('bio_uti');
             $table->string('url_profil_uti');
             $table->boolean('compte_actif_uti')->default(true);
-            $table->string('raison_banni_uti');
+            $table->string('raison_banni_uti')->nullable();
         });
     }
 

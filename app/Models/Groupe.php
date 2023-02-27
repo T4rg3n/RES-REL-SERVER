@@ -11,6 +11,12 @@ class Groupe extends Model
 
     public $timestamps = false;
     protected $table = 'groupes';
+
+    protected $fillable = [
+        'nom',
+        'description',
+        'prive',
+    ];
     
     public function Utilisateur()
     {

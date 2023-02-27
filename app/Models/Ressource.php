@@ -17,6 +17,10 @@ class Ressource extends Model
         'contenu_texte_ressource',
         'fk_id_uti',
         'fk_id_categorie',
+        'status',
+        'partage_ressource',
+        'date_publication_ressource',
+        'raison_refus_ressource',
     ];
 
     public function Utilisateur()

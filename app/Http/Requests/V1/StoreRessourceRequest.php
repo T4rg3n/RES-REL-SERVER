@@ -24,21 +24,38 @@ class StoreRessourceRequest extends FormRequest
     public function rules()
     {
         return [
-            'titreRessource' => ['required'],
-            'contenu' => ['required'],
-            'idUtilisateur' => ['required'],
-            'idCategorie' => ['required'],
+            'titre' => ['required', 'string', 'max:255'],
+            'contenu' => ['required', 'string', 'max:65535'],
+            'idUtilisateur' => ['required', 'integer'],
+            'idCategorie' => ['required', 'integer'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'titre.required' => 'Titre is required',
+            'titre.string' => 'Titre must be a string',
+            'titre.max' => 'Titre must be less than 255 characters',
+            'contenu.required' => 'Contenu is required',
+            'contenu.string' => 'Contenu must be a string',
+            'contenu.max' => 'Contenu must be less than 65535 characters',
+            'idUtilisateur.required' => 'IdUtilisateur is required',
+            'idUtilisateur.integer' => 'IdUtilisateur must be an integer',
+            'idCategorie.required' => 'IdCategorie is required',
+            'idCategorie.integer' => 'IdCategorie must be an integer',
         ];
     }
     
     /**
-     * Translate request parameters to database columns
-     * (for the columns that need to be translated)
+     * Translate request parameters to database columns 
+     * for the columns that need to be translated
      */
-    protected function preprareForValidation()
+    protected function prepareForValidation()
     {
         $this->merge([
-            'titre_ressource' => $this->titreRessource,
+            'titre_ressource' => $this->titre,
+            'contenu_texte_ressource' => $this->contenu,
             'fk_id_uti' => $this->idUtilisateur,
             'fk_id_categorie' => $this->idCategorie,
         ]);

@@ -12,6 +12,11 @@ class Commentaire extends Model
     public $timestamps = false;
     protected $table = 'commentaires';
 
+    protected $fillable = [
+        'contenu',
+        'supprime',
+    ];
+
     public function Ressource()
     {
         return $this->belongsTo(Ressource::class);

@@ -12,6 +12,16 @@ class PieceJointe extends Model
     public $timestamps = false;
     protected $table = 'piece_jointes';
 
+    protected $fillable = [
+        'type',
+        'titre',
+        'description',
+        'contenu',
+        'dateActivite',
+        'lieu',
+        'codePostal'
+    ];
+
     public function Ressource()
     {
         return $this->belongsTo(Ressource::class);

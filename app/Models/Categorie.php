@@ -12,6 +12,10 @@ class Categorie extends Model
     public $timestamps = false;
     protected $table = 'categories';
 
+    protected $fillable = [
+        'nomCategorie',
+    ];
+
     public function Ressource()
     {
         return $this->hasMany(Ressource::class);

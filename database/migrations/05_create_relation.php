@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id('id_relation');
             $table->integer('demandeur_id');
             $table->integer('receveur_id');
-            $table->boolean('accepte');
+            $table->boolean('accepte')->nullable();
         });
     }
 

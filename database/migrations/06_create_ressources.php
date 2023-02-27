@@ -9,21 +9,18 @@ return new class extends Migration
     public function up()
     {
         Schema::create('ressources', function (Blueprint $table) {
-        //TODO Ajouter champ DATETIME modification
-        //TODO Ajouter vrais chemins de 
-        //TODO Foreign key sur pieces jointes
-        //TODO Type text sur contenu_texte_ressource
-        
             $table->id('id_ressource');
             $table->timestamp('date_creation_ressource')->useCurrent();
-            $table->enum('status', ['PENDING', 'APPROVED', 'REJECTED', 'DELETED']);
+            $table->enum('status', ['PENDING', 'APPROVED', 'REJECTED', 'DELETED'])->default('PENDING');
             $table->unsignedBigInteger('fk_id_uti');
-            $table->string('partage_ressource');
+            $table->enum('partage_ressource', ['PRIVATE', 'PUBLIC', 'RESTRICTED'])->default('PRIVATE');
             $table->string('titre_ressource');
-            $table->string('contenu_texte_ressource');
-            $table->dateTime('date_publication_ressource');
-            $table->string('raison_refus_ressource');
+            $table->text('contenu_texte_ressource');
+            $table->dateTime('date_publication_ressource')->nullable();
+            $table->string('raison_refus_ressource')->nullable();
             $table->unsignedBigInteger('fk_id_categorie');
+            $table->dateTime('date_modification')->nullable();
+            $table->unsignedBigInteger('fk_id_piece_jointe');
 
             $table->foreign('fk_id_uti')
                 ->references('id_uti')
@@ -33,7 +30,13 @@ return new class extends Migration
             $table->foreign('fk_id_categorie')
                 ->references('id_categorie')
                 ->on('categories')
-                ->onDelete('cascade');  
+                ->onDelete('cascade');
+            
+            $table->foreign('fk_id_piece_jointe')
+                ->references('id_piece_jointe')
+                ->on('piece_jointes')
+                ->onDelete('cascade');
+                
         });
     }
 
