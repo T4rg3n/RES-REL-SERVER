@@ -66,32 +66,26 @@ class PieceJointeController extends Controller
         $pieceJointe->save();
         $id = $pieceJointe->id;
 
+        $uploadedFile = $request->file('contenu_pj');
+        $fileName = $id . '_' . $uploadedFile->getClientOriginalName()->extension();
+        $filePath = 'public/files/' . $pieceJointe->fk_id_uti;
+
+        switch ($request->input('type_pj')) {
+            case('IMAGE'):
+                $filePath .= '//image//';
+                break;
+            case('VIDEO'):
+                $filePath .= '//video//';
+            case('PDF'):
+                $filePath .= '//pdf//';
+            default:
+                break;
+        }
+
+        $uploadedFile->storeAs($filePath, $fileName);
+       
         return response()->json($this->show($id), 201);
     }
-
-    public function uploadFile(Request $request)
-    {
-        $validatedData = $request->validate([
-            'file' => ['required', 'file', 'max:10240']
-        ]);
-
-        $uploadedFile = $request->file('file');
-        $tempFilePath = $uploadedFile->store('temp');
-
-        // move the uploaded file to its final location
-        $finalFilePath = Storage::putFile('files', $uploadedFile);
-
-        // return a response to the client
-        return response()->json([
-            'message' => 'File uploaded successfully.',
-            'file' => [
-                'name' => $uploadedFile->getClientOriginalName(),
-                'size' => $uploadedFile->getSize(),
-                'path' => $finalFilePath,
-            ],
-        ]);
-    }
-}
 
     /**
      * Display the specified resource.
@@ -99,10 +93,10 @@ class PieceJointeController extends Controller
      * @param  int  $id_commentaire
      * @return \Illuminate\Http\Response
      */
-    public function show($id_piece_jointe)
+    public function show($idPieceJointe)
     {
-        $piece_jointe = PieceJointe::where('id_piece_jointe', $id_piece_jointe)->first();
+        $pieceJointe = PieceJointe::where('id_piece_jointe', $idPieceJointe)->first();
 
-        return new PieceJointeResource($piece_jointe);
+        return new PieceJointeResource($pieceJointe);
     }
 }
