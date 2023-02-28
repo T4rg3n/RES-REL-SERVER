@@ -31,9 +31,7 @@ return new class extends Migration
                 ->references('id_categorie')
                 ->on('categories')
                 ->onDelete('cascade');
-            
-                //TODO: Allow null value for fk_id_piece_jointe
-                //TODO: Update methods down()
+
             $table->foreign('fk_id_piece_jointe')
                 ->references('id_piece_jointe')
                 ->on('piece_jointes')

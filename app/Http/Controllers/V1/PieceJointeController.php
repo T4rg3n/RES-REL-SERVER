@@ -62,12 +62,36 @@ class PieceJointeController extends Controller
      */
     public function store(StorePieceJointeRequest $request)
     {
-        $piece_jointe = PieceJointe::create($request->all());
-        $piece_jointe->save();
-        $id = $piece_jointe->id;
+        $pieceJointe = PieceJointe::create($request->all());
+        $pieceJointe->save();
+        $id = $pieceJointe->id;
 
         return response()->json($this->show($id), 201);
     }
+
+    public function uploadFile(Request $request)
+    {
+        $validatedData = $request->validate([
+            'file' => ['required', 'file', 'max:10240']
+        ]);
+
+        $uploadedFile = $request->file('file');
+        $tempFilePath = $uploadedFile->store('temp');
+
+        // move the uploaded file to its final location
+        $finalFilePath = Storage::putFile('files', $uploadedFile);
+
+        // return a response to the client
+        return response()->json([
+            'message' => 'File uploaded successfully.',
+            'file' => [
+                'name' => $uploadedFile->getClientOriginalName(),
+                'size' => $uploadedFile->getSize(),
+                'path' => $finalFilePath,
+            ],
+        ]);
+    }
+}
 
     /**
      * Display the specified resource.

@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('code_postal_uti');
             $table->string('nom_uti');
             $table->string('prenom_uti');
-            $table->string('photo_uti')->nullable(); //TODO ne pas garder en prod
+            $table->string('photo_uti')->nullable(); //TODO ne pas garder en prod (ou alors garder & requete PUT/PATCH après)
             $table->text('bio_uti');
-            $table->string('url_profil_uti')->nullable(); //TODO ne pas garder en prod
+            $table->string('url_profil_uti')->nullable(); //TODO générer automatiquement 
             $table->boolean('compte_actif_uti')->default(true);
             $table->string('raison_banni_uti')->nullable();
         });

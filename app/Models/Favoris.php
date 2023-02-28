@@ -9,8 +9,8 @@ class Favoris extends Model
 {
     use HasFactory;
     
-    protected $table = 'favoris';
     public $timestamps = false;
+    protected $table = 'favoris';
 
     protected $fillable = [
         'fk_id_uti',
