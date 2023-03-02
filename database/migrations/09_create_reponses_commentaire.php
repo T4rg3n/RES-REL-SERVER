@@ -12,8 +12,8 @@ return new class extends Migration
             $table->id('id_reponse');
             $table->text('contenu_reponse');
             $table->timestamp('date_publication_reponse')->useCurrent();
-            $table->boolean('reponse_supprime');
-            $table->integer('nombre_signalement_commentaire');
+            $table->boolean('reponse_supprime')->default(false);
+            $table->integer('nombre_signalement_commentaire')->default(0);
             $table->unsignedBigInteger('fk_id_uti');
             $table->unsignedBigInteger('fk_id_commentaire');
 

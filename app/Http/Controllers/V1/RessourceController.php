@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\RessourceResource;
 use App\Http\Resources\V1\RessourceCollection;
+use App\Http\Requests\V1\StoreRessourceRequest;
 use App\Services\V1\QueryFilter;
 
 class RessourceController extends Controller
@@ -44,12 +45,29 @@ class RessourceController extends Controller
      */
     public function index(Request $request)
     {
+        //TODO: Add piece jointe as related data to ressource
+        $perPage = request()->input('perPage', 15);
         $queryContent = $request->all();
         $filter = new QueryFilter();
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
-        $ressources = Ressource::where($eloquentQuery)->paginate();
+        $ressources = Ressource::where($eloquentQuery)->paginate($perPage);
 
         return new RessourceCollection($ressources->appends($request->query()));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(StoreRessourceRequest $request)
+    {
+        $ressource = Ressource::create($request->all());
+        $ressource->save();
+        $id = $ressource->id;
+
+        return response()->json($this->show($id), 201);
     }
 
     /**

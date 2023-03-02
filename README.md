@@ -71,45 +71,45 @@ The API supports the following operators for filtering :
 However not all fields are filterable. Here is the complete list of all the endpoints of the API that support filtering in the current API version :
 
 
-| Table | Field | Equals</br><p align="center">=</p> | notEquals <p align="center">!=</p>  | LowerThan <p align="center"><</p> | LowerThanEquals <p align="center"><=</p> | GreaterThan <p align="center">></p> | GreaterThanEquals <p align="center">>=</p> |
-|-------|-------|--------|------------|-----------|-----------------|-------------|-------------------|
+| Table | Field | Equals</br><p align="center">=</p> | LowerThan <p align="center"><</p> | LowerThanEquals <p align="center"><=</p> | GreaterThan <p align="center">></p> | GreaterThanEquals <p align="center">>=</p> |
+|-------|--------|------------|-----------|-----------------|-------------|-------------------|
 categories | id |<p align="center"> ✓ </p>| |  |  |  |  |
 categories | nom |<p align="center"> ✓ </p>|  |  |  |  |  |
 commentaires | idUtilisateur |<p align="center"> ✓ </p>| |  |  |  |  |
-commentaires | datePublication |<p align="center"> ✓ </p>|<p align="center">  </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|
-commentaires | nombreReponses |<p align="center"> ✓ </p>|<p align="center">  </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|
+commentaires | datePublication |<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|
+commentaires | nombreReponses |<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|
 commentaires | supprime |<p align="center"> ✓ </p>| |  |  |  |  |
-commentaires | nombreSignalements |<p align="center"> ✓ </p>|<p align="center">  </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|
-favoris | dateFav |<p align="center"> ✓ </p>|<p align="center">  </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|
+commentaires | nombreSignalements |<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|
+favoris | dateFav |<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|
 favoris | idUtilisateur |<p align="center"> ✓ </p>| |  |  |  |  |
 favoris | idRessource |<p align="center"> ✓ </p>| |  |  |  |  |
 groupes | nom |<p align="center"> ✓ </p>| |  |  |  |  |
 groupes | estPrive |<p align="center"> ✓ </p>| |  |  |  |  |
 piecesJointes | type |<p align="center"> ✓ </p>| |  |  |  |  |
 piecesJointes | titre |<p align="center"> ✓ </p>| |  |  |  |  |
-piecesJointes | dateCreation |<p align="center"> ✓ </p>|<p align="center">  </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|
-piecesJointes | dateActivite |<p align="center"> ✓ </p>|<p align="center">  </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|
+piecesJointes | dateCreation |<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|
+piecesJointes | dateActivite |<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|
 piecesJointes | lieu |<p align="center"> ✓ </p>| |  |  |  |  |
 piecesJointes | codePostal |<p align="center"> ✓ </p>| |  |  |  |  |
 piecesJointes | idUtilisateur |<p align="center"> ✓ </p>| |  |  |  |  |
 relations | idDemandeur |<p align="center"> ✓ </p>| |  |  |  |  |
 relations | idReceveur |<p align="center"> ✓ </p>| |  |  |  |  |
 relations | accepte |<p align="center"> ✓ </p>| |  |  |  |  |
-reponsesCommentaires | datePublication |<p align="center"> ✓ </p>|<p align="center">  </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|
+reponsesCommentaires | datePublication |<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|
 reponsesCommentaires | supprime |<p align="center"> ✓ </p>| |  |  |  |  |
 reponsesCommentaires | nombreSignalement |<p align="center"> ✓ </p>| |  |  |  |  |
 reponsesCommentaires | idUtilisateur |<p align="center"> ✓ </p>| |  |  |  |  |
 reponsesCommentaires | idCommentaire |<p align="center"> ✓ </p>| |  |  |  |  |
 ressources | id |<p align="center"> ✓ </p>| |  |  |  |  |
-ressources | dateCreation |<p align="center"> ✓ </p>|<p align="center">  </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|
+ressources | dateCreation |<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|
 ressources | status |<p align="center"> ✓ </p>| |  |  |  |  |
 ressources | idUtilisateur |<p align="center"> ✓ </p>| |  |  |  |  |
-ressources | datePublication |<p align="center"> ✓ </p>|<p align="center">  </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|
+ressources | datePublication |<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|
 ressources | idCategorie |<p align="center"> ✓ </p>| |  |  |  |  |
 utilisateurs | id  |<p align="center"> ✓ </p>| |  |  |  |  |
 utilisateurs | mail |<p align="center"> ✓ </p>| |  |  |  |  |
-utilisateurs | dateInscription |<p align="center"> ✓ </p>|<p align="center">  </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|
-utilisateurs | dateNaissance |<p align="center"> ✓ </p>|<p align="center">  </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|
+utilisateurs | dateInscription |<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|
+utilisateurs | dateNaissance |<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|<p align="center"> ✓ </p>|
 utilisateurs | codePostal |<p align="center"> ✓ </p>| |  |  |  |  |
 utilisateurs | nom |<p align="center"> ✓ </p>| |  |  |  |  |
 utilisateurs | prenom |<p align="center"> ✓ </p>| |  |  |  |  |

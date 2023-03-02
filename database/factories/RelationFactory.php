@@ -20,7 +20,6 @@ class RelationFactory extends Factory
         return [
             'demandeur_id' => $this->faker->randomNumber(2),
             'receveur_id' => $this->faker->randomNumber(2),
-            'accepte' => $this->faker->boolean
         ];
     }
 }

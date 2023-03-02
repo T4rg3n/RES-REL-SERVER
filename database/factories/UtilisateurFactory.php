@@ -27,9 +27,9 @@ class UtilisateurFactory extends Factory
             'prenom_uti' => $this->faker->firstName,
             'photo_uti' => $this->faker->imageUrl(),
             'bio_uti' => $this->faker->text,
+            //todo vraie url 
             'url_profil_uti' => $this->faker->url,
             'compte_actif_uti' => $this->faker->boolean,
-            'raison_banni_uti' => $this->faker->sentence,
         ];
     }
 }

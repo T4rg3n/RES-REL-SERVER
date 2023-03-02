@@ -12,6 +12,12 @@ class Relation extends Model
     public $timestamps = false;
     protected $table = 'relations';
 
+    protected $fillable = [
+        'demandeur_id',
+        'receveur_id',
+        'accepte',
+    ];
+
     public function TypeRelation ()
     {
         return $this->belongsTo(TypeRelation::class);

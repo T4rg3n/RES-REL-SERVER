@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V1;
 use App\Models\Favoris;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\StoreFavorisRequest;
 use App\Http\Resources\V1\FavorisResource;
 use App\Http\Resources\V1\FavorisCollection;
 use App\Services\V1\QueryFilter;
@@ -38,12 +39,28 @@ class FavorisController extends Controller
      */
     public function index(Request $request)
     {
+        $perPage = request()->input('perPage', 15);
         $queryContent = $request->all();
         $filter = new QueryFilter();
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
-        $favoris = Favoris::where($eloquentQuery)->paginate();
+        $favoris = Favoris::where($eloquentQuery)->paginate($perPage);
         
         return new FavorisCollection($favoris->appends($request->query()));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(StoreFavorisRequest $request)
+    {
+        $favoris = Favoris::create($request->all());
+        $favoris->save();
+        $id = $favoris->id;
+        
+        return response()->json($this->show($id), 201);
     }
     
     /**

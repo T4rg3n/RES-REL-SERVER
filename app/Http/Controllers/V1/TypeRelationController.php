@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\TypeRelationResource;
 use App\Http\Resources\V1\TypeRelationCollection;
+use App\Http\Requests\V1\StoreTypeRelationRequest;
 use App\Services\V1\QueryFilter;
 
 /**
@@ -39,12 +40,28 @@ class TypeRelationController extends Controller
      */
     public function index(Request $request)
     {
+        $perPage = request()->input('perPage', 15);
         $queryContent = $request->all();
         $filter = new QueryFilter();
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
-        $typesRelations = TypeRelation::where($eloquentQuery)->paginate();
+        $typesRelations = TypeRelation::where($eloquentQuery)->paginate($perPage);
 
         return new TypeRelationCollection($typesRelations->appends($request->query()));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     * 
+     * @param  \Illuminate\Http\StoreTypeRelationRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(StoreTypeRelationRequest $request)
+    {
+        $typeRelation = TypeRelation::create($request->all());
+        $typeRelation->save();
+        $id = $typeRelation->id;
+
+        return response()->json($this->show($id), 201);;
     }
 
     /**

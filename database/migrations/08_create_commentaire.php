@@ -12,9 +12,9 @@ return new class extends Migration
             $table->id('id_commentaire');
             $table->text('contenu_commentaire');
             $table->timestamp('date_publication_commentaire')->useCurrent();
-            $table->integer('nombre_reponses_commentaire');
-            $table->boolean('commentaire_supprime');
-            $table->integer('nombre_signalement_commentaire');
+            $table->integer('nombre_reponses_commentaire')->default(0);
+            $table->boolean('commentaire_supprime')->default(false);
+            $table->integer('nombre_signalement_commentaire')->default(0);
             $table->unsignedBigInteger('fk_id_uti');
             $table->unsignedBigInteger('fk_id_ressource');
 

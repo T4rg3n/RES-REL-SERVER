@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\ReponseCommentaireResource;
 use App\Http\Resources\V1\ReponseCommentaireCollection;
+use App\Http\Requests\V1\StoreReponseCommentaireRequest;
 use App\Services\V1\QueryFilter;
 
 class ReponseCommentaireController extends Controller
@@ -28,7 +29,7 @@ class ReponseCommentaireController extends Controller
      */
     protected $columnMap = [
         'id' => 'id_reponse',
-        'date' => 'date_publication_reponse',
+        'date' => 'date_publication_reponse', //BUG date is null in GET request but not in DB
         'supprime' => 'reponse_supprime',
         'nombreSignalement' => 'nombre_signalement_commentaire',
         'idUtilisateur' => 'fk_id_uti',
@@ -42,12 +43,28 @@ class ReponseCommentaireController extends Controller
      */
     public function index(Request $request)
     {
+        $perPage = request()->input('perPage', 15);
         $queryContent = $request->all();
         $filter = new QueryFilter();
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
-        $reponsesCommentaires = ReponseCommentaire::where($eloquentQuery)->paginate();
+        $reponsesCommentaires = ReponseCommentaire::where($eloquentQuery)->paginate($perPage);
 
         return new ReponseCommentaireCollection($reponsesCommentaires->appends($request->query())); 
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     * 
+     * @param  \Illuminate\Http\StoreReponseCommentaireRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(StoreReponseCommentaireRequest $request)
+    {
+        $reponseCommentaire = ReponseCommentaire::create($request->all());
+        $reponseCommentaire->save();
+        $id = $reponseCommentaire->id;
+
+        return response()->json($this->show($id), 201);
     }
 
     /**
