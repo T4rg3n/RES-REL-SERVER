@@ -27,12 +27,13 @@ class StorePieceJointeRequest extends FormRequest
         return [
             'type' => ['required', 'string', 'max:255'],
             'titre' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string', 'max:255'],
-            'contenu' => ['required', 'string', 'max:255'],
-            'dateActivite' => ['required', 'string', 'max:255'],
-            'lieu' => ['required', 'string', 'max:255'],
-            'codePostal' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:255'],
+            'contenu' => ['nullable', 'string', 'max:255'],
+            'dateActivite' => ['nullable', 'string', 'max:255'],
+            'lieu' => ['nullable', 'string', 'max:255'],
+            'codePostal' => ['nullable', 'string', 'max:255'],
             'idUtilisateur' => ['required', 'integer'],
+            'file' => ['nullable', 'file', 'mimes:png,jpg,jpeg,gif,mp4,webm,pdf', 'max:15000'],
         ];
     }
 
@@ -53,21 +54,19 @@ class StorePieceJointeRequest extends FormRequest
             'description_pj.required' => 'Description is required',
             'description_pj.string' => 'Description must be a string',
             'description_pj.max' => 'Description must be less than 255 characters',
-            'contenu_pj.required' => 'Contenu is required',
             'contenu_pj.string' => 'Contenu must be a string',
             'contenu_pj.max' => 'Contenu must be less than 255 characters',
-            'date_activite_pj.required' => 'DateActivite is required',
             'date_activite_pj.string' => 'DateActivite must be a string',
             'date_activite_pj.max' => 'DateActivite must be less than 255 characters',
-            'lieu_pj.required' => 'Lieu is required',
             'lieu_pj.string' => 'Lieu must be a string',
             'lieu_pj.max' => 'Lieu must be less than 255 characters',
-            'code_postal_pj.required' => 'CodePostal is required',
             'code_postal_pj.string' => 'CodePostal must be a string',
             'code_postal_pj.max' => 'CodePostal must be less than 255 characters',
             'fk_id_uti.required' => 'IdUtilisateur is required',
             'fk_id_uti.string' => 'IdUtilisateur must be a string',
             'fk_id_uti.max' => 'IdUtilisateur must be less than 255 characters',
+            'pieceJointe.file' => 'PieceJointe must be a file',
+            'pieceJointe.mimes' => 'PieceJointe must be a file of type: png, jpg, jpeg, gif, mp4, webm, pdf',
         ];
     }
 

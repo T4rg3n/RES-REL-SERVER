@@ -31,6 +31,7 @@ class PieceJointeController extends Controller
     protected $columnMap = [
         'id' => 'id_piece_jointe',
         'idUtilisateur' => 'fk_id_uti',
+        'contenu' => 'contenu_pj',
         'type' => 'type_pj',
         'dateCreation' => 'date_creation_pj',
         'dateActivite' => 'date_activite_pj',
@@ -61,29 +62,36 @@ class PieceJointeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(StorePieceJointeRequest $request)
-    {
+    {    
         $pieceJointe = PieceJointe::create($request->all());
-        $pieceJointe->save();
         $id = $pieceJointe->id;
+        
+        //For any case but 'ACTIVITE', the content is the path to the file
+        if($request->input('type_pj') != 'ACTIVITE') {
+            $filePath = 'user-files/' . $pieceJointe->fk_id_uti;
+            $uploadedFile = $request->file('file');
 
-        $uploadedFile = $request->file('contenu_pj');
-        $fileName = $id . '_' . $uploadedFile->getClientOriginalName()->extension();
-        $filePath = 'public/files/' . $pieceJointe->fk_id_uti;
+            switch ($request->input('type_pj')) {
+                case('IMAGE'):
+                    $filePath .= '//image//';
+                    break;
+                case('VIDEO'):
+                    $filePath .= '//video//';
+                    break;
+                case('PDF'):
+                    $filePath .= '//pdf//';
+                default:
+                    break;
+            }
 
-        switch ($request->input('type_pj')) {
-            case('IMAGE'):
-                $filePath .= '//image//';
-                break;
-            case('VIDEO'):
-                $filePath .= '//video//';
-            case('PDF'):
-                $filePath .= '//pdf//';
-            default:
-                break;
+            //dont seem to work
+            // $request->merge(['contenu_pj' => $filePath . $uploadedFile->getClientOriginalName()]);
+            
+            $fileName = $id . '_' . $uploadedFile->getClientOriginalName();
+            $request->file->move(public_path($filePath), $fileName);
         }
-
-        $uploadedFile->storeAs($filePath, $fileName);
-       
+        
+        $pieceJointe->save();
         return response()->json($this->show($id), 201);
     }
 
