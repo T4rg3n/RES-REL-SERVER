@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V1;
 use App\Models\Ressource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\RefuseRessourceRequest;
 use App\Http\Resources\V1\RessourceResource;
 use App\Http\Resources\V1\RessourceCollection;
 use App\Http\Requests\V1\StoreRessourceRequest;
@@ -81,5 +82,23 @@ class RessourceController extends Controller
         $ressource = Ressource::where('id_ressource', $id_ressource)->first();
 
         return new RessourceResource($ressource);
+    }
+
+    /**
+     * Refuse the specified resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function disable(RefuseRessourceRequest $request)
+    {
+
+        $ressource = Ressource::findOrfail($request->id_ressource);
+        $ressource->status = 'REJECTED';
+        $ressource->raison_refus_ressource = $request->raison_refus_ressource;
+        $ressource->save();
+        $id = $ressource->id_ressource;
+
+        return response()->json($this->show($id), 200);
     }
 }

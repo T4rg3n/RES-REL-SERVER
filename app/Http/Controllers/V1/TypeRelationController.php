@@ -76,4 +76,20 @@ class TypeRelationController extends Controller
 
         return new TypeRelationResource($type_relation);
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id_type_relation
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id_type_relation)
+    {
+        $typeRelation = TypeRelation::findOrfail($id_type_relation);
+        $typeRelation->delete();
+
+        return response()->json([
+            'message' => 'TypeRelation deleted'
+        ], 200);
+    }
 }

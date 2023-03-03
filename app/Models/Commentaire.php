@@ -11,6 +11,7 @@ class Commentaire extends Model
 
     public $timestamps = false;
     protected $table = 'commentaires';
+    protected $primaryKey = 'id_commentaire';
 
     protected $fillable = [
         'contenu_commentaire',

@@ -75,4 +75,20 @@ class FavorisController extends Controller
 
         return new FavorisResource($favoris);
     }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  int  $id_favoris
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id_favoris)
+    {
+        $favoris = Favoris::findOrfail($id_favoris);
+        $favoris->delete();
+
+        return response()->json([
+            'message' => 'Favoris deleted'
+        ], 200);
+    }
 }

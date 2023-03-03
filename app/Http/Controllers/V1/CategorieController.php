@@ -106,14 +106,46 @@ class CategorieController extends Controller
         //
     }*/
 
+    //choses à faire API :
+    /*
+    TODO doc readme
+    TODO vérif nommage entre db & translator
+    TODO augmenter varchar en texte sur certaines migrations
+    TODO foreign key pieceJointe sur ressources
+    TODO foreign key role sur utilisateur (si pas déjà fait)
+    TODO create sur tous les endpoints
+    */
+
+    /*
+    Choses qu'on delete:
+                     DONE:      TEST:
+        - categorie     x       
+        - relation      x
+        - typeRelation  x
+        - groupe        x
+        - role          x
+        - favoris       x
+
+    Choses qu'on désactive:
+        - utilisateur           x     
+        - ressource             x  (PJ en conséquense si présente)<= à réfléchir
+        - commentaire           x
+        - reponses_commentaire  x
+    */
+
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Categorie  $categorie
+     * @param  int  $id_categorie
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Categorie $categorie)
+    public function destroy($id_categorie)
     {
-        //
+        $categorie = Categorie::findOrfail($id_categorie);
+        $categorie->delete($id_categorie);
+
+        return response()->json([
+            'message' => 'Categorie deleted'
+        ], 200);
     }
 }

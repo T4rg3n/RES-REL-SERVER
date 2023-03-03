@@ -11,6 +11,7 @@ class Utilisateur extends Model
 
     public $timestamps = false;
     protected $table = 'utilisateurs';
+    protected $primaryKey = 'id_uti';
 
     protected $fillable = [
         'mail_uti',

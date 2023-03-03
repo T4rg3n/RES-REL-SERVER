@@ -11,6 +11,7 @@ class TypeRelation extends Model
     
     public $timestamps = false;
     protected $table = 'type_relations';
+    protected $primaryKey = 'id_type_relation';
     
     protected $fillable = [
         'nom_type_relation',

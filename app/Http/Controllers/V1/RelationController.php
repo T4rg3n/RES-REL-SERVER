@@ -75,4 +75,20 @@ class RelationController extends Controller
 
         return new RelationResource($relation);
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id_relation
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id_relation)
+    {
+        $groupe = Relation::findOrfail($id_relation);
+        $groupe->delete($id_relation);
+
+        return response()->json([
+            'message' => 'Groupe deleted'
+        ], 200);
+    }
 }

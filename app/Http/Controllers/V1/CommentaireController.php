@@ -81,4 +81,47 @@ class CommentaireController extends Controller
 
         return new CommentaireResource($commentaire);
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id_commentaire
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id_commentaire)
+    {
+        //on désactive on supprime pas, todo (appel à patch?/autre méthode?)
+
+        $commentaire = Commentaire::findOrfail($id_commentaire);
+        $commentaire->delete();
+
+        return response()->json([
+            'message' => 'Commentaire deleted'
+        ], 200);
+    }
+
+    /**
+     * Disable the specified resource in the database.
+     */
+    public function disable($id_commentaire)
+    {
+        $commentaire = Commentaire::findOrfail($id_commentaire);
+        $commentaire->commentaire_supprime = true;
+        $commentaire->save();
+
+        return response()->json([
+            'message' => 'Commentaire disabled'
+        ], 200);
+    }
+
+    public function report($id_commentaire)
+    {
+        $commentaire = Commentaire::findOrfail($id_commentaire);
+        $commentaire->nombre_signalement_commentaire += 1;
+        $commentaire->save();
+
+        return response()->json([
+            'message' => 'Commentaire reported'
+        ], 200);
+    }
 }

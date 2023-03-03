@@ -11,6 +11,7 @@ class Favoris extends Model
     
     public $timestamps = false;
     protected $table = 'favoris';
+    protected $primaryKey = 'id_favoris';
 
     protected $fillable = [
         'fk_id_uti',
