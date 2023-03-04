@@ -23,15 +23,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1'], function () {
     //PATCH 
         //(Disable)
-    Route::patch('utilisateurs/disable', 'UtilisateurController@disable');
-    Route::patch('ressources/disable', 'RessourceController@disable');
+    Route::patch('utilisateur/disable', 'UtilisateurController@disable');
+    Route::patch('ressource/disable', 'RessourceController@disable');
     Route::patch('commentaire/disable', 'CommentaireController@disable');
     Route::patch('reponsesCommentaire/disable', 'ReponseCommentaireController@disable');
         //(Report)
     Route::patch('commentaire/{id}/report', 'CommentaireController@report');
     Route::patch('reponseCommentaire/{id}/report', 'ReponseCommentaireController@report');
         //(Like)
-    //TODO les likes
+    Route::patch('ressource/like', 'FavorisController@like');
+    //unlike in DELETE
 
     //GET/HEAD/POST
     Route::apiResource('categories', CategorieController::class);

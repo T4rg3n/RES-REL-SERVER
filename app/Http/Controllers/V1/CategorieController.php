@@ -110,9 +110,6 @@ class CategorieController extends Controller
     /*
     TODO doc readme
     TODO vérif nommage entre db & translator
-    TODO augmenter varchar en texte sur certaines migrations
-    TODO foreign key pieceJointe sur ressources
-    TODO foreign key role sur utilisateur (si pas déjà fait)
     TODO create sur tous les endpoints
     */
 

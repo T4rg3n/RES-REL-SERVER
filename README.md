@@ -13,7 +13,7 @@
   - [About RESREL Server](#about-resrel-server)
 - [API Documentation](#api-documentation)
   - [Filtering data](#filtering-data)
-  - [Endpoints list](#endpoints-list)
+    - [Endpoints list](#endpoints-list)
   - [Search](#search)
   - [Adding data with POST](#adding-data-with-post)
   - [Deleting data with DELETE](#deleting-data-with-delete)
@@ -65,7 +65,7 @@ The API supports the following operators for filtering :
 
 <br>
 
-## Endpoints list
+### Endpoints list
 
 However not all fields are filterable. Here is the complete list of all the endpoints of the API that support filtering in the current API version :
 
@@ -149,12 +149,12 @@ Beware that deleting a resource will also delete all the related data. For examp
 
 ## Disabling resources
 
-Some endpoints support disabling resources. Disabling a resource means its status will be set to "DISABLED". You will also need to send a JSON form with the ID of the resource you want to disable as well as the reason you disabled it.
+Some endpoints support disabling. Disabling a resource means its status will be set to disabled in the database. You will also need to send a JSON form with the ID of the resource you want to disable as well as the reason you disabled it.
 
 Example: `PATCH /api/ressource/disable` <br>
 JSON form : `{ "id": 51,  "raison": "I didnt liked it"}`
 
-Returns the whole resource with the status set to "DISABLED" and the reason you provided.
+Returns the whole resource with the status set to "DISABLED" and the reason you provided in JSON format.
 
 The following endpoints support disabling :
 - utilisateur
