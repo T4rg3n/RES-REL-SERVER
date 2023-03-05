@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\UtilisateurResource;
 use App\Http\Resources\V1\UtilisateurCollection;
 use App\Http\Requests\V1\StoreUtilisateurRequest;
+use App\Http\Requests\V1\BanUtilisateurRequest;
 use App\Services\V1\QueryFilter;
 
 class UtilisateurController extends Controller
@@ -87,5 +88,37 @@ class UtilisateurController extends Controller
 
         return new UtilisateurResource($utilisateur);
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id_uti
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id_uti)
+    {
+        $utilisateur = Utilisateur::findOrfail($id_uti);
+        $utilisateur->delete();
+
+        return response()->json([
+            'message' => 'Utilisateur deleted successfully'
+        ], 200);
+    }
     
+    /**
+     * Set the specified user as disabled (banned) in the database
+     * 
+     * @param int $id_uti
+     * @return \Illuminate\Http\Response
+     */
+    public function disable(BanUtilisateurRequest $request)
+    {
+        $utilisateur = Utilisateur::findOrfail($request->id_uti);
+        $utilisateur->compte_actif_uti = false;
+        $utilisateur->raison_banni_uti = $request->raison_banni_uti;
+        $utilisateur->save();
+        $id = $utilisateur->id_uti;
+        
+        return response()->json($this->show($id), 200);
+    }
 }

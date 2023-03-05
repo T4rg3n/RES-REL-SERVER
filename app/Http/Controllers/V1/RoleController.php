@@ -69,4 +69,20 @@ class RoleController extends Controller
 
         return new RoleResource($role);
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id_role
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id_role)
+    {
+        $role = Role::findOrfail($id_role);
+        $role->delete();
+
+        return response()->json([
+            'message' => 'Role deleted'
+        ], 200);
+    }
 }

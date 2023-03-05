@@ -13,9 +13,12 @@
   - [About RESREL Server](#about-resrel-server)
 - [API Documentation](#api-documentation)
   - [Filtering data](#filtering-data)
-  - [Endpoints list](#endpoints-list)
+    - [Endpoints list](#endpoints-list)
   - [Search](#search)
   - [Adding data with POST](#adding-data-with-post)
+  - [Deleting data with DELETE](#deleting-data-with-delete)
+  - [Disabling resources](#disabling-resources)
+  - [Reporting resources and comments](#reporting-resources-and-comments)
   - [Modifying data with PUT and PATCH](#modifying-data-with-put-and-patch)
 - [License](#license)
 
@@ -33,11 +36,7 @@ It's one of the 3 repos composing *Ressources Relationnelles*, the other ones be
 <br>
 
 # API Documentation
-
-
 ## Filtering data
-
-<br>
 
 The API supports filtering on all the endpoints. The filtering is done by adding a GET parameter to the request. The parameter is called the same as the field you want to filter on, and the value is the value you want to filter on. 
 
@@ -66,11 +65,11 @@ The API supports the following operators for filtering :
 
 <br>
 
-## Endpoints list
+### Endpoints list
 
 However not all fields are filterable. Here is the complete list of all the endpoints of the API that support filtering in the current API version :
 
-
+<!-- TODO Refactor this -->
 | Table | Field | Equals</br><p align="center">=</p> | LowerThan <p align="center"><</p> | LowerThanEquals <p align="center"><=</p> | GreaterThan <p align="center">></p> | GreaterThanEquals <p align="center">>=</p> |
 |-------|--------|------------|-----------|-----------------|-------------|-------------------|
 categories | id |<p align="center"> ✓ </p>| |  |  |  |  |
@@ -131,7 +130,45 @@ The API support a search system. You can search for a specific resource by using
 
 ## Adding data with POST
 
-*WIP*
+You can add custom data to the API on the same endpoints as those you were reading from. You'll need to send an HTTP POST request that contains a JSON form. All parameters are usually required except ID.
+
+<br>
+
+## Deleting data with DELETE
+
+Delete is available on all the endpoints. You'll need to send an HTTP DELETE request without the need to send a JSON form. The ID of the resource you want to delete is required in the URL. 
+
+Example: `DELETE /api/ressources/1` <br>
+Returns : `{"message": "Categorie deleted"}`
+<br>
+
+Beware that deleting the resource erase it from the database. The API also provide the ability to disable a resource. You can find more information about this in the [disabling resources](#disabling-resources) section just below.
+<!-- TODO 
+Beware that deleting a resource will also delete all the related data. For example, deleting a user will also delete all the comments, replies, favorites, etc. that the user has created.
+-->
+
+## Disabling resources
+
+Some endpoints support disabling. Disabling a resource means its status will be set to disabled in the database. You will also need to send a JSON form with the ID of the resource you want to disable as well as the reason you disabled it.
+
+Example: `PATCH /api/ressource/disable` <br>
+JSON form : `{ "id": 51,  "raison": "I didn't liked it"}`
+
+Returns the whole resource with the status set to "DISABLED" and the reason you provided in JSON format.
+
+The following endpoints support disabling :
+- utilisateur
+- ressource
+- commentaire
+- reponseCommentaire
+
+<br>
+
+## Reporting resources and comments
+
+You can invoke a PATCH request to report a resource or a comment. The API will then automatically increment the number of reports by one. You won't need to send a JSON form.
+
+Example: `PATCH /api/commentaire/1/report` <br>
 
 <br>
 

@@ -11,6 +11,7 @@ class Ressource extends Model
 
     public $timestamps = false;
     protected $table = 'ressources';
+    protected $primaryKey = 'id_ressource';
 
     protected $fillable = [
         'titre_ressource',

@@ -73,4 +73,20 @@ class GroupeController extends Controller
 
         return new GroupeResource($groupe);
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id_groupe
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id_groupe)
+    {
+        $groupe = Groupe::findOrfail($id_groupe);
+        $groupe->delete($id_groupe);
+
+        return response()->json([
+            'message' => 'Groupe deleted'
+        ], 200);
+    }
 }

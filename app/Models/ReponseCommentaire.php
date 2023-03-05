@@ -11,6 +11,7 @@ class ReponseCommentaire extends Model
 
     public $timestamps = false;
     protected $table = 'reponses_commentaires';
+    protected $primaryKey = 'id_reponse';
 
     protected $fillable = [
         'contenu_reponse',

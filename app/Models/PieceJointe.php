@@ -11,6 +11,7 @@ class PieceJointe extends Model
     
     public $timestamps = false;
     protected $table = 'piece_jointes';
+    protected $primaryKey = 'id_piece_jointe';
 
     protected $fillable = [
         'type_pj',

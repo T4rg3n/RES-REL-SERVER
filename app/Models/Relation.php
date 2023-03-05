@@ -11,6 +11,7 @@ class Relation extends Model
     
     public $timestamps = false;
     protected $table = 'relations';
+    protected $primaryKey = 'id_relation';
 
     protected $fillable = [
         'demandeur_id',

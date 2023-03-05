@@ -79,4 +79,33 @@ class ReponseCommentaireController extends Controller
 
         return new ReponseCommentaireResource($reponse_commentaire);
     }
+
+    //todo destroy
+
+    /**
+     * Disable the specified resource in databas
+     * 
+     * @param int id_reponse
+     */
+    public function disable($id_reponse)
+    {
+        $reponse = ReponseCommentaire::findorFail($id_reponse);
+        $reponse->reponse_supprime = 1;
+        $reponse->save();
+
+        return response()->json([
+            'message' => 'Reponse disabled'
+        ], 200);
+    }
+
+    public function report($id_reponse)
+    {
+        $reponse = ReponseCommentaire::findorFail($id_reponse);
+        $reponse->nombre_signalement_commentaire += 1;
+        $reponse->save();
+
+        return response()->json([
+            'message' => 'Reponse reported'
+        ], 200);
+    }
 }

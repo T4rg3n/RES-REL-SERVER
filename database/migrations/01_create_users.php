@@ -21,6 +21,13 @@ return new class extends Migration
             $table->string('url_profil_uti')->nullable(); //TODO générer automatiquement 
             $table->boolean('compte_actif_uti')->default(true);
             $table->string('raison_banni_uti')->nullable();
+            $table->string('fk_id_role');
+
+            $table->foreign('fk_id_role')
+            ->references('id_role')
+            ->on('roles')
+            ->onDelete('cascade');
+
         });
     }
 

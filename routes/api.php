@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\V1\CategorieController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,20 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // api/v1
 Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1'], function () {
+    //PATCH 
+        //(Disable)
+    Route::patch('utilisateurs/disable', 'UtilisateurController@disable');
+    Route::patch('ressources/disable', 'RessourceController@disable');
+        //No need to pass a form, the id is in the URL then
+    Route::patch('commentaires/{id}/disable', 'CommentaireController@disable');
+    Route::patch('reponsesCommentaires/{id}/disable', 'ReponseCommentaireController@disable');
+        //(Report)
+    Route::patch('commentaires/{id}/report', 'CommentaireController@report');
+    Route::patch('reponsesCommentaires/{id}/report', 'ReponseCommentaireController@report');
+        //(Like) (unlike is a DELETE)
+    Route::patch('ressources/like', 'FavorisController@like');
+    
+    //GET / HEAD / POST / DELETE
     Route::apiResource('categories', CategorieController::class);
     Route::apiResource('commentaires', CommentaireController::class);
     Route::apiResource('favoris', FavorisController::class);

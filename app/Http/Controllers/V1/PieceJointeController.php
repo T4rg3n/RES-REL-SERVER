@@ -107,4 +107,20 @@ class PieceJointeController extends Controller
 
         return new PieceJointeResource($pieceJointe);
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id_pj
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id_pj)
+    {
+        $groupe = PieceJointe::findOrfail($id_pj);
+        $groupe->delete($id_pj);
+
+        return response()->json([
+            'message' => 'Piece jointe deleted'
+        ], 200);
+    }
 }
