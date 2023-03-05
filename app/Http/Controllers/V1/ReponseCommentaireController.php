@@ -93,8 +93,9 @@ class ReponseCommentaireController extends Controller
         $reponse->reponse_supprime = 1;
         $reponse->save();
 
-        return response()->json($this->show($id_reponse), 200);
-
+        return response()->json([
+            'message' => 'Reponse disabled'
+        ], 200);
     }
 
     public function report($id_reponse)

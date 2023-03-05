@@ -46,16 +46,6 @@ class CategorieController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreCategorieRequest  $request
@@ -101,34 +91,10 @@ class CategorieController extends Controller
      * @param  \App\Models\Categorie  $categorie
      * @return \Illuminate\Http\Response
      */
-   /* public function update(UpdateCategorieRequest $request, Categorie $categorie)
+    public function update(UpdateCategorieRequest $request, Categorie $categorie)
     {
         //
-    }*/
-
-    //choses à faire API :
-    /*
-    TODO doc readme
-    TODO vérif nommage entre db & translator
-    TODO create sur tous les endpoints
-    */
-
-    /*
-    Choses qu'on delete:
-                     DONE:      TEST:
-        - categorie     x       
-        - relation      x
-        - typeRelation  x
-        - groupe        x
-        - role          x
-        - favoris       x
-
-    Choses qu'on désactive:
-        - utilisateur           x     
-        - ressource             x  (PJ en conséquense si présente)<= à réfléchir
-        - commentaire           x
-        - reponses_commentaire  x
-    */
+    }
 
     /**
      * Remove the specified resource from storage.

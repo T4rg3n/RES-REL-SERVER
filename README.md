@@ -130,7 +130,7 @@ The API support a search system. You can search for a specific resource by using
 
 ## Adding data with POST
 
-You can add custom data to the API on the same endpoints as those you were reading from. You'll need to send an HTTP POST request that contains a JSON form. All parameters are required except ID.
+You can add custom data to the API on the same endpoints as those you were reading from. You'll need to send an HTTP POST request that contains a JSON form. All parameters are usually required except ID.
 
 <br>
 
@@ -152,7 +152,7 @@ Beware that deleting a resource will also delete all the related data. For examp
 Some endpoints support disabling. Disabling a resource means its status will be set to disabled in the database. You will also need to send a JSON form with the ID of the resource you want to disable as well as the reason you disabled it.
 
 Example: `PATCH /api/ressource/disable` <br>
-JSON form : `{ "id": 51,  "raison": "I didnt liked it"}`
+JSON form : `{ "id": 51,  "raison": "I didn't liked it"}`
 
 Returns the whole resource with the status set to "DISABLED" and the reason you provided in JSON format.
 
@@ -162,17 +162,13 @@ The following endpoints support disabling :
 - commentaire
 - reponseCommentaire
 
-Note that the endpoints are in singular form, as we are operating on a single resource.
 <br>
-
 
 ## Reporting resources and comments
 
-You can invoke a PATCH request to report a resource or a comment. The API will then automatically increment the number of reports by one. You wont need to send a JSON form.
+You can invoke a PATCH request to report a resource or a comment. The API will then automatically increment the number of reports by one. You won't need to send a JSON form.
 
 Example: `PATCH /api/commentaire/1/report` <br>
-
-Here again, the endpoints are in singular form.
 
 <br>
 

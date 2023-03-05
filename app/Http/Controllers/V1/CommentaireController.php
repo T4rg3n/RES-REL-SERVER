@@ -90,8 +90,6 @@ class CommentaireController extends Controller
      */
     public function destroy($id_commentaire)
     {
-        //on désactive on supprime pas, todo (appel à patch?/autre méthode?)
-
         $commentaire = Commentaire::findOrfail($id_commentaire);
         $commentaire->delete();
 
@@ -114,6 +112,9 @@ class CommentaireController extends Controller
         ], 200);
     }
 
+    /**
+     * Increment the report counter by 1.
+     */
     public function report($id_commentaire)
     {
         $commentaire = Commentaire::findOrfail($id_commentaire);

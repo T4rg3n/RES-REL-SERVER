@@ -23,18 +23,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1'], function () {
     //PATCH 
         //(Disable)
-    Route::patch('utilisateur/disable', 'UtilisateurController@disable');
-    Route::patch('ressource/disable', 'RessourceController@disable');
-    Route::patch('commentaire/disable', 'CommentaireController@disable');
-    Route::patch('reponsesCommentaire/disable', 'ReponseCommentaireController@disable');
+    Route::patch('utilisateurs/disable', 'UtilisateurController@disable');
+    Route::patch('ressources/disable', 'RessourceController@disable');
+        //No need to pass a form, the id is in the URL then
+    Route::patch('commentaires/{id}/disable', 'CommentaireController@disable');
+    Route::patch('reponsesCommentaires/{id}/disable', 'ReponseCommentaireController@disable');
         //(Report)
-    Route::patch('commentaire/{id}/report', 'CommentaireController@report');
-    Route::patch('reponseCommentaire/{id}/report', 'ReponseCommentaireController@report');
-        //(Like)
-    Route::patch('ressource/like', 'FavorisController@like');
-    //unlike in DELETE
-
-    //GET/HEAD/POST
+    Route::patch('commentaires/{id}/report', 'CommentaireController@report');
+    Route::patch('reponsesCommentaires/{id}/report', 'ReponseCommentaireController@report');
+        //(Like) (unlike is a DELETE)
+    Route::patch('ressources/like', 'FavorisController@like');
+    
+    //GET / HEAD / POST / DELETE
     Route::apiResource('categories', CategorieController::class);
     Route::apiResource('commentaires', CommentaireController::class);
     Route::apiResource('favoris', FavorisController::class);
@@ -46,18 +46,4 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1'], funct
     Route::apiResource('roles', RoleController::class);
     Route::apiResource('typesRelation', TypeRelationController::class);
     Route::apiResource('utilisateurs', UtilisateurController::class);
-
-    //DELETE
-    Route::delete('categories', 'CategorieController@destroy');
-    Route::delete('commentaires', 'CommentaireController@destroy');
-    Route::delete('favoris', 'FavorisController@destroy');
-    Route::delete('groupes', 'GroupeController@destroy');
-    Route::delete('piecesJointes', 'PieceJointeController@destroy');
-    Route::delete('relations', 'RelationController@destroy');
-    Route::delete('reponsesCommentaires', 'ReponseCommentaireController@destroy');
-    Route::delete('ressources', 'RessourceController@destroy');
-    Route::delete('roles', 'RoleController@destroy');
-    Route::delete('typesRelation', 'TypeRelationController@destroy');
-    Route::delete('utilisateurs', 'UtilisateurController@destroy');
-
 });
