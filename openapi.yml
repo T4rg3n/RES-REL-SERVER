@@ -1,0 +1,578 @@
+openapi: '3.0.2'
+info:
+  title: Ressources Relationnelles
+  version: '1.0'
+servers:
+  - url: https://api.victor-gombert.fr/api/v1
+
+
+paths:
+  #region Categories
+  /categories:
+    get:
+      summary: Get all categories
+      tags: 
+        - Categories
+      parameters:
+            - name: perPage
+              in: query
+              description: Set the number of categories per page
+              required: false
+              #want : status[<operator>]=<value> 
+              #ébut returns : &operator=<operator>&value=<value>
+            - name: nom
+              in: query
+              description: "Allow to filter categories with operators like : equals, notEquals, lowerThan, lowerThanEquals, greaterThan, greaterThanEquals"
+              required: false
+              schema:
+                type: object
+                properties:
+                  nom:
+                    type: string
+                    enum: [equals, notEquals, lowerThan, lowerThanEquals, greaterThan, greaterThanEquals]
+                  value:
+                    type: string
+      responses:
+        '200':
+          description: Get all categories
+          content:
+            application/json:
+              schema:
+                type: array
+              example:
+                - id: 1
+                  nom: "Catégorie 1"
+                - id: 2
+                  nom: "Catégorie 2"
+                - id: 3
+                  nom: "Catégorie 3"
+    post:
+      summary: Create a category
+      tags:
+        - Categories
+      responses:
+        '201':
+          description: Create a category
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - nom : "Ajout d'une nouvelle catégorie"
+  /categories/{id}:
+    get:
+      summary: Get a category by id
+      tags:
+        - Categories
+      parameters:
+        - name: id
+          in: path
+          description: ID of the category
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Get a category by id
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - id: 1
+                  nom: "Catégorie 1"
+    delete:
+      summary: Delete a category
+      tags:
+        - Categories
+      responses:
+        '200':
+          description: Delete a category
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - id: 1
+                  nom: "Catégorie 1"
+  #endregion
+
+  #region Commentaires
+  /commentaires:
+    get:
+      summary: Get all commentaires
+      tags: 
+        - Commentaires
+      parameters:
+            - name: perPage
+              in: query
+              description: Set the number of commentaires per page
+              required: false
+            - name: status[<operator>]=<value>
+              in: query
+              description: Allow to filter commentaires with operators like equals, greater than, less than, greater than equals, less than equals
+              required: false
+      responses:
+        '200':
+          description: Get all commentaires
+          content:
+            application/json:
+              schema:
+                type: array
+              example:
+                - id: 1
+                  dateCreation: 2023-01-02 21:16:55
+                  status: PENDING
+                  idUtilisateur: 1
+                  contenu: Voluptas cum sint accusamus quo officiis qui. Eum voluptatem autem aut nisi. Quae molestiae optio et ut. Voluptatem vel hic temporibus ea animi magni totam.
+                  datePublication: null
+                  raisonRefus: null
+                  idRessource: 2
+                - id: 2
+                  dateCreation: 2023-03-06 12:10:02
+                  status: PENDING
+                  idUtilisateur: 5
+                  contenu: Voluptas cum sint accusamus quo officiis qui. Eum voluptatem autem aut nisi. Quae molestiae optio et ut. Voluptatem vel hic temporibus ea animi magni totam.
+                  datePublication: null
+                  raisonRefus: null
+                  idRessource: 3
+    post:
+      summary: Create a commentaire
+      tags:
+        - Commentaires
+      responses:
+        '201':
+          description: Create a commentaire
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - contenu : "Contenu du nouveau commentaire"
+                  idUtilisateur : 1
+                  idRessource : 2
+    patch:
+      summary: Disable a commentaire
+      tags:
+        - Commentaires
+      responses:
+        '200':
+          description: Disable a commentaire
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - id: 1
+                  dateCreation: 2023-01-02 21:16:55
+                  status: PENDING
+                  idUtilisateur: 1
+                  contenu: Voluptas cum sint accusamus quo officiis qui. Eum voluptatem autem aut nisi. Quae molestiae optio et ut. Voluptatem vel hic temporibus ea animi magni totam.
+                  datePublication: null
+                  raisonRefus: null
+                  idRessource: 2
+  /commentaires/{id}:
+    get:
+      summary: Get a commentaire by id
+      tags:
+        - Commentaires
+      parameters:
+        - name: id
+          in: path
+          description: ID of the commentaire
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Get a commentaire by id
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - id: 1
+                  dateCreation: 2023-01-02 21:16:55
+                  status: PENDING
+                  idUtilisateur: 1
+                  contenu: Voluptas cum sint accusamus quo officiis qui. Eum voluptatem autem aut nisi. Quae molestiae optio et ut. Voluptatem vel hic temporibus ea animi magni totam.
+                  datePublication: null
+                  raisonRefus: null
+                  idRessource: 2
+  #endregion
+
+  #region Favoris
+  /favoris:
+    get:
+      summary: Get all favoris
+      tags: 
+        - Favoris
+      parameters:
+            - name: perPage
+              in: query
+              description: Set the number of favoris per page
+              required: false
+            - name: status[<operator>]=<value>
+              in: query
+              description: Allow to filter favoris with operators like equals, greater than, less than, greater than equals, less than equals
+              required: false
+      responses:
+        '200':
+          description: Get all favoris
+          content:
+            application/json:
+              schema:
+                type: array
+              example:
+                - id: 1
+                  dateCreation: 2023-01-02 21:16:55
+                  status: PENDING
+                  idUtilisateur: 1
+                  idRessource: 2
+                - id: 2
+                  dateCreation: 2023-03-06 12:10:02
+                  status: PENDING
+                  idUtilisateur: 5
+                  idRessource: 3
+    post:
+      summary: Create a favori
+      tags:
+        - Favoris
+      responses:
+        '201':
+          description: Create a favori
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - idUtilisateur : 1
+                  idRessource : 2
+  /favoris/{id}:
+    get:
+      summary: Get a favori by id
+      tags:
+        - Favoris
+      parameters:
+        - name: id
+          in: path
+          description: ID of the favori
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Get a favori by id
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - id: 1
+                  dateCreation: 2023-01-02 21:16:55
+                  status: PENDING
+                  idUtilisateur: 1
+                  idRessource: 2
+  #endregion
+
+  #region Groupes
+  /groupes:
+    get:
+      summary: Get all groupes
+      tags: 
+        - Groupes
+      parameters:
+            - name: perPage
+              in: query
+              description: Set the number of groupes per page
+              required: false
+            - name: status[<operator>]=<value>
+              in: query
+              description: Allow to filter groupes with operators like equals, greater than, less than, greater than equals, less than equals
+              required: false
+      responses:
+        '200':
+          description: Get all groupes
+          content:
+            application/json:
+              schema:
+                type: array
+              example:
+                - id: 1
+                  dateCreation: 2023-01-02 21:16:55
+                  status: PENDING
+                  nom: "Groupe 1"
+                  description: "Description du groupe 1"
+                  idUtilisateur: 1
+                - id: 2
+                  dateCreation: 2023-03-06 12:10:02
+                  status: PENDING
+                  nom: "Groupe 2"
+                  description: "Description du groupe 2"
+                  idUtilisateur: 5
+    post:
+      summary: Create a groupe
+      tags:
+        - Groupes
+      responses:
+        '201':
+          description: Create a groupe
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - nom : "Groupe 3"
+                  description : "Description du groupe 3"
+                  idUtilisateur : 1
+  /groupes/{id}: 
+    get:
+      summary: Get a groupe by id
+      tags:
+        - Groupes
+      parameters:
+        - name: id
+          in: path
+          description: ID of the groupe
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Get a groupe by id
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - id: 1
+                  dateCreation: 2023-01-02 21:16:55
+                  status: PENDING
+                  nom: "Groupe 1"
+                  description: "Description du groupe 1"
+                  idUtilisateur: 1
+    delete:
+      summary: Delete a groupe by id
+      tags:
+        - Groupes
+      parameters:
+        - name: id
+          in: path
+          description: ID of the groupe
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Delete a groupe by id
+  #endregion
+
+  #region Pieces jointes
+  /piecesJointes:
+    get:
+      summary: Get all pieces jointes
+      tags: 
+        - Pieces jointes
+      parameters:
+            - name: perPage
+              in: query
+              description: Set the number of pieces jointes per page
+              required: false
+            - name: status[<operator>]=<value>
+              in: query
+              description: Allow to filter pieces jointes with operators like equals, greater than, less than, greater than equals, less than equals
+              required: false
+      responses:
+        '200':
+          description: Get all pieces jointes
+          content:
+            application/json:
+              schema:
+                type: array
+              example:
+                - id: 1
+                  dateCreation: 2023-01-02 21:16:55
+                  status: PENDING
+                  idUtilisateur: 1
+                  idRessource: 2
+                  nom: "Annexe PDF sur la situation géopolitique au Zimbabwe"
+                  chemin: /1/pdf/1_ressource.pdr
+                - id: 2
+                  dateCreation: 2023-03-06 12:10:02
+                  status: PENDING
+                  idUtilisateur: 5
+                  idRessource: 3
+                  nom: "Annexe PDF sur la situation géopolitique au Zimbabwe"
+                  chemin: /1/pdf/1_ressource.pdr
+    post:
+      summary: Create a piece jointe
+      tags:
+        - Pieces jointes
+      responses:
+        '201':
+          description: Create a piece jointe
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - idUtilisateur : 1
+                  idRessource : 2
+                  nom : "Annexe PDF sur la situation géopolitique au Zimbabwe"
+                  chemin : /1/pdf/1_ressource.pdr
+  /pieceJointes/{id}:
+    get:
+      summary: Get a piece jointe by id
+      tags:
+        - Pieces jointes
+      parameters:
+        - name: id
+          in: path
+          description: ID of the piece jointe
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Get a piece jointe by id
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - id: 1
+                  dateCreation: 2023-01-02 21:16:55
+                  status: PENDING
+                  idUtilisateur: 1
+                  idRessource: 2
+                  nom: "Annexe PDF sur la situation géopolitique au Zimbabwe"
+                  chemin: /1/pdf/1_ressource.pdf
+    delete:
+      summary: Delete a piece jointe by id
+      tags:
+        - Pieces jointes
+      parameters:
+        - name: id
+          in: path
+          description: ID of the piece jointe
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Delete a piece jointe by id
+  #endregion
+
+  #region Ressources
+  /ressources:
+    get:
+      summary: Get all ressources
+      tags: 
+        - Ressources
+      parameters:
+            - name: perPage
+              in: query
+              description: Set the number of ressources per page
+              required: false
+            - name: status[<operator>]=<value>
+              in: query
+              description: Allow to filter ressources with operators like equals, greater than, less than, greater than equals, less than equals
+              required: false
+      responses:
+        '200':
+          description: Get all Ressources
+          content:
+            application/json:
+              schema:
+                type: array
+              example:
+                - id: 1
+                  dateCreation: 2023-01-02 21:16:55
+                  status: PENDING
+                  idUtilisateur: 1
+                  partage: RESTRICTED
+                  titre: Quis dolores repellendus fuga ut sit perferendis.
+                  contenu: Voluptas cum sint accusamus quo officiis qui. Eum voluptatem autem aut nisi. Quae molestiae optio et ut. Voluptatem vel hic temporibus ea animi magni totam.
+                  datePublication: null
+                  raisonRefus: null
+                  idCategorie: 2
+                - id: 2
+                  dateCreation: 2023-03-06 12:10:02
+                  status: PENDING
+                  idUtilisateur: 5
+                  partage: PRIVATE
+                  titre: Quis dolores repellendus fuga ut sit perferendis.
+                  contenu: Voluptas cum sint accusamus quo officiis qui. Eum voluptatem autem aut nisi. Quae molestiae optio et ut. Voluptatem vel hic temporibus ea animi magni totam.
+                  datePublication: null
+                  raisonRefus: null
+                  idCategorie: 3
+    post:
+      summary: Create a ressource
+      tags:
+        - Ressources
+      responses:
+        '201':
+          description: Create a ressource
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - titre : "Ajout d'une nouvelle ressource"
+                  contenu : "Contenu de la nouvelle ressource"
+                  idUtilisateur : 1
+                  idCategorie : 2
+                  idPieceJointe : 3   
+  /ressources/{id}:
+    get:
+      summary: Get a ressource by id
+      tags:
+        - Ressources
+      parameters:
+        - name: id
+          in: path
+          description: ID of the ressource
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Get a ressource by id
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - id: 1
+                  dateCreation: 2023-01-02 21:16:55
+                  status: PENDING
+                  idUtilisateur: 1
+                  partage: RESTRICTED
+                  titre: Quis dolores repellendus fuga ut sit perferendis.
+                  contenu: Voluptas cum sint accusamus quo officiis qui. Eum voluptatem autem aut nisi. Quae molestiae optio et ut. Voluptatem vel hic temporibus ea animi magni totam.
+                  datePublication: null
+                  raisonRefus: null
+                  idCategorie: 2
+    delete:
+      summary: Delete a ressource
+      tags:
+        - Ressources
+      responses:
+        '200':
+          description: Delete a ressource
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - id: 1
+                  dateCreation: 2023-01-02 21:16:55
+                  status: PENDING
+                  idUtilisateur: 1
+                  partage: RESTRICTED
+                  titre: Quis dolores repellendus fuga ut sit perferendis.
+                  contenu: Voluptas cum sint accusamus quo officiis qui. Eum voluptatem autem aut nisi. Quae molestiae optio et ut. Voluptatem vel hic temporibus ea animi magni totam.
+                  datePublication: null
+                  raisonRefus: null
+                  idCategorie: 2
+  #endregion
