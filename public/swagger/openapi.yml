@@ -18,20 +18,16 @@ paths:
               in: query
               description: Set the number of categories per page
               required: false
-              #want : status[<operator>]=<value> 
+              schema:
+                type: integer
+              #want : <key>[<operator>]=<value> 
               #ébut returns : &operator=<operator>&value=<value>
-            - name: nom
+            - name: <key>[<operator>]=<value>
               in: query
               description: "Allow to filter categories with operators like : equals, notEquals, lowerThan, lowerThanEquals, greaterThan, greaterThanEquals"
               required: false
               schema:
-                type: object
-                properties:
-                  nom:
-                    type: string
-                    enum: [equals, notEquals, lowerThan, lowerThanEquals, greaterThan, greaterThanEquals]
-                  value:
-                    type: string
+                type: string
       responses:
         '200':
           description: Get all categories
@@ -50,6 +46,16 @@ paths:
       summary: Create a category
       tags:
         - Categories
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nom:
+                  type: string
+                  description: Name of the category
+                  example: "My super category"
       responses:
         '201':
           description: Create a category
@@ -58,7 +64,7 @@ paths:
               schema:
                 type: object
               example:
-                - nom : "Ajout d'une nouvelle catégorie"
+                - nom : "My super category"
   /categories/{id}:
     get:
       summary: Get a category by id
@@ -108,10 +114,14 @@ paths:
               in: query
               description: Set the number of commentaires per page
               required: false
-            - name: status[<operator>]=<value>
+              schema:
+                type: integer
+            - name: <key>[<operator>]=<value>
               in: query
               description: Allow to filter commentaires with operators like equals, greater than, less than, greater than equals, less than equals
               required: false
+              schema:
+                type: string
       responses:
         '200':
           description: Get all commentaires
@@ -212,10 +222,14 @@ paths:
               in: query
               description: Set the number of favoris per page
               required: false
-            - name: status[<operator>]=<value>
+              schema:
+                type: integer
+            - name: <key>[<operator>]=<value>
               in: query
               description: Allow to filter favoris with operators like equals, greater than, less than, greater than equals, less than equals
               required: false
+              schema:
+                type: string
       responses:
         '200':
           description: Get all favoris
@@ -286,10 +300,14 @@ paths:
               in: query
               description: Set the number of groupes per page
               required: false
-            - name: status[<operator>]=<value>
+              schema:
+                type: integer
+            - name: <key>[<operator>]=<value>
               in: query
               description: Allow to filter groupes with operators like equals, greater than, less than, greater than equals, less than equals
               required: false
+              schema:
+                type: string
       responses:
         '200':
           description: Get all groupes
@@ -378,10 +396,14 @@ paths:
               in: query
               description: Set the number of pieces jointes per page
               required: false
-            - name: status[<operator>]=<value>
+              schema:
+                type: integer
+            - name: <key>[<operator>]=<value>
               in: query
               description: Allow to filter pieces jointes with operators like equals, greater than, less than, greater than equals, less than equals
               required: false
+              schema:
+                type: string
       responses:
         '200':
           description: Get all pieces jointes
@@ -474,10 +496,14 @@ paths:
               in: query
               description: Set the number of ressources per page
               required: false
-            - name: status[<operator>]=<value>
+              schema:
+                type: integer
+            - name: <key>[<operator>]=<value>
               in: query
               description: Allow to filter ressources with operators like equals, greater than, less than, greater than equals, less than equals
               required: false
+              schema:
+                type: string
       responses:
         '200':
           description: Get all Ressources
