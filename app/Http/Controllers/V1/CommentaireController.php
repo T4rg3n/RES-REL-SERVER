@@ -64,7 +64,7 @@ class CommentaireController extends Controller
     {
         $commentaire = Commentaire::create($request->all());
         $commentaire->save();
-        $id = $commentaire->id;
+        $id = $commentaire->id_commentaire;
 
         return response()->json($this->show($id), 201);
     }
@@ -77,7 +77,7 @@ class CommentaireController extends Controller
      */
     public function show($id_commentaire)
     {
-        $commentaire = Commentaire::where('id_commentaire', $id_commentaire)->first();
+        $commentaire = Commentaire::findOrfail($id_commentaire);
 
         return new CommentaireResource($commentaire);
     }

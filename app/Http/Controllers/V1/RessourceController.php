@@ -10,6 +10,7 @@ use App\Http\Resources\V1\RessourceResource;
 use App\Http\Resources\V1\RessourceCollection;
 use App\Http\Requests\V1\StoreRessourceRequest;
 use App\Services\V1\QueryFilter;
+use LDAP\Result;
 
 class RessourceController extends Controller
 {
@@ -66,7 +67,7 @@ class RessourceController extends Controller
     {
         $ressource = Ressource::create($request->all());
         $ressource->save();
-        $id = $ressource->id;
+        $id = $ressource->id_ressource;
 
         return response()->json($this->show($id), 201);
     }
@@ -79,7 +80,7 @@ class RessourceController extends Controller
      */
     public function show($id_ressource)
     {
-        $ressource = Ressource::where('id_ressource', $id_ressource)->first();
+        $ressource = Ressource::findOrfail($id_ressource);
 
         return new RessourceResource($ressource);
     }
@@ -92,7 +93,6 @@ class RessourceController extends Controller
      */
     public function disable(RefuseRessourceRequest $request)
     {
-
         $ressource = Ressource::findOrfail($request->id_ressource);
         $ressource->status = 'REJECTED';
         $ressource->raison_refus_ressource = $request->raison_refus_ressource;

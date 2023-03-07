@@ -56,7 +56,7 @@ class GroupeController extends Controller
     {
         $groupe = Groupe::create($request->all());
         $groupe->save();
-        $id = $groupe->id;
+        $id = $groupe->id_groupe;
 
         return response()->json($this->show($id), 201);
     }
@@ -69,7 +69,7 @@ class GroupeController extends Controller
      */
     public function show($id_groupe)
     {
-        $groupe = Groupe::where('id_groupe', $id_groupe)->first();
+        $groupe = Groupe::findOrfail($id_groupe);
 
         return new GroupeResource($groupe);
     }

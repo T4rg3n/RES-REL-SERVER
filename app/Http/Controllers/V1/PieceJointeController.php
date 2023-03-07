@@ -64,7 +64,7 @@ class PieceJointeController extends Controller
     public function store(StorePieceJointeRequest $request)
     {    
         $pieceJointe = PieceJointe::create($request->all());
-        $id = $pieceJointe->id;
+        $id = $pieceJointe->id_piece_jointe;
         
         //For any case but 'ACTIVITE', the content is the path to the file
         if($request->input('type_pj') != 'ACTIVITE') {
@@ -84,6 +84,7 @@ class PieceJointeController extends Controller
                     break;
             }
 
+            //TODO fill contenu with the path to the file
             //dont seem to work
             // $request->merge(['contenu_pj' => $filePath . $uploadedFile->getClientOriginalName()]);
             
@@ -103,7 +104,7 @@ class PieceJointeController extends Controller
      */
     public function show($idPieceJointe)
     {
-        $pieceJointe = PieceJointe::where('id_piece_jointe', $idPieceJointe)->first();
+        $pieceJointe = PieceJointe::findOrfail($idPieceJointe);
 
         return new PieceJointeResource($pieceJointe);
     }

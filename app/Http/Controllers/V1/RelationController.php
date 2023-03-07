@@ -17,8 +17,8 @@ class RelationController extends Controller
      */
     protected $allowedParams = [
         'id' => ['equals'],
-        'demandeur' => ['equals'],
-        'receveur' => ['equals'],
+        'idDemandeur' => ['equals'],
+        'idReceveur' => ['equals'],
         'accepte' => ['equals'],
     ];
 
@@ -27,8 +27,8 @@ class RelationController extends Controller
      */
     protected $columnMap = [
         'id' => 'id_relation',
-        'demandeur' => 'demandeur_id',
-        'receveur' => 'receveur_id',
+        'idDemandeur' => 'demandeur_id',
+        'idReceveur' => 'receveur_id',
         'accepte' => 'accepte',
     ];
 
@@ -58,7 +58,7 @@ class RelationController extends Controller
     {
         $relation = Relation::create($request->all());
         $relation->save();
-        $id = $relation->id;
+        $id = $relation->id_relation;
         
         return response()->json($this->show($id), 201);
     }
@@ -71,7 +71,7 @@ class RelationController extends Controller
      */
     public function show($id_relation)
     {
-        $relation = Relation::where('id_relation', $id_relation)->first();
+        $relation = Relation::findOrfail($id_relation);
 
         return new RelationResource($relation);
     }

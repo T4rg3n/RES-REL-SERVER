@@ -59,7 +59,7 @@ class TypeRelationController extends Controller
     {
         $typeRelation = TypeRelation::create($request->all());
         $typeRelation->save();
-        $id = $typeRelation->id;
+        $id = $typeRelation->id_type_relation;
 
         return response()->json($this->show($id), 201);;
     }
@@ -72,7 +72,7 @@ class TypeRelationController extends Controller
      */
     public function show($id_type_relation)
     {
-        $type_relation = TypeRelation::where('id_type_relation', $id_type_relation)->first();
+        $type_relation = TypeRelation::findOrfail($id_type_relation);
 
         return new TypeRelationResource($type_relation);
     }

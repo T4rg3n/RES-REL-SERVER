@@ -84,7 +84,7 @@ class UtilisateurController extends Controller
      */
     public function show($id_uti)
     {
-        $utilisateur = Utilisateur::where('id_uti', $id_uti)->first();
+        $utilisateur = Utilisateur::findOrfail($id_uti);
 
         return new UtilisateurResource($utilisateur);
     }

@@ -58,7 +58,7 @@ class FavorisController extends Controller
     {
         $favoris = Favoris::create($request->all());
         $favoris->save();
-        $id = $favoris->id;
+        $id = $favoris->id_favoris;
         
         return response()->json($this->show($id), 201);
     }
@@ -71,7 +71,7 @@ class FavorisController extends Controller
      */
     public function show($id_favoris)
     {
-        $favoris = Favoris::where('id_favoris', $id_favoris)->first();
+        $favoris = Favoris::findOrfail($id_favoris);
 
         return new FavorisResource($favoris);
     }

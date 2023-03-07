@@ -52,7 +52,7 @@ class RoleController extends Controller
     {
         $role = Role::create($request->all());
         $role->save();
-        $id = $role->id;
+        $id = $role->id_role;
 
         return response()->json($this->show($id), 201);
     }
@@ -65,7 +65,7 @@ class RoleController extends Controller
      */
     public function show($id_role)
     {
-        $role = Role::where('id_role', $id_role)->first();
+        $role = Role::findOrfail($id_role);
 
         return new RoleResource($role);
     }
