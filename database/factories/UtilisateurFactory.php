@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Utilisateur;
+use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -30,6 +30,7 @@ class UtilisateurFactory extends Factory
             //todo vraie url 
             'url_profil_uti' => $this->faker->url,
             'compte_actif_uti' => $this->faker->boolean,
+            'fk_id_role' => Role::all()->random()->id_role,
         ];
     }
 }

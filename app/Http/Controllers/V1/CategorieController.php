@@ -55,7 +55,7 @@ class CategorieController extends Controller
     {
         $categorie = Categorie::create($request->all());
         $categorie->save();
-        $id = $categorie->id;
+        $id = $categorie->id_categorie;
 
         return response()->json($this->show($id), 201);
     }
@@ -68,7 +68,7 @@ class CategorieController extends Controller
      */
     public function show($id_categorie)
     {
-        $categorie = Categorie::where('id_categorie', $id_categorie)->first();
+        $categorie = Categorie::findOrfail($id_categorie);
 
         return new CategorieResource($categorie);
     }
