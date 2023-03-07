@@ -16,8 +16,8 @@ class RelationResource extends JsonResource
     {
         return [
             'id' => $this->id_relation,
-            'demandeur' => $this->demandeur_id,
-            'receveur' => $this->receveur_id,
+            'idDemandeur' => $this->demandeur_id,
+            'idReceveur' => $this->receveur_id,
             'accepte' => $this->accepte,
         ];
     }
