@@ -119,6 +119,8 @@ class UtilisateurController extends Controller
         $utilisateur->save();
         $id = $utilisateur->id_uti;
         
-        return response()->json($this->show($id), 200);
+        return response()->json([
+            'message' => 'Utilisateur disabled',
+        ], 200);
     }
 }

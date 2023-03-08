@@ -110,5 +110,16 @@ class ReponseCommentaireTest extends TestCase
         ]);
     }
 
-    //TODO Report one reponse commentaire
+    /**
+     * Test report one reponse commentaire
+     */
+    public function testReportOneReponseCommentaire()
+    {
+        $id_reponse = ReponseCommentaire::all()->random()->id_reponse;
+        $response = $this->patch('/api/v1/reponsesCommentaires/' . $id_reponse . '/report');
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'message'
+        ]);
+    }
 }
