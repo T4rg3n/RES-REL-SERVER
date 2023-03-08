@@ -28,6 +28,7 @@ class UtilisateurResource extends JsonResource
             'urlProfil' => $this->url_profil_uti,
             'compteActif' => $this->compte_actif_uti,
             'raisonBan' => $this->raison_banni_uti,
+            'role' => $this->fk_id_role,
         ];
     }
 }

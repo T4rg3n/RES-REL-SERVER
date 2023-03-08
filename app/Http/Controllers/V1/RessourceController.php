@@ -97,7 +97,6 @@ class RessourceController extends Controller
         $ressource->status = 'REJECTED';
         $ressource->raison_refus_ressource = $request->raison_refus_ressource;
         $ressource->save();
-        $id = $ressource->id_ressource;
 
         return response()->json([
             'message' => 'Ressource disabled'
