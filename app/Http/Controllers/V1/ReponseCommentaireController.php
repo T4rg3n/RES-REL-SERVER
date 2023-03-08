@@ -19,7 +19,7 @@ class ReponseCommentaireController extends Controller
         'id' => ['equals'],
         'date' => ['equals', 'lowerThan', 'lowerThanEquals', 'greaterThan', 'greaterThanEquals'],
         'supprime' => ['equals'],
-        'nombreSignalement' => ['equals', 'lowerThan', 'lowerThanEquals', 'greaterThan', 'greaterThanEquals'],
+        'nombreSignalements' => ['equals', 'lowerThan', 'lowerThanEquals', 'greaterThan', 'greaterThanEquals'],
         'idUtilisateur' => ['equals'],
         'idCommentaire' => ['equals'],
     ];
@@ -31,7 +31,7 @@ class ReponseCommentaireController extends Controller
         'id' => 'id_reponse',
         'date' => 'date_publication_reponse', //BUG date is null in GET request but not in DB
         'supprime' => 'reponse_supprime',
-        'nombreSignalement' => 'nombre_signalement_commentaire',
+        'nombreSignalements' => 'nombre_signalement_commentaire',
         'idUtilisateur' => 'fk_id_uti',
         'idCommentaire' => 'fk_id_commentaire',
     ];
@@ -80,7 +80,21 @@ class ReponseCommentaireController extends Controller
         return new ReponseCommentaireResource($reponse_commentaire);
     }
 
-    //todo destroy
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id_reponse
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id_reponse)
+    {
+        $reponse = ReponseCommentaire::findorFail($id_reponse);
+        $reponse->delete();
+
+        return response()->json([
+            'message' => 'Reponse deleted'
+        ], 200);
+    }
 
     /**
      * Disable the specified resource in databas

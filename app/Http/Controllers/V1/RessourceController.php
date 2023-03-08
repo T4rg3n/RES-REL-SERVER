@@ -10,7 +10,6 @@ use App\Http\Resources\V1\RessourceResource;
 use App\Http\Resources\V1\RessourceCollection;
 use App\Http\Requests\V1\StoreRessourceRequest;
 use App\Services\V1\QueryFilter;
-use LDAP\Result;
 
 class RessourceController extends Controller
 {
@@ -93,12 +92,30 @@ class RessourceController extends Controller
      */
     public function disable(RefuseRessourceRequest $request)
     {
+        //TODO error parsing if resource != PENDING
         $ressource = Ressource::findOrfail($request->id_ressource);
         $ressource->status = 'REJECTED';
         $ressource->raison_refus_ressource = $request->raison_refus_ressource;
         $ressource->save();
-        $id = $ressource->id_ressource;
 
-        return response()->json($this->show($id), 200);
+        return response()->json([
+            'message' => 'Ressource disabled'
+        ], 200);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     * 
+     * @param  int  $id_ressource
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id_ressource)
+    {
+        $ressource = Ressource::findOrfail($id_ressource);
+        $ressource->delete();
+
+        return response()->json([
+            'message' => 'Ressource deleted'
+        ], 200);
     }
 }

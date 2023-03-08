@@ -21,7 +21,8 @@ class Utilisateur extends Model
         'nom_uti',
         'prenom_uti',
         'photo_uti',
-        'bio_uti'
+        'bio_uti',
+        'fk_id_role',
     ];
 
     /**

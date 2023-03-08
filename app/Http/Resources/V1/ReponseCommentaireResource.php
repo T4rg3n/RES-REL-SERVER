@@ -20,8 +20,10 @@ class ReponseCommentaireResource extends JsonResource
             'date' => $this->date_reponse,
             'supprime' => $this->reponse_supprime,
             'nombreSignalements' => $this->nombre_signalement_commentaire,
-            'utilisateur' => $this->fk_id_uti,
-            'commentaire' => $this->fk_id_commentaire,
+            'idUtilisateur' => $this->fk_id_uti,
+            'idCommentaire' => $this->fk_id_commentaire,
+            'datePublication' => $this->date_publication_reponse,
+            'reponseSupprime' => $this->reponse_supprime,
         ];
     }
 }

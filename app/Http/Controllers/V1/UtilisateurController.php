@@ -27,6 +27,7 @@ class UtilisateurController extends Controller
         'cheminPhoto' => ['equals'],
         'urlProfil' => ['equals'],
         'compteActif' => ['equals'],
+        'role' => ['equals']
     ];
 
     /**
@@ -43,6 +44,7 @@ class UtilisateurController extends Controller
         'cheminPhoto' => 'photo_uti',
         'urlProfil' => 'url_profil_uti',
         'compteActif' => 'compte_actif_uti',
+        'role' => 'fk_id_role'
     ];
 
     /**
@@ -71,7 +73,7 @@ class UtilisateurController extends Controller
     {
         $utilisateur = Utilisateur::create($request->all());
         $utilisateur->save();
-        $id = $utilisateur->id;
+        $id = $utilisateur->id_uti;
 
         return response()->json($this->show($id), 201);
     }
@@ -119,6 +121,8 @@ class UtilisateurController extends Controller
         $utilisateur->save();
         $id = $utilisateur->id_uti;
         
-        return response()->json($this->show($id), 200);
+        return response()->json([
+            'message' => 'Utilisateur disabled',
+        ], 200);
     }
 }

@@ -18,6 +18,8 @@ class PieceJointeFactory extends Factory
      */
     public function definition()
     {
+        //TODO ajouter de la logique sur les activités
+        //TODO ajouter les activités dans typePj
         $typesPj = ['IMAGE', 'VIDEO', 'PDF'];
 
         return [
