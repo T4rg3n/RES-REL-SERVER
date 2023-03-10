@@ -33,6 +33,14 @@ class RelationController extends Controller
     ];
 
     /**
+     * Allowed includes
+     */
+    protected $allowedIncludes = [
+        'idDemandeur',
+        'idReceveur'
+    ];
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

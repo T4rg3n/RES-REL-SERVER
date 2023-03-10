@@ -25,7 +25,6 @@ class RessourceResource extends JsonResource
             'datePublication' => $this->date_publication_ressource,
             'raisonRefus' => $this->raison_refus_ressource,
             'idCategorie' => $this->fk_id_categorie,
-            'categories' => CategorieResource::collection($this->whenLoaded('categories'))
         ];
     }
 }

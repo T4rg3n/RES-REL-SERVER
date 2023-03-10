@@ -40,6 +40,15 @@ class RessourceController extends Controller
     ];
 
     /**
+     * Allowed includes
+     */
+    protected $allowedIncludes = [
+        'idCategorie',
+        'idUtilisateur',
+        'pieceJointe'
+    ];
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

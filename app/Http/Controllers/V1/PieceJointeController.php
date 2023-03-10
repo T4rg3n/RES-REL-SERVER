@@ -40,6 +40,13 @@ class PieceJointeController extends Controller
     ];
 
     /**
+     * Allowed includes
+     */
+    protected $allowedIncludes = [
+        'idUtilisateur'
+    ];
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

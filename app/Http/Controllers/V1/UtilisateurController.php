@@ -9,6 +9,8 @@ use App\Http\Resources\V1\UtilisateurResource;
 use App\Http\Resources\V1\UtilisateurCollection;
 use App\Http\Requests\V1\StoreUtilisateurRequest;
 use App\Http\Requests\V1\BanUtilisateurRequest;
+use App\Http\Resources\V1\CategorieCollection;
+use App\Models\Categorie;
 use App\Services\V1\QueryFilter;
 
 class UtilisateurController extends Controller
@@ -48,6 +50,16 @@ class UtilisateurController extends Controller
     ];
 
     /**
+     * Array of allowed includes
+     */
+    protected $allowedIncludes = [
+        'idCategorie',
+        'idUtilisateur'
+    ];
+
+    //TODO : translate included data like idCategorie  becomes categorie etc
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -58,8 +70,17 @@ class UtilisateurController extends Controller
         $queryContent = $request->all();
         $filter = new QueryFilter();
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
+        //TODO 
+        $includeCategories = request()->query('includeCategories');
+        
         $utilisateurs = Utilisateur::where($eloquentQuery)->paginate($perPage);
 
+
+        //TODO "?include=<array>" not just one value. Especially useful here where there are 2 relationships
+
+        if($includeCategories)
+            $utilisateurs['idCategorie'] = Categorie::findOrfail($utilisateurs->fk_id_categorie);
+        
         return new UtilisateurCollection($utilisateurs->appends($request->query()));
     }
 

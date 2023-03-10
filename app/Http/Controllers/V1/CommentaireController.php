@@ -39,6 +39,14 @@ class CommentaireController extends Controller
     ];
 
     /**
+     * Allowed includes
+     */
+    protected $allowedIncludes = [
+        'idUtilisateur',
+        'idRessource'
+    ];
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
