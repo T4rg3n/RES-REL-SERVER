@@ -9,6 +9,7 @@ use App\Http\Requests\V1\RefuseRessourceRequest;
 use App\Http\Resources\V1\RessourceResource;
 use App\Http\Resources\V1\RessourceCollection;
 use App\Http\Requests\V1\StoreRessourceRequest;
+use App\Models\Categorie;
 use App\Services\V1\QueryFilter;
 
 class RessourceController extends Controller
@@ -43,8 +44,8 @@ class RessourceController extends Controller
      * Allowed includes
      */
     protected $allowedIncludes = [
-        'idCategorie',
-        'idUtilisateur',
+        'categorie',
+        'utilisateur',
         'pieceJointe'
     ];
 
@@ -61,6 +62,30 @@ class RessourceController extends Controller
         $filter = new QueryFilter();
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
         $ressources = Ressource::where($eloquentQuery)->paginate($perPage);
+
+        $includes = $request->query('include');
+        $includedRessources = explode(',', $includes);
+
+        if ($includes) {
+            foreach($includedRessources as $includedRessource) {
+                if (!in_array($includedRessource, $this->allowedIncludes)) {
+                    return response()->json([
+                        'message' => 'Invalid include'
+                    ], 400);
+                }
+            }
+
+            $ressources = Ressource::with('categorie')->get();
+        
+            $ressources->transform(function ($ressource) {
+                $ressource->categorie;
+                unset($ressource->idCategorie);
+                return $ressource;
+            });
+
+            return response()->json(['data' => $ressources], 200);
+            //$ressources->load($includedRessources);
+        }
 
         return new RessourceCollection($ressources->appends($request->query()));
     }
