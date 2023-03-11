@@ -99,7 +99,7 @@ class RessourceController extends Controller
         $ressource->save();
 
         return response()->json([
-            'message' => 'Ressource disabled'
+            'message' => 'Ressource refused'
         ], 200);
     }
 

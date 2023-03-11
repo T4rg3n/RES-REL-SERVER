@@ -418,14 +418,14 @@ paths:
                   idUtilisateur: 1
                   idRessource: 2
                   nom: "Annexe PDF sur la situation géopolitique au Zimbabwe"
-                  chemin: /1/pdf/1_ressource.pdr
+                  chemin: /1/pdf/1_ressource.pdf
                 - id: 2
                   dateCreation: 2023-03-06 12:10:02
                   status: PENDING
                   idUtilisateur: 5
                   idRessource: 3
                   nom: "Annexe PDF sur la situation géopolitique au Zimbabwe"
-                  chemin: /1/pdf/1_ressource.pdr
+                  chemin: /1/pdf/1_ressource.pdf
     post:
       summary: Create a piece jointe
       tags:
@@ -485,10 +485,109 @@ paths:
           description: Delete a piece jointe by id
   #endregion
 
+  #region Relations
+  /relations:
+    get:
+      summary: Get all relations
+      tags: 
+        - Relations
+      parameters:
+            - name: perPage
+              in: query
+              description: Set the number of relations per page
+              required: false
+              schema:
+                type: integer
+            - name: <key>[<operator>]=<value>
+              in: query
+              description: Allow to filter relations with operators like equals, greater than, less than, greater than equals, less than equals
+              required: false
+              schema:
+                type: string
+      responses:
+        '200':
+          description: Get all relations
+          content:
+            application/json:
+              schema:
+                type: array
+              example:
+                - id: 1
+                  dateCreation: 2023-01-02 21:16:55
+                  idDemandeur: 1
+                  idReceveur: 2
+                  accepte: true
+                - id: 2
+                  dateCreation: 2023-03-06 12:10:02
+                  idDemandeur: 3
+                  idReceveur: 3
+                  accepte: null
+    post:
+      summary: Create a relation
+      tags:
+        - Relations
+      responses:
+        '201':
+          description: Create a relation
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - idDemandeur : 1
+                  idReceveur : 2
+  /relation/{id}:
+    get:
+      summary: Get a relation by id
+      tags:
+        - Relations
+      parameters:
+        - name: id
+          in: path
+          description: ID of the relation
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Get a relation by id
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - id: 1
+                  dateCreation: 2023-01-02 21:16:55
+                  idDemandeur: 1
+                  idReceveur: 2
+                  accepte: true
+    delete:
+      summary: Delete a relation by id
+      tags:
+        - Relations
+      parameters:
+        - name: id
+          in: path
+          description: ID of the relation
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Delete a relation by id
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: "Relation deleted"
+  #endregion
+
   #region Ressources
   /ressources:
     get:
       summary: Get all ressources
+      description: Get all ressources as a JSON array
       tags: 
         - Ressources
       parameters:
@@ -534,6 +633,7 @@ paths:
                   idCategorie: 3
     post:
       summary: Create a ressource
+      description: Create a ressource by sending a JSON object
       tags:
         - Ressources
       responses:
@@ -549,9 +649,38 @@ paths:
                   idUtilisateur : 1
                   idCategorie : 2
                   idPieceJointe : 3   
+    #TODO ressources/{id}/accept
+    patch:
+      summary: Refuse a ressource
+      description: Moderate and give a refusal reason for a ressource
+      tags:
+        - Ressources
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                raisonRefus:
+                  type: string
+            example:
+              id: 1
+              raisonRefus: "Raison du refus"
+      responses:
+        '200':
+          description: Refuse a ressource
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message : "Ressource refused"
   /ressources/{id}:
     get:
       summary: Get a ressource by id
+      description: Get a single ressource by its id
       tags:
         - Ressources
       parameters:
@@ -581,6 +710,7 @@ paths:
                   idCategorie: 2
     delete:
       summary: Delete a ressource
+      description: Delete a single ressource by its id
       tags:
         - Ressources
       responses:
@@ -591,14 +721,5 @@ paths:
               schema:
                 type: object
               example:
-                - id: 1
-                  dateCreation: 2023-01-02 21:16:55
-                  status: PENDING
-                  idUtilisateur: 1
-                  partage: RESTRICTED
-                  titre: Quis dolores repellendus fuga ut sit perferendis.
-                  contenu: Voluptas cum sint accusamus quo officiis qui. Eum voluptatem autem aut nisi. Quae molestiae optio et ut. Voluptatem vel hic temporibus ea animi magni totam.
-                  datePublication: null
-                  raisonRefus: null
-                  idCategorie: 2
+                message : "Ressource deleted"
   #endregion

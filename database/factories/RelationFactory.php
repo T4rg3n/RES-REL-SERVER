@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Relation;
+use App\Models\Utilisateur;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,8 +19,12 @@ class RelationFactory extends Factory
     public function definition()
     {
         return [
-            'demandeur_id' => $this->faker->randomNumber(2),
-            'receveur_id' => $this->faker->randomNumber(2),
+            'demandeur_id' => Utilisateur::all()->random()->id_uti,
+            'receveur_id' => Utilisateur::all()->random()->id_uti,
+            'accepte' => $this->faker->randomElement([null, true, false]),
+            //'date_acceptation' => $this->faker->dateTimeBetween('-1 year', 'now'),
+            'date_acceptation' => $this->faker->randomElement([$this->faker->dateTimeBetween('-1 year', 'now'), null]),
+            'date_demande' => $this->faker->dateTimeBetween('-1 year', 'now'),
         ];
     }
 }

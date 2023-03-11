@@ -18,20 +18,33 @@ class PieceJointeFactory extends Factory
      */
     public function definition()
     {
-        //TODO ajouter de la logique sur les activités
-        //TODO ajouter les activités dans typePj
-        $typesPj = ['IMAGE', 'VIDEO', 'PDF'];
+        //TODO maybe more logic for each type of piece jointe
+        $pj = $this->faker->randomElement(['IMAGE', 'VIDEO', 'PDF', 'ACTIVITE']);
 
-        return [
-            'type_pj' => $typesPj[rand(0,2)],
-            'titre_pj' => $this->faker->word,
-            'date_creation_pj' => $this->faker->dateTimeBetween('-1 year', 'now'),
-            'description_pj' => $this->faker->text,
-            'contenu_pj' => $this->faker->text,
-            'date_activite_pj' => $this->faker->dateTimeBetween('-1 year', 'now'),
-            'lieu_pj' => $this->faker->word,
-            'code_postal_pj' => $this->faker->numberBetween(10000, 95000),
-            'fk_id_uti' => Utilisateur::all()->random()->id_uti,
-        ];
+        if ($pj == 'ACTIVITE') {
+            return [
+                'type_pj' => $pj,
+                'titre_pj' => $this->faker->word,
+                'date_creation_pj' => $this->faker->dateTimeBetween('-1 year', 'now'),
+                'description_pj' => $this->faker->text,
+                'contenu_pj' => $this->faker->text,
+                'date_activite_pj' => $this->faker->dateTimeBetween('-1 year', 'now'),
+                'lieu_pj' => $this->faker->word,
+                'code_postal_pj' => $this->faker->numberBetween(10000, 95000),
+                'fk_id_uti' => Utilisateur::all()->random()->id_uti,
+            ];
+        } else {
+            return [
+                'type_pj' => $pj,
+                'titre_pj' => $this->faker->word,
+                'date_creation_pj' => $this->faker->dateTimeBetween('-1 year', 'now'),
+                'description_pj' => $this->faker->text,
+                'contenu_pj' => $this->faker->text,
+                'date_activite_pj' => null,
+                'lieu_pj' => null,
+                'code_postal_pj' => null,
+                'fk_id_uti' => Utilisateur::all()->random()->id_uti,
+            ];
+        }
     }
 }

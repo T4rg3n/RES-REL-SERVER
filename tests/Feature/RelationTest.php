@@ -28,6 +28,8 @@ class RelationTest extends TestCase
             'id',
             'idDemandeur',
             'idReceveur',
+            'dateDemande',
+            'dateAcceptation',
             'accepte'
         ]);
     }

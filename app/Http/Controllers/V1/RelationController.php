@@ -29,6 +29,8 @@ class RelationController extends Controller
         'id' => 'id_relation',
         'idDemandeur' => 'demandeur_id',
         'idReceveur' => 'receveur_id',
+        'dateDemande' => 'date_demande',
+        'dateAcceptation' => 'date_acceptation',
         'accepte' => 'accepte',
     ];
 
@@ -88,7 +90,7 @@ class RelationController extends Controller
         $groupe->delete($id_relation);
 
         return response()->json([
-            'message' => 'Groupe deleted'
+            'message' => 'Relation deleted'
         ], 200);
     }
 }
