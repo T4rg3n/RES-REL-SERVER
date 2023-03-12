@@ -5,7 +5,6 @@ info:
 servers:
   - url: https://api.victor-gombert.fr/api/v1
 
-
 paths:
   #region Categories
   /categories:
@@ -484,7 +483,7 @@ paths:
         '204':
           description: Delete a piece jointe by id
   #endregion
-
+  
   #region Ressources
   /ressources:
     get:

@@ -9,7 +9,6 @@ use App\Http\Requests\V1\RefuseRessourceRequest;
 use App\Http\Resources\V1\RessourceResource;
 use App\Http\Resources\V1\RessourceCollection;
 use App\Http\Requests\V1\StoreRessourceRequest;
-use App\Models\Categorie;
 use App\Services\V1\QueryFilter;
 
 class RessourceController extends Controller
@@ -38,6 +37,7 @@ class RessourceController extends Controller
         'idUtilisateur' => 'fk_id_uti',
         'partage' => 'partage_ressource',
         'datePublication' => 'date_publication_ressource',
+        'idPieceJointe' => 'fk_id_piece_jointe',
     ];
 
     /**
@@ -52,42 +52,32 @@ class RessourceController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
-        //TODO: Add piece jointe as related data to ressource
         $perPage = request()->input('perPage', 15);
         $queryContent = $request->all();
         $filter = new QueryFilter();
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
-        $ressources = Ressource::where($eloquentQuery)->paginate($perPage);
-
+        $ressources = Ressource::where($eloquentQuery);   
+        
         $includes = $request->query('include');
-        $includedRessources = explode(',', $includes);
-
         if ($includes) {
+            $includedRessources = explode(',', $includes);
             foreach($includedRessources as $includedRessource) {
-                if (!in_array($includedRessource, $this->allowedIncludes)) {
+                if (in_array($includedRessource, $this->allowedIncludes)) {
+                    $ressources = $ressources->with($includedRessources);
+                } else {
                     return response()->json([
                         'message' => 'Invalid include'
                     ], 400);
                 }
             }
-
-            $ressources = Ressource::with('categorie')->get();
-        
-            $ressources->transform(function ($ressource) {
-                $ressource->categorie;
-                unset($ressource->idCategorie);
-                return $ressource;
-            });
-
-            return response()->json(['data' => $ressources], 200);
-            //$ressources->load($includedRessources);
         }
-
-        return new RessourceCollection($ressources->appends($request->query()));
+        
+        return new RessourceCollection($ressources->paginate($perPage)->appends($request->query()));
     }
 
     /**
@@ -113,6 +103,7 @@ class RessourceController extends Controller
      */
     public function show($id_ressource)
     {
+        //TODO ?include=utilisateur,categorie,pieceJointe here
         $ressource = Ressource::findOrfail($id_ressource);
 
         return new RessourceResource($ressource);

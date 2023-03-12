@@ -24,12 +24,12 @@ class PieceJointe extends Model
         'fk_id_uti',
     ];
 
-    public function Ressource()
+    public function ressource()
     {
         return $this->belongsTo(Ressource::class);
     }
 
-    public function Utilisateur()
+    public function utilisateur()
     {
         return $this->belongsTo(Utilisateur::class);
     }

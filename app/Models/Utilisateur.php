@@ -47,22 +47,22 @@ class Utilisateur extends Model
     ];
     */
 
-    public function Role()
+    public function role()
     {
         return $this->belongsTo(Role::class);
     }
 
-    public function Groupe()
+    public function groupe()
     {
         return $this->belongsTo(Groupe::class);
     }
 
-    public function Ressource()
+    public function ressource()
     {
         return $this->hasMany(Ressource::class);
     }
 
-    public function Favoris()
+    public function favoris()
     {
         return $this->hasMany(Favoris::class);
     }
