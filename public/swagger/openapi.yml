@@ -383,6 +383,104 @@ paths:
         '204':
           description: Delete a groupe by id
   #endregion
+ 
+  #region Relations
+  /relations:
+    get:
+      summary: Get all relations
+      tags: 
+        - Relations
+      parameters:
+            - name: perPage
+              in: query
+              description: Set the number of relations per page
+              required: false
+              schema:
+                type: integer
+            - name: <key>[<operator>]=<value>
+              in: query
+              description: Allow to filter relations with operators like equals, greater than, less than, greater than equals, less than equals
+              required: false
+              schema:
+                type: string
+      responses:
+        '200':
+          description: Get all relations
+          content:
+            application/json:
+              schema:
+                type: array
+              example:
+                - id: 1
+                  dateCreation: 2023-01-02 21:16:55
+                  idDemandeur: 1
+                  idReceveur: 2
+                  accepte: true
+                - id: 2
+                  dateCreation: 2023-03-06 12:10:02
+                  idDemandeur: 3
+                  idReceveur: 3
+                  accepte: null
+    post:
+      summary: Create a relation
+      tags:
+        - Relations
+      responses:
+        '201':
+          description: Create a relation
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - idDemandeur : 1
+                  idReceveur : 2
+  /relation/{id}:
+    get:
+      summary: Get a relation by id
+      tags:
+        - Relations
+      parameters:
+        - name: id
+          in: path
+          description: ID of the relation
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Get a relation by id
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - id: 1
+                  dateCreation: 2023-01-02 21:16:55
+                  idDemandeur: 1
+                  idReceveur: 2
+                  accepte: true
+    delete:
+      summary: Delete a relation by id
+      tags:
+        - Relations
+      parameters:
+        - name: id
+          in: path
+          description: ID of the relation
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Delete a relation by id
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: "Relation deleted"
+  #endregion
 
   #region Pieces jointes
   /piecesJointes:
