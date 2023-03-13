@@ -18,6 +18,8 @@ class RelationResource extends JsonResource
             'id' => $this->id_relation,
             'idDemandeur' => $this->demandeur_id,
             'idReceveur' => $this->receveur_id,
+            'dateDemande' => $this->date_demande,
+            'dateAcceptation' => $this->date_acceptation,
             'accepte' => $this->accepte,
         ];
     }
