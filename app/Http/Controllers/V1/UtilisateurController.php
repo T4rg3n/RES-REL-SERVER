@@ -53,11 +53,8 @@ class UtilisateurController extends Controller
      * Array of allowed includes
      */
     protected $allowedIncludes = [
-        'idCategorie',
-        'idUtilisateur'
+        'role'
     ];
-
-    //TODO : translate included data like idCategorie  becomes categorie etc
 
     /**
      * Display a listing of the resource.
@@ -70,18 +67,23 @@ class UtilisateurController extends Controller
         $queryContent = $request->all();
         $filter = new QueryFilter();
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
-        //TODO 
-        $includeCategories = request()->query('includeCategories');
+        $utilisateurs = Utilisateur::where($eloquentQuery);
+
+        $includes = $request->query('include');
+        if ($includes) {
+            $includedArray = explode(',', $includes);
+            foreach ($includedArray as $include) {
+                if (in_array($include, $this->allowedIncludes)) {
+                    $utilisateurs->with($include);
+                } else {
+                    return response()->json([
+                        'message' => 'Invalid include parameter'
+                    ], 400);
+                }
+            }
+        }
         
-        $utilisateurs = Utilisateur::where($eloquentQuery)->paginate($perPage);
-
-
-        //TODO "?include=<array>" not just one value. Especially useful here where there are 2 relationships
-
-        if($includeCategories)
-            $utilisateurs['idCategorie'] = Categorie::findOrfail($utilisateurs->fk_id_categorie);
-        
-        return new UtilisateurCollection($utilisateurs->appends($request->query()));
+        return new UtilisateurCollection($utilisateurs->paginate($perPage)->appends($request->query()));
     }
 
     /**
@@ -108,6 +110,20 @@ class UtilisateurController extends Controller
     public function show($id_uti)
     {
         $utilisateur = Utilisateur::findOrfail($id_uti);
+
+        $includes = request()->query('include');
+        if ($includes) {
+            $includedArray = explode(',', $includes);
+            foreach ($includedArray as $include) {
+                if (in_array($include, $this->allowedIncludes)) {
+                    $utilisateur = $utilisateur->loadMissing($include);
+                } else {
+                    return response()->json([
+                        'message' => 'Invalid include parameter'
+                    ], 400);
+                }
+            }
+        }
 
         return new UtilisateurResource($utilisateur);
     }

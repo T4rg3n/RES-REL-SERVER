@@ -19,13 +19,13 @@ class ReponseCommentaire extends Model
         'fk_id_commentaire',
     ];
 
-    public function Utilisateur()
+    public function utilisateur()
     {
-        return $this->belongsTo(Utilisateur::class);
+        return $this->belongsTo(Utilisateur::class, 'fk_id_uti', 'id_uti');
     }
 
-    public function Commentaire()
+    public function commentaire()
     {
-        return $this->belongsTo(Commentaire::class);
+        return $this->belongsTo(Commentaire::class, 'fk_id_commentaire', 'id_commentaire');
     }
 }

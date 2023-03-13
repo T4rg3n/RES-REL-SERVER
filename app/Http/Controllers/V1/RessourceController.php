@@ -68,7 +68,7 @@ class RessourceController extends Controller
             $includedRessources = explode(',', $includes);
             foreach($includedRessources as $includedRessource) {
                 if (in_array($includedRessource, $this->allowedIncludes)) {
-                    $ressources = $ressources->with($includedRessources);
+                    $ressources = $ressources->with($includedRessource);
                 } else {
                     return response()->json([
                         'message' => 'Invalid include'
@@ -103,8 +103,21 @@ class RessourceController extends Controller
      */
     public function show($id_ressource)
     {
-        //TODO ?include=utilisateur,categorie,pieceJointe here
         $ressource = Ressource::findOrfail($id_ressource);
+
+        $includes = request()->query('include');
+        if ($includes) {
+            $includedRessources = explode(',', $includes);
+            foreach($includedRessources as $includedRessource) {
+                if (in_array($includedRessource, $this->allowedIncludes)) {
+                    $ressource = $ressource->loadMissing($includedRessource);
+                } else {
+                    return response()->json([
+                        'message' => 'Invalid include'
+                    ], 400);
+                }
+            }
+        }
 
         return new RessourceResource($ressource);
     }

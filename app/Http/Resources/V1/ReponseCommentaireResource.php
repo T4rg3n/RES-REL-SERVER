@@ -21,7 +21,9 @@ class ReponseCommentaireResource extends JsonResource
             'supprime' => $this->reponse_supprime,
             'nombreSignalements' => $this->nombre_signalement_commentaire,
             'idUtilisateur' => $this->fk_id_uti,
+            'utilisateur' => new UtilisateurResource($this->whenLoaded('utilisateur')),
             'idCommentaire' => $this->fk_id_commentaire,
+            'commentaire' => new CommentaireResource($this->whenLoaded('commentaire')),
             'datePublication' => $this->date_publication_reponse,
             'reponseSupprime' => $this->reponse_supprime,
         ];

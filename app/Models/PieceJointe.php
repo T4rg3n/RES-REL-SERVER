@@ -26,11 +26,11 @@ class PieceJointe extends Model
 
     public function ressource()
     {
-        return $this->belongsTo(Ressource::class);
+        return $this->belongsTo(Ressource::class, 'fk_id_ressource', 'id_ressource');
     }
 
     public function utilisateur()
     {
-        return $this->belongsTo(Utilisateur::class);
+        return $this->belongsTo(Utilisateur::class, 'fk_id_uti', 'id_uti');
     }
 }

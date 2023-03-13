@@ -40,8 +40,8 @@ class ReponseCommentaireController extends Controller
      * Allowed includes
      */
     protected $allowedIncludes = [
-        'idUtilisateur',
-        'idCommentaire'
+        'utilisateur',
+        'commentaire'
     ];
 
     /**
@@ -55,9 +55,23 @@ class ReponseCommentaireController extends Controller
         $queryContent = $request->all();
         $filter = new QueryFilter();
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
-        $reponsesCommentaires = ReponseCommentaire::where($eloquentQuery)->paginate($perPage);
+        $reponsesCommentaires = ReponseCommentaire::where($eloquentQuery);
 
-        return new ReponseCommentaireCollection($reponsesCommentaires->appends($request->query())); 
+        $includes = $request->query('include');
+        if ($includes) {
+            $includedArray = explode(',', $includes);
+            foreach($includedArray as $include) {
+                if (in_array($include, $this->allowedIncludes)) {
+                    $reponsesCommentaires->with($include);
+                } else {
+                    return response()->json([
+                        'message' => 'Invalid include'],
+                    400);
+                }
+            }
+        }
+
+        return new ReponseCommentaireCollection($reponsesCommentaires->paginate($perPage)->appends($request->query())); 
     }
 
     /**
@@ -83,9 +97,23 @@ class ReponseCommentaireController extends Controller
      */
     public function show($id_reponse)
     {
-        $reponse_commentaire = ReponseCommentaire::findorFail($id_reponse);
+        $reponseCommentaire = ReponseCommentaire::findorFail($id_reponse);
 
-        return new ReponseCommentaireResource($reponse_commentaire);
+        $includes = request()->query('include');
+        if ($includes) {
+            $includedArray = explode(',', $includes);
+            foreach($includedArray as $include) {
+                if (in_array($include, $this->allowedIncludes)) {
+                    $reponseCommentaire = $reponseCommentaire->loadMissing($include);
+                } else {
+                    return response()->json([
+                        'message' => 'Invalid include'],
+                    400);
+                }
+            }
+        }
+
+        return new ReponseCommentaireResource($reponseCommentaire);
     }
 
     /**

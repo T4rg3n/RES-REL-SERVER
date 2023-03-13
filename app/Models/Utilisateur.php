@@ -49,7 +49,7 @@ class Utilisateur extends Model
 
     public function role()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(Role::class, 'fk_id_role', 'id_role');
     }
 
     public function groupe()
@@ -67,7 +67,7 @@ class Utilisateur extends Model
         return $this->hasMany(Favoris::class);
     }
 
-    public function Commentaire()
+    public function commentaire()
     {
         return $this->hasMany(Commentaire::class);
     }
