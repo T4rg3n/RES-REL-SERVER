@@ -25,13 +25,18 @@ class Ressource extends Model
         'raison_refus_ressource',
     ];
 
-    public function Utilisateur()
+    public function utilisateur()
     {
-        return $this->belongsTo(Utilisateur::class);
+        return $this->belongsTo(Utilisateur::class, 'fk_id_uti', 'id_uti');
     }
 
-    public function Categorie()
+    public function categorie()
     {
-        return $this->belongsTo(Categorie::class);
+        return $this->belongsTo(Categorie::class, 'fk_id_categorie', 'id_categorie');
+    }
+
+    public function pieceJointe()
+    {
+        return $this->belongsTo(PieceJointe::class, 'fk_id_piece_jointe', 'id_piece_jointe');
     }
 }

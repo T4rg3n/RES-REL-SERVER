@@ -11,6 +11,8 @@ class CategorieTest extends TestCase
     //Revert changes mades by the tests
     use DatabaseTransactions;
 
+    //TODO Add test for ?perPage
+
     /**
      * Test POST one category
      *

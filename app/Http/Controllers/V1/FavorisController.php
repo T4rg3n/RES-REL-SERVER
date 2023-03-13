@@ -33,6 +33,14 @@ class FavorisController extends Controller
     ];
 
     /**
+     * Allowed includes
+     */
+    protected $allowedIncludes = [
+        'utilisateur',
+        'ressource'
+    ];
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -43,9 +51,23 @@ class FavorisController extends Controller
         $queryContent = $request->all();
         $filter = new QueryFilter();
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
-        $favoris = Favoris::where($eloquentQuery)->paginate($perPage);
+        $favoris = Favoris::where($eloquentQuery);
+
+        $includes = $request->query('include');
+        if ($includes) {
+            $includedArray = explode(',', $includes);
+            foreach($includedArray as $include) {
+                if (in_array($include, $this->allowedIncludes)) {
+                    $favoris->with($include);
+                } else {
+                    return response()->json([
+                        'message' => 'Invalid include'
+                    ], 400);
+                }
+            }
+        }
         
-        return new FavorisCollection($favoris->appends($request->query()));
+        return new FavorisCollection($favoris->paginate($perPage)->appends($request->query()));
     }
 
     /**
@@ -72,6 +94,20 @@ class FavorisController extends Controller
     public function show($id_favoris)
     {
         $favoris = Favoris::findOrfail($id_favoris);
+
+        $includes = request()->query('include');
+        if ($includes) {
+            $includedArray = explode(',', $includes);
+            foreach($includedArray as $include) {
+                if (in_array($include, $this->allowedIncludes)) {
+                    $favoris = $favoris->loadMissing($include);
+                } else {
+                    return response()->json([
+                        'message' => 'Invalid include'
+                    ], 400);
+                }
+            }
+        }
 
         return new FavorisResource($favoris);
     }

@@ -37,23 +37,47 @@ class RessourceController extends Controller
         'idUtilisateur' => 'fk_id_uti',
         'partage' => 'partage_ressource',
         'datePublication' => 'date_publication_ressource',
+        'idPieceJointe' => 'fk_id_piece_jointe',
+    ];
+
+    /**
+     * Allowed includes
+     */
+    protected $allowedIncludes = [
+        'categorie',
+        'utilisateur',
+        'pieceJointe'
     ];
 
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
-        //TODO: Add piece jointe as related data to ressource
         $perPage = request()->input('perPage', 15);
         $queryContent = $request->all();
         $filter = new QueryFilter();
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
-        $ressources = Ressource::where($eloquentQuery)->paginate($perPage);
-
-        return new RessourceCollection($ressources->appends($request->query()));
+        $ressources = Ressource::where($eloquentQuery);   
+        
+        $includes = $request->query('include');
+        if ($includes) {
+            $includedRessources = explode(',', $includes);
+            foreach($includedRessources as $includedRessource) {
+                if (in_array($includedRessource, $this->allowedIncludes)) {
+                    $ressources = $ressources->with($includedRessource);
+                } else {
+                    return response()->json([
+                        'message' => 'Invalid include'
+                    ], 400);
+                }
+            }
+        }
+        
+        return new RessourceCollection($ressources->paginate($perPage)->appends($request->query()));
     }
 
     /**
@@ -80,6 +104,20 @@ class RessourceController extends Controller
     public function show($id_ressource)
     {
         $ressource = Ressource::findOrfail($id_ressource);
+
+        $includes = request()->query('include');
+        if ($includes) {
+            $includedRessources = explode(',', $includes);
+            foreach($includedRessources as $includedRessource) {
+                if (in_array($includedRessource, $this->allowedIncludes)) {
+                    $ressource = $ressource->loadMissing($includedRessource);
+                } else {
+                    return response()->json([
+                        'message' => 'Invalid include'
+                    ], 400);
+                }
+            }
+        }
 
         return new RessourceResource($ressource);
     }

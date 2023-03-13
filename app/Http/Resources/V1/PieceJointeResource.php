@@ -24,7 +24,8 @@ class PieceJointeResource extends JsonResource
             'dateActivite' => $this->date_activite_pj,
             'lieu' => $this->lieu_pj,
             'codePostal' => $this->code_postal_pj,
-            'utilisateur' => $this->fk_id_uti,
+            'idUtilisateur' => $this->fk_id_uti,
+            'utilisateur' => new UtilisateurResource($this->whenLoaded('utilisateur')),
         ];
     }
 }

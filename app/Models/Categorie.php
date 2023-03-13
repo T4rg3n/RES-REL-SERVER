@@ -17,7 +17,7 @@ class Categorie extends Model
         'nom_categorie',
     ];
 
-    public function Ressource()
+    public function ressource()
     {
         return $this->hasMany(Ressource::class);
     }

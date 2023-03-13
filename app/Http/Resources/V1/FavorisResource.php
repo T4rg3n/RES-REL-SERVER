@@ -18,7 +18,9 @@ class FavorisResource extends JsonResource
             'id' => $this->id_favoris,
             'dateFav' => $this->date_fav,
             'idUtilisateur' => $this->fk_id_uti,
+            'utilisateur' => new UtilisateurResource($this->whenLoaded('utilisateur')),
             'idRessource' => $this->fk_id_ressource,
+            'ressource' => new RessourceResource($this->whenLoaded('ressource')),
         ];
     }
 }

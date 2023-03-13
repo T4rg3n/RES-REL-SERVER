@@ -18,6 +18,7 @@ class PieceJointeController extends Controller
     protected $allowedParams = [
         'id' => ['equals'],
         'idUtilisateur' => ['equals'],
+        'idRessource' => ['equals'],
         'type' => ['equals'],
         'dateCreation' => ['equals', 'lowerThan', 'lowerThanEquals', 'greaterThan', 'greaterThanEquals'],
         'dateActivite' => ['equals', 'lowerThan', 'lowerThanEquals', 'greaterThan', 'greaterThanEquals'],
@@ -31,12 +32,21 @@ class PieceJointeController extends Controller
     protected $columnMap = [
         'id' => 'id_piece_jointe',
         'idUtilisateur' => 'fk_id_uti',
+        'idRessource' => 'fk_id_ressource',
         'contenu' => 'contenu_pj',
         'type' => 'type_pj',
         'dateCreation' => 'date_creation_pj',
         'dateActivite' => 'date_activite_pj',
         'lieu' => 'lieu_pj',
         'codePostal' => 'code_postal_pj',
+    ];
+
+    /**
+     * Allowed includes
+     */
+    protected $allowedIncludes = [
+        'utilisateur',
+        'ressource'
     ];
 
     /**
@@ -50,9 +60,23 @@ class PieceJointeController extends Controller
         $queryContent = $request->all();
         $filter = new QueryFilter();
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
-        $piecesJointes = PieceJointe::where($eloquentQuery)->paginate($perPage);
+        $piecesJointes = PieceJointe::where($eloquentQuery);
+
+        $includes = $request->query('include');
+        if ($includes) {
+            $includedArray = explode(',', $includes);
+            foreach($includedArray as $include) {
+                if (in_array($include, $this->allowedIncludes)) {
+                    $piecesJointes->with($include);
+                } else {
+                    return response()->json([
+                        'error' => 'Invalid include'
+                    ], 400);
+                }
+            }
+        }
         
-        return new PieceJointeCollection($piecesJointes->appends($request->query()));
+        return new PieceJointeCollection($piecesJointes->paginate($perPage)->appends($request->query()));
     }
 
     /**
@@ -105,6 +129,20 @@ class PieceJointeController extends Controller
     public function show($idPieceJointe)
     {
         $pieceJointe = PieceJointe::findOrfail($idPieceJointe);
+
+        $includes = request()->query('include');
+        if ($includes) {
+            $includedArray = explode(',', $includes);
+            foreach($includedArray as $include) {
+                if (in_array($include, $this->allowedIncludes)) {
+                    $pieceJointe = $pieceJointe->loadMissing($include);
+                } else {
+                    return response()->json([
+                        'error' => 'Invalid include'
+                    ], 400);
+                }
+            }
+        }
 
         return new PieceJointeResource($pieceJointe);
     }

@@ -18,13 +18,13 @@ class Favoris extends Model
         'fk_id_ressource',
     ];
 
-    public function Utilisateur()
+    public function utilisateur()
     {
-        return $this->belongsTo(Utilisateur::class);
+        return $this->belongsTo(Utilisateur::class, 'fk_id_uti', 'id_uti');
     }
 
-    public function Ressource()
+    public function ressource()
     {
-        return $this->belongsTo(Ressource::class);
+        return $this->belongsTo(Ressource::class, 'fk_id_ressource', 'id_ressource');
     }
 }
