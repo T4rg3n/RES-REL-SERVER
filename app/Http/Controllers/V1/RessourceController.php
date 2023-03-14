@@ -130,14 +130,44 @@ class RessourceController extends Controller
      */
     public function disable(RefuseRessourceRequest $request)
     {
-        //TODO error parsing if resource != PENDING
         $ressource = Ressource::findOrfail($request->id_ressource);
+    
+        if($ressource->status != 'PENDING') {
+            return response()->json([
+                'message' => 'Ressource is not pending'
+            ], 400);
+        }
+
         $ressource->status = 'REJECTED';
         $ressource->raison_refus_ressource = $request->raison_refus_ressource;
         $ressource->save();
 
         return response()->json([
             'message' => 'Ressource refused'
+        ], 200);
+    }
+
+    /**
+     * Accept the specified resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function enable($id_ressource)
+    {
+        $ressource = Ressource::findOrfail($id_ressource);
+
+        if($ressource->status != 'PENDING') {
+            return response()->json([
+                'message' => 'Ressource is not pending'
+            ], 400);
+        }
+
+        $ressource->status = 'APPROVED';
+        $ressource->save();
+
+        return response()->json([
+            'message' => 'Ressource accepted'
         ], 200);
     }
 

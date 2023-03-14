@@ -25,7 +25,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1'], funct
         //(Disable)
     Route::patch('utilisateurs/disable', 'UtilisateurController@disable');
     Route::patch('ressources/disable', 'RessourceController@disable');
-        //No need to pass a form, the id is in the URL then
+            //No need to pass a form, the id is in the URL then
     Route::patch('commentaires/{id}/disable', 'CommentaireController@disable');
     Route::patch('reponsesCommentaires/{id}/disable', 'ReponseCommentaireController@disable');
         //(Report)
@@ -33,6 +33,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1'], funct
     Route::patch('reponsesCommentaires/{id}/report', 'ReponseCommentaireController@report');
         //(Like) (unlike is a DELETE)
     Route::patch('ressources/like', 'FavorisController@like');
+        //Enable (Accept a pending resource)
+    Route::patch('ressources/{id}/enable', 'RessourceController@enable');
     
     //GET / HEAD / POST / DELETE
     Route::apiResource('categories', CategorieController::class);
