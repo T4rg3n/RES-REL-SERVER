@@ -13,7 +13,8 @@ class SearchRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        //only for development
+        return true;
     }
 
     /**
@@ -24,7 +25,21 @@ class SearchRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'ressourceQuery' => ['string', 'max:255'],
+            'utilisateurQuery' => ['string', 'max:255']
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     */
+    public function messages()
+    {
+        return [
+            'ressourceQuery.string' => 'Ressource query must be a string',
+            'ressourceQuery.max' => 'Ressource query must be less than 255 characters',
+            'utilisateurQuery.string' => 'Utilisateur query must be a string',
+            'utilisateurQuery.max' => 'Ressource query must be less than 255 characters',
         ];
     }
 }
