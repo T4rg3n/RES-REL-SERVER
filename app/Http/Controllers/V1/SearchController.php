@@ -8,7 +8,7 @@ use App\Http\Resources\V1\RessourceCollection;
 use App\Http\Resources\V1\UtilisateurCollection;
 use App\Models\Ressource;
 use App\Models\Utilisateur;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Response;
+use Illuminate\Database\Eloquent\Collection;
 
 class SearchController extends Controller
 {
@@ -20,9 +20,8 @@ class SearchController extends Controller
      */
     public function search(SearchRequest $request)
     {
-        $result = [];
-        $ressourceCollection = null;
-        $utilisateurCollection = null;
+        $ressourcesResult = [];
+        $utilisateursResult = [];
 
         if(isset($request->ressourceQuery)) {
             $ressourceSearch = Ressource::where('titre_ressource', 'LIKE', "%$request->ressourceQuery%")
@@ -32,11 +31,9 @@ class SearchController extends Controller
             ->take(25)
             ->get();
 
-            foreach($ressourceSearch as $ressourceResult) {
-                array_push($result, $ressourceResult);
-            }
-
-            $ressourceCollection = new RessourceCollection($result);
+            foreach($ressourceSearch as $result) {
+                array_push($ressourcesResult, $result);
+            }           
         }
 
         if(isset($request->utilisateurQuery)) {
@@ -46,23 +43,29 @@ class SearchController extends Controller
             ->take(25)
             ->get();
 
-            foreach($utilisateurSearch as $utilisateurResult) {
-                array_push($result, $utilisateurResult);
+            foreach($utilisateurSearch as $result) {
+                array_push($utilisateursResult, $result);
             }
-
-            $utilisateurCollection = new UtilisateurCollection($result);
         }
 
-        if(empty($result)) {
-            return response(204);
+        //if everything is empty return 204
+        if(empty($ressourcesResult) && empty($utilisateursResult)) {
+            return response(null, 204);
         }
 
+        $utilisateurCollection = new UtilisateurCollection($utilisateursResult);
+        $ressourceCollection = new RessourceCollection($ressourcesResult);
 
-        /** BUG array of empty users at the end of the response :
-         * If there is n ressources, there will be n empty arrays at the end of the response.
-         */
-        $finalCollection = $ressourceCollection->merge($utilisateurCollection);
+        //if one or the other is empty
+        if($ressourceCollection->isEmpty())
+            return $utilisateurCollection; 
+        
+        if($utilisateurCollection->isEmpty())
+            return $ressourceCollection;
+        
+
+        //if both are full
+        $finalCollection = $utilisateurCollection->concat($ressourceCollection);
         return $finalCollection;
-        //return response()->json($result, 200);
     }
 }
