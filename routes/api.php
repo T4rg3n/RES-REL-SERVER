@@ -35,6 +35,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1'], funct
     Route::patch('ressources/like', 'FavorisController@like');
         //Enable (Accept a pending resource)
     Route::patch('ressources/{id}/enable', 'RessourceController@enable');
+
+    Route::post('search', 'SearchController@search');
     
     //GET / HEAD / POST / DELETE
     Route::apiResource('categories', CategorieController::class);

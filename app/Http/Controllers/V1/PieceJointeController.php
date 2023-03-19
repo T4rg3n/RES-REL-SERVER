@@ -109,7 +109,7 @@ class PieceJointeController extends Controller
             }
 
             //TODO fill contenu with the path to the file
-            //dont seem to work
+            //dont seem to work [edit : maybe after moving the file?]
             // $request->merge(['contenu_pj' => $filePath . $uploadedFile->getClientOriginalName()]);
             
             $fileName = $id . '_' . $uploadedFile->getClientOriginalName();
