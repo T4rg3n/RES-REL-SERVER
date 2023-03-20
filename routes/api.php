@@ -35,9 +35,12 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1'], funct
     Route::patch('ressources/like', 'FavorisController@like');
         //Enable (Accept a pending resource)
     Route::patch('ressources/{id}/enable', 'RessourceController@enable');
-
+    //Search (POST)
     Route::post('search', 'SearchController@search');
     
+    //Login (POST)
+    Route::post('login', 'LoginController@login');
+
     //GET / HEAD / POST / DELETE
     Route::apiResource('categories', CategorieController::class);
     Route::apiResource('commentaires', CommentaireController::class);

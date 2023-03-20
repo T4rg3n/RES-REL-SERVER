@@ -3,6 +3,7 @@
 namespace App\Http\Requests\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Hash;
 
 class StoreUtilisateurRequest extends FormRequest
 {
@@ -82,7 +83,7 @@ class StoreUtilisateurRequest extends FormRequest
     {
         $this->merge([
             'mail_uti' => $this->mail,
-            'mdp_uti' => $this->motDePasse,
+            'mdp_uti' => Hash::make($this->motDePasse),
             'date_naissance_uti' => $this->dateNaissance,
             'code_postal_uti' => $this->codePostal,
             'nom_uti' => $this->nom,
