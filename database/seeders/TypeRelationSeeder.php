@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\TypeRelation;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class TypeRelationSeeder extends Seeder
 {
@@ -15,8 +15,19 @@ class TypeRelationSeeder extends Seeder
      */
     public function run()
     {
-        TypeRelation::factory()
-            ->count(5)
-            ->create();
+        $typesRelations = [
+            'Soi',
+            'Conjoints',
+            'Famille',
+            'Professionnel',
+            'Amis',
+            'Inconnus',
+        ];
+
+        foreach($typesRelations as $typeRelation){
+            DB::table((new TypeRelation())->getTable())->insert([
+                'nom_type_relation' => $typeRelation,
+            ]);
+        }
     }
 }

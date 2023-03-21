@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Categorie;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class CategorieSeeder extends Seeder
 {
@@ -14,8 +15,26 @@ class CategorieSeeder extends Seeder
      */
     public function run()
     {
-        Categorie::factory()
-            ->count(10)
-            ->create();
+        $categories = [
+            'Communication',
+            'Culture',
+            'Développement personnel',
+            'Intelligence émotionnelle',
+            'Loisirs',
+            'Monde professionnel',
+            'Parentalité',
+            'Qualité de vie',
+            'Recherche de sens',
+            'Santé physique',
+            'Santé psychique',
+            'Spiritualité',
+            'Vie affective',
+        ];
+
+        foreach($categories as $categorie){
+            DB::table((new Categorie())->getTable())->insert([
+                'nom_categorie' => $categorie,
+            ]);
+        }
     }
 }
