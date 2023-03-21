@@ -17,6 +17,7 @@ class RelationController extends Controller
      */
     protected $allowedParams = [
         'id' => ['equals'],
+        'typeRelation' => ['equals'],
         'idDemandeur' => ['equals'],
         'idReceveur' => ['equals'],
         'accepte' => ['equals'],

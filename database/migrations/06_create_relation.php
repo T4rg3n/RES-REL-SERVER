@@ -10,6 +10,12 @@ return new class extends Migration
     {
         Schema::create('relations', function (Blueprint $table) {
             $table->id('id_relation');
+            $table->unsignedBigInteger('fk_id_type_relation');
+            $table->foreign('fk_id_type_relation')
+                ->references('id_type_relation')
+                ->on('type_relations')
+                ->onDelete('cascade');
+
             $table->integer('demandeur_id');
             $table->integer('receveur_id');
             $table->boolean('accepte')->nullable();
