@@ -20,7 +20,6 @@ class RessourceResource extends JsonResource
             'dateCreation' => $this->date_creation_ressource,
             'status' => $this->status,
             'idUtilisateur' => $this->fk_id_uti,
-            //TODO if utilisateur is loaded, remove idUtilisateur
             'utilisateur' => new UtilisateurResource($this->whenLoaded('utilisateur')),
             'partage' => $this->partage_ressource,
             'titre' => $this->titre_ressource,
@@ -28,7 +27,6 @@ class RessourceResource extends JsonResource
             'datePublication' => $this->date_publication_ressource,
             'raisonRefus' => $this->raison_refus_ressource,
             'idCategorie' => $this->fk_id_categorie,
-            //TODO if categorie is loaded, remove idCategorie
             'categorie' => new CategorieResource($this->whenLoaded('categorie')),
             'idPieceJointe' => $this->fk_id_piece_jointe,
             'pieceJointe' => new PieceJointeResource($this->whenLoaded('pieceJointe')),

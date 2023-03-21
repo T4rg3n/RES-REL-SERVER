@@ -29,7 +29,7 @@ class ReponseCommentaireController extends Controller
      */
     protected $columnMap = [
         'id' => 'id_reponse',
-        'date' => 'date_publication_reponse', //BUG date is null in GET request but not in DB
+        'datePublication' => 'date_publication_reponse',
         'supprime' => 'reponse_supprime',
         'nombreSignalements' => 'nombre_signalement_commentaire',
         'idUtilisateur' => 'fk_id_uti',

@@ -17,7 +17,6 @@ class ReponseCommentaireResource extends JsonResource
         return [
             'id' => $this->id_reponse,
             'contenu' => $this->contenu_reponse,
-            'date' => $this->date_reponse,
             'supprime' => $this->reponse_supprime,
             'nombreSignalements' => $this->nombre_signalement_commentaire,
             'idUtilisateur' => $this->fk_id_uti,
