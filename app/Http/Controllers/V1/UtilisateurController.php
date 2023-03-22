@@ -99,10 +99,12 @@ class UtilisateurController extends Controller
         }
 
         $utilisateur = Utilisateur::create($request->all());
+        
+        $token = $utilisateur->createToken('testToken')->plainTextToken;
         $utilisateur->save();
         $id = $utilisateur->id_uti;
 
-        return response()->json($this->show($id), 201);
+        return response()->json([$this->show($id), 'token' => $token], 201);
     }
     
     /**

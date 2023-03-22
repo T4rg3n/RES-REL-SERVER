@@ -71,6 +71,8 @@ class ReponseCommentaireController extends Controller
             }
         }
 
+        //BUG 'supprime' et 'date' s'affichent alors qu'ils ne devraient pas (ces champs sont traduits)
+
         return new ReponseCommentaireCollection($reponsesCommentaires->paginate($perPage)->appends($request->query())); 
     }
 

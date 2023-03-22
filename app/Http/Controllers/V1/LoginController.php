@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\StoreUtilisateurRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Utilisateur;
@@ -11,7 +12,7 @@ use App\Models\Utilisateur;
 class LoginController extends Controller
 {
     /**
-     * Login a user
+     * Login a user and get a bearer token
      * 
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -20,7 +21,7 @@ class LoginController extends Controller
     {
         //check if user exists in database
         $user = Utilisateur::where('mail_uti', $request->mail)->first();
-        if(!$user || !Hash::check($request->motDePasse, $user->mot_de_passe_uti)) {
+        if(!$user || !Hash::check($request->motDePasse, $user->mdp_uti)) {
             return response()->json([
                 'message' => 'User not found'
             ], 401);
@@ -31,11 +32,14 @@ class LoginController extends Controller
             'motDePasse' => ['required']
         ]);
 
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            //$token = $user->createToken('authToken')->accessToken;
+        //TODO translate mail & motDePasse to 'mail_uti' and 'mdp_uti'
 
-            /*
+        if (Auth::attempt($credentials)) {
+            $user = Auth::utilisateur();
+
+            //TODO issue tokens depending on typeCompte
+            $token = $user->createToken('authToken')->accessToken;
+
             return response()->json([
                 'user' => $user,
                 'token' => $token
@@ -43,7 +47,7 @@ class LoginController extends Controller
         } else {
             return response()->json([
                 'message' => 'Invalid credentials'
-            ], 401);*/
+            ], 401);
         }
     }
 }
