@@ -35,7 +35,7 @@ class StoreUtilisateurRequest extends FormRequest
             'prenom' => ['required', 'string', 'max:255'],
             'bio' => ['required', 'string', 'max:255'],
             //'exists:roles,id_role'
-            'role' => ['required', 'integer'],
+            //'role' => ['required', 'integer'],
         ];
     }
 
@@ -70,8 +70,6 @@ class StoreUtilisateurRequest extends FormRequest
             'bio.required' => 'bio is required',
             'bio.string' => 'bio must be a string',
             'bio.max' => 'bio must not be greater than 255 characters',
-            'role.required' => 'role is required',
-            'role.integer' => 'role must be an integer',
         ];
     }
 
@@ -89,7 +87,8 @@ class StoreUtilisateurRequest extends FormRequest
             'nom_uti' => $this->nom,
             'prenom_uti' => $this->prenom,
             'bio_uti' => $this->bio,
-            'fk_id_role' => $this->role,
+            //1 = super-admin, 2 = admin, 3 = moderateur, 4 = utilisateur
+            'fk_id_role' => 4,
         ]);
     }
 }

@@ -4,8 +4,7 @@ namespace App\Http\Controllers\V1;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\V1\StoreUtilisateurRequest;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\V1\LoginRequest;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Utilisateur;
 
@@ -17,37 +16,42 @@ class LoginController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        //check if user exists in database
         $user = Utilisateur::where('mail_uti', $request->mail)->first();
-        if(!$user || !Hash::check($request->motDePasse, $user->mdp_uti)) {
+        if(!$user) {
             return response()->json([
                 'message' => 'User not found'
             ], 401);
         }
 
-        $credentials = $request->validate([
-            'mail' => ['required', 'email'], 
-            'motDePasse' => ['required']
-        ]);
-
-        //TODO translate mail & motDePasse to 'mail_uti' and 'mdp_uti'
-
-        if (Auth::attempt($credentials)) {
-            $user = Auth::utilisateur();
-
-            //TODO issue tokens depending on typeCompte
-            $token = $user->createToken('authToken')->accessToken;
-
+        if(!Hash::check($request->motDePasse, $user->mdp_uti)) {
             return response()->json([
-                'user' => $user,
-                'token' => $token
-            ], 200);
-        } else {
-            return response()->json([
-                'message' => 'Invalid credentials'
+                'message' => 'Invalid credentials!'
             ], 401);
         }
+
+        switch($user->role->nom_role) {
+            case 'super-admin':
+                $token = $user->createToken('authToken', ['super-admin']);
+                break;
+            case 'admin':
+                $token = $user->createToken('authToken', ['admin']);
+                break;
+            case 'moderateur':
+                $token = $user->createToken('authToken', ['moderateur']);
+                break;
+            case 'utilisateur':
+                $token = $user->createToken('authToken', ['utilisateur']);
+                break;
+            default:
+                $token = $user->createToken('authToken');
+        }
+
+        return response()->json([
+            'user' => $user,
+            'token' => $token->plainTextToken
+        ], 200);
+
     }
 }

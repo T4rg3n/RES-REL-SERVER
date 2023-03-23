@@ -45,9 +45,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1'], funct
     //Search (POST)
     Route::post('search', 'SearchController@search');
     
-    //GET / POST / PUT / PATCH / DELETE
-    Route::apiResource('categories', CategorieController::class)->middleware('auth');
-    Route::apiResource('commentaires', CommentaireController::class);
+    //GET / HEAD / POST / PUT / PATCH / DELETE
+    Route::apiResource('categories', CategorieController::class)->except(['get', 'head'])->middleware('auth');
+    Route::apiResource('commentaires', CommentaireController::class)->middleware('auth');
     Route::apiResource('favoris', FavorisController::class);
     Route::apiResource('groupes', GroupeController::class);
     Route::apiResource('piecesJointes', PieceJointeController::class);

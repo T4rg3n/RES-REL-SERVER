@@ -100,11 +100,27 @@ class UtilisateurController extends Controller
 
         $utilisateur = Utilisateur::create($request->all());
         
-        $token = $utilisateur->createToken('testToken')->plainTextToken;
+        switch($utilisateur->role->nom_role) {
+            case 'super-admin':
+                $token = $utilisateur->createToken('authToken', ['super-admin']);
+                break;
+            case 'admin':
+                $token = $utilisateur->createToken('authToken', ['admin']);
+                break;
+            case 'moderateur':
+                $token = $utilisateur->createToken('authToken', ['moderateur']);
+                break;
+            case 'utilisateur':
+                $token = $utilisateur->createToken('authToken', ['utilisateur']);
+                break;
+            default:
+                $token = $utilisateur->createToken('authToken');
+        }
+
         $utilisateur->save();
         $id = $utilisateur->id_uti;
 
-        return response()->json([$this->show($id), 'token' => $token], 201);
+        return response()->json(['response' => $this->show($id), 'token' => $token->plainTextToken], 201);
     }
     
     /**
