@@ -66,6 +66,8 @@ paths:
             application/json:
               schema:
                 type: array
+                items:
+                  type: object
               example:
                 - id: 1
                   nom: "Catégorie 1"
@@ -171,6 +173,8 @@ paths:
             application/json:
               schema:
                 type: array
+                items:
+                  type: object
               example:
                 - id: 1
                   dateCreation: 2023-01-02 21:16:55
@@ -329,6 +333,8 @@ paths:
             application/json:
               schema:
                 type: array
+                items:
+                  type: object
               example:
                 - id: 1
                   dateCreation: 2023-01-02 21:16:55
@@ -435,6 +441,8 @@ paths:
             application/json:
               schema:
                 type: array
+                items:
+                  type: object
               example:
                 - id: 1
                   dateCreation: 2023-01-02 21:16:55
@@ -539,6 +547,8 @@ paths:
             application/json:
               schema:
                 type: array
+                items:
+                  type: object
               example:
                 - id: 1
                   dateCreation: 2023-01-02 21:16:55
@@ -601,7 +611,6 @@ paths:
                   idRessource: 2
                   nom: "Annexe PDF sur la situation géopolitique au Zimbabwe"
                   chemin: /1/pdf/1_ressource.pdf
-
     delete:
       summary: Delete a piece jointe by id
       security:
@@ -648,6 +657,8 @@ paths:
             application/json:
               schema:
                 type: array
+                items:
+                  type: object
               example:
                 - id: 1
                   dateCreation: 2023-01-02 21:16:55
@@ -752,6 +763,8 @@ paths:
             application/json:
               schema:
                 type: array
+                items:
+                  type: object
               example:
                 - id: 1
                   dateCreation: 2023-01-02 21:16:55
@@ -904,6 +917,8 @@ paths:
             application/json:
               schema:
                 type: array
+                items:
+                  type: object
               example:
                 - id: 1
                   dateCreation: 2023-01-02 21:16:55
@@ -981,6 +996,13 @@ paths:
       operationId: acceptRessource
       security:
         - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID of the ressource
+          required: true
+          schema:
+            type: integer
       description: Moderate and accept a ressource
       tags:
         - Ressources
@@ -1038,6 +1060,13 @@ paths:
       summary: Delete a ressource
       security:
         - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID of the ressource
+          required: true
+          schema:
+            type: integer
       description: Delete a single ressource by its id
       tags:
         - Ressources
@@ -1079,6 +1108,8 @@ paths:
             application/json:
               schema:
                 type: array
+                items:
+                  type: object
               example:
                 - id: 1
                   nom: administrateur
@@ -1137,6 +1168,13 @@ paths:
       summary: Delete a role
       security:
         - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID of the role
+          required: true
+          schema:
+            type: integer
       description: Delete a single role by its id
       tags:
         - Roles
@@ -1178,6 +1216,8 @@ paths:
             application/json:
               schema:
                 type: array
+                items:
+                  type: object
               example:
                 - id: 1
                   dateCreation: 2023-01-02 21:16:55
@@ -1218,6 +1258,8 @@ paths:
             application/json:
               schema:
                 type: array
+                items:
+                  type: object
               example:
                 - id: 1
                   nom: Ami
@@ -1277,6 +1319,13 @@ paths:
       summary: Delete a type relation
       security:
         - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID of the type relation
+          required: true
+          schema:
+            type: integer
       description: Delete a single type relation by its id
       tags:
         - Types Relation
@@ -1318,6 +1367,8 @@ paths:
             application/json:
               schema:
                 type: array
+                items:
+                  type: object
               example:
                 - id: 1
                   mail: "john.doe@gmail.com"
@@ -1337,7 +1388,7 @@ paths:
       summary: Create an utilisateur
       security:
         - bearerAuth: []
-      description: Create an utilisateur by sending a JSON object
+      description: Create an utilisateur by sending a JSON object. Role is user by default
       tags:
         - Utilisateurs
       requestBody:
@@ -1386,7 +1437,6 @@ paths:
                 urlProfil: "users/1"
                 compteActif: true
                 raisonBan: null
-                idRole: 1
       responses:
         '201':
           description: Create an utilisateur
@@ -1408,7 +1458,7 @@ paths:
                  urlProfil: "users/1"
                  compteActif: true
                  raisonBan: null
-                 idRole: 1
+                 idRole: 4
 
   #endregion
 
