@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\V1\CategorieController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -9,21 +8,13 @@ use Illuminate\Support\Facades\Route;
 | API Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
+| These routes are loaded by the RouteServiceProvider within a group which
+| is assigned the "api" middleware group.
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-// api/v1
-Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1'], function () {
-
-    //Protected routes
-
+// authenticated routes
+Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1', 'middleware' => 'auth:sanctum'], function () {
     //PATCH 
         //(Disable)
         Route::patch('utilisateurs/disable', 'UtilisateurController@disable');
@@ -38,23 +29,36 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1'], funct
         //Enable (Accept a pending resource)
         Route::patch('ressources/{id}/enable', 'RessourceController@enable');    
     //POST    
-        //(POST)
     Route::post('login', 'LoginController@login');
-    
-    //Public routes
-    //Search (POST)
-    Route::post('search', 'SearchController@search');
-    
-    //GET / HEAD / POST / PUT / PATCH / DELETE
-    Route::apiResource('categories', CategorieController::class)->except(['get', 'head'])->middleware('auth');
-    Route::apiResource('commentaires', CommentaireController::class)->middleware('auth');
+
+    //PUT / PATCH / DELETE
+        //only/except: index, create, store, show, edit, update, destroy
+    Route::apiResource('categories', CategorieController::class)->except(['index', 'show']);
+    Route::apiResource('commentaires', CommentaireController::class)->except(['index', 'show']);
     Route::apiResource('favoris', FavorisController::class);
-    Route::apiResource('groupes', GroupeController::class);
-    Route::apiResource('piecesJointes', PieceJointeController::class);
+    Route::apiResource('groupes', GroupeController::class)->except(['index', 'show']);
+    Route::apiResource('piecesJointes', PieceJointeController::class)->except(['index', 'show']);
     Route::apiResource('relations', RelationController::class);
-    Route::apiResource('reponsesCommentaires', ReponseCommentaireController::class);
-    Route::apiResource('ressources', RessourceController::class);
-    Route::apiResource('roles', RoleController::class);
-    Route::apiResource('typesRelation', TypeRelationController::class);
-    Route::apiResource('utilisateurs', UtilisateurController::class);
+    Route::apiResource('reponsesCommentaires', ReponseCommentaireController::class)->except(['index', 'show']);
+    Route::apiResource('ressources', RessourceController::class)->except(['index', 'show']);
+    Route::apiResource('roles', RoleController::class)->except(['index', 'show']);
+    Route::apiResource('typesRelation', TypeRelationController::class)->except(['index', 'show']);
+    Route::apiResource('utilisateurs', UtilisateurController::class)->except(['index', 'show']);
+});
+
+// public routes (no favorites or relations, only authenticated users)
+Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1'], function () {
+    //POST
+    Route::post('search', 'SearchController@search');
+   
+    //GET / HEAD
+    Route::apiResource('categories', CategorieController::class)->only(['index', 'show']);
+    Route::apiResource('commentaires', CommentaireController::class)->only(['index', 'show']);
+    Route::apiResource('groupes', GroupeController::class)->only(['index', 'show']);
+    Route::apiResource('piecesJointes', PieceJointeController::class)->only(['index', 'show']);
+    Route::apiResource('reponsesCommentaires', ReponseCommentaireController::class)->only(['index', 'show']);
+    Route::apiResource('ressources', RessourceController::class)->only(['index', 'show']);
+    Route::apiResource('roles', RoleController::class)->only(['index', 'show']);
+    Route::apiResource('typesRelation', TypeRelationController::class)->only(['index', 'show']);
+    Route::apiResource('utilisateurs', UtilisateurController::class)->only(['index', 'show']);
 });
