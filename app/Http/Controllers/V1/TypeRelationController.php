@@ -89,7 +89,7 @@ class TypeRelationController extends Controller
         $typeRelation->delete();
 
         return response()->json([
-            'message' => 'TypeRelation deleted'
+            'message' => 'Type relation deleted'
         ], 200);
     }
 }

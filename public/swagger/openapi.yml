@@ -6,6 +6,38 @@ servers:
   - url: https://api.victor-gombert.fr/api/v1
 
 paths:
+  #region Authentification
+  /login:
+    post:
+      summary: Login
+      description: Login a user with an email password and get a bearer token to issue API requests. 
+      tags:
+        - Authentification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mail:
+                  type: string
+                  description: Email of the user
+                  example: "john.doe@domain.com"
+                motDePasse:
+                  type: string
+                  description: Password of the user
+                  example: "password"
+      responses:
+        '200':
+          description: Login
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjIyN"
+  #endregion
+  
   #region Categories
   /categories:
     get:
@@ -43,6 +75,8 @@ paths:
                   nom: "Catégorie 3"
     post:
       summary: Create a category
+      security:
+        - bearerAuth: []
       tags:
         - Categories
       requestBody:
@@ -87,7 +121,16 @@ paths:
                 - id: 1
                   nom: "Catégorie 1"
     delete:
-      summary: Delete a category
+      summary: Delete a category 
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID of the category
+          required: true
+          schema:
+            type: integer
       tags:
         - Categories
       responses:
@@ -147,6 +190,8 @@ paths:
                   idRessource: 3
     post:
       summary: Create a commentaire
+      security:
+        - bearerAuth: []
       tags:
         - Commentaires
       responses:
@@ -162,6 +207,8 @@ paths:
                   idRessource : 2
     patch:
       summary: Disable a commentaire
+      security:
+        - bearerAuth: []
       tags:
         - Commentaires
       responses:
@@ -208,6 +255,50 @@ paths:
                   datePublication: null
                   raisonRefus: null
                   idRessource: 2
+    patch:
+      summary: Report a commentaire
+      security:
+        - bearerAuth: []
+      tags:
+        - Commentaires
+      parameters:
+        - name: id
+          in: path
+          description: ID of the commentaire
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Report a commentaire
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: "Commentaire reported"
+    delete:
+      summary: Delete a commentaire 
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID of the commentaire
+          required: true
+          schema:
+            type: integer
+      tags:
+        - Commentaires
+      responses:
+        '200':
+          description: Delete a commentaire
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: "Commentaire deleted"
   #endregion
 
   #region Favoris
@@ -216,6 +307,8 @@ paths:
       summary: Get all favoris
       tags: 
         - Favoris
+      security:
+        - bearerAuth: []
       parameters:
             - name: perPage
               in: query
@@ -249,6 +342,8 @@ paths:
                   idRessource: 3
     post:
       summary: Create a favori
+      security:
+        - bearerAuth: []
       tags:
         - Favoris
       responses:
@@ -264,6 +359,8 @@ paths:
   /favoris/{id}:
     get:
       summary: Get a favori by id
+      security:
+        - bearerAuth: []
       tags:
         - Favoris
       parameters:
@@ -286,12 +383,36 @@ paths:
                   status: PENDING
                   idUtilisateur: 1
                   idRessource: 2
+    delete:
+      summary: Delete a favori 
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID of the favori
+          required: true
+          schema:
+            type: integer
+      tags:
+        - Favoris
+      responses:
+        '200':
+          description: Delete a favori
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: "Favori deleted"
   #endregion
 
   #region Groupes
   /groupes:
     get:
       summary: Get all groupes
+      security:
+        - bearerAuth: []
       tags: 
         - Groupes
       parameters:
@@ -329,6 +450,8 @@ paths:
                   idUtilisateur: 5
     post:
       summary: Create a groupe
+      security:
+        - bearerAuth: []
       tags:
         - Groupes
       responses:
@@ -345,6 +468,8 @@ paths:
   /groupes/{id}: 
     get:
       summary: Get a groupe by id
+      security:
+        - bearerAuth: []
       tags:
         - Groupes
       parameters:
@@ -370,6 +495,8 @@ paths:
                   idUtilisateur: 1
     delete:
       summary: Delete a groupe by id
+      security:
+        - bearerAuth: []
       tags:
         - Groupes
       parameters:
@@ -384,108 +511,12 @@ paths:
           description: Delete a groupe by id
   #endregion
  
-  #region Relations
-  /relations:
-    get:
-      summary: Get all relations
-      tags: 
-        - Relations
-      parameters:
-            - name: perPage
-              in: query
-              description: Set the number of relations per page
-              required: false
-              schema:
-                type: integer
-            - name: <key>[<operator>]=<value>
-              in: query
-              description: Allow to filter relations with operators like equals, greater than, less than, greater than equals, less than equals
-              required: false
-              schema:
-                type: string
-      responses:
-        '200':
-          description: Get all relations
-          content:
-            application/json:
-              schema:
-                type: array
-              example:
-                - id: 1
-                  dateCreation: 2023-01-02 21:16:55
-                  idDemandeur: 1
-                  idReceveur: 2
-                  accepte: true
-                - id: 2
-                  dateCreation: 2023-03-06 12:10:02
-                  idDemandeur: 3
-                  idReceveur: 3
-                  accepte: null
-    post:
-      summary: Create a relation
-      tags:
-        - Relations
-      responses:
-        '201':
-          description: Create a relation
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                - idDemandeur : 1
-                  idReceveur : 2
-  /relation/{id}:
-    get:
-      summary: Get a relation by id
-      tags:
-        - Relations
-      parameters:
-        - name: id
-          in: path
-          description: ID of the relation
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: Get a relation by id
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                - id: 1
-                  dateCreation: 2023-01-02 21:16:55
-                  idDemandeur: 1
-                  idReceveur: 2
-                  accepte: true
-    delete:
-      summary: Delete a relation by id
-      tags:
-        - Relations
-      parameters:
-        - name: id
-          in: path
-          description: ID of the relation
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: Delete a relation by id
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                message: "Relation deleted"
-  #endregion
-
   #region Pieces jointes
   /piecesJointes:
     get:
       summary: Get all pieces jointes
+      security:
+        - bearerAuth: []
       tags: 
         - Pieces jointes
       parameters:
@@ -525,6 +556,8 @@ paths:
                   chemin: /1/pdf/1_ressource.pdf
     post:
       summary: Create a piece jointe
+      security:
+        - bearerAuth: []
       tags:
         - Pieces jointes
       responses:
@@ -542,6 +575,8 @@ paths:
   /pieceJointes/{id}:
     get:
       summary: Get a piece jointe by id
+      security:
+        - bearerAuth: []
       tags:
         - Pieces jointes
       parameters:
@@ -566,8 +601,11 @@ paths:
                   idRessource: 2
                   nom: "Annexe PDF sur la situation géopolitique au Zimbabwe"
                   chemin: /1/pdf/1_ressource.pdf
+
     delete:
       summary: Delete a piece jointe by id
+      security:
+        - bearerAuth: []
       tags:
         - Pieces jointes
       parameters:
@@ -580,6 +618,263 @@ paths:
       responses:
         '204':
           description: Delete a piece jointe by id
+  #endregion
+
+  #region Relations
+  /relations:
+    get:
+      summary: Get all relations
+      security:
+        - bearerAuth: []
+      tags: 
+        - Relations
+      parameters:
+            - name: perPage
+              in: query
+              description: Set the number of relations per page
+              required: false
+              schema:
+                type: integer
+            - name: <key>[<operator>]=<value>
+              in: query
+              description: Allow to filter relations with operators like equals, greater than, less than, greater than equals, less than equals
+              required: false
+              schema:
+                type: string
+      responses:
+        '200':
+          description: Get all relations
+          content:
+            application/json:
+              schema:
+                type: array
+              example:
+                - id: 1
+                  dateCreation: 2023-01-02 21:16:55
+                  idDemandeur: 1
+                  idReceveur: 2
+                  accepte: true
+                - id: 2
+                  dateCreation: 2023-03-06 12:10:02
+                  idDemandeur: 3
+                  idReceveur: 3
+                  accepte: null
+    post:
+      summary: Create a relation
+      security:
+        - bearerAuth: []
+      tags:
+        - Relations
+      responses:
+        '201':
+          description: Create a relation
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - idDemandeur : 1
+                  idReceveur : 2
+  /relation/{id}:
+    get:
+      summary: Get a relation by id
+      security:
+        - bearerAuth: []
+      tags:
+        - Relations
+      parameters:
+        - name: id
+          in: path
+          description: ID of the relation
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Get a relation by id
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - id: 1
+                  dateCreation: 2023-01-02 21:16:55
+                  idDemandeur: 1
+                  idReceveur: 2
+                  accepte: true
+    delete:
+      summary: Delete a relation by id
+      security:
+        - bearerAuth: []
+      tags:
+        - Relations
+      parameters:
+        - name: id
+          in: path
+          description: ID of the relation
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Delete a relation by id
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: "Relation deleted"
+  #endregion
+
+  #region Reponses commentaires
+  /reponsesCommentaires:
+    get:
+      summary: Get all reponses commentaires
+      tags: 
+        - Reponses commentaires
+      parameters:
+            - name: perPage
+              in: query
+              description: Set the number of reponses commentaires per page
+              required: false
+              schema:
+                type: integer
+            - name: <key>[<operator>]=<value>
+              in: query
+              description: Allow to filter reponses commentaires with operators like equals, greater than, less than, greater than equals, less than equals
+              required: false
+              schema:
+                type: string
+      responses:
+        '200':
+          description: Get all reponses commentaires
+          content:
+            application/json:
+              schema:
+                type: array
+              example:
+                - id: 1
+                  dateCreation: 2023-01-02 21:16:55
+                  idCommentaire: 1
+                  idUtilisateur: 2
+                  contenu: "C'est une bonne idée"
+                - id: 2
+                  dateCreation: 2023-03-06 12:10:02
+                  idCommentaire: 2
+                  idUtilisateur: 3
+                  contenu: "C'est une bonne idée"
+    post:
+      summary: Create a reponse commentaire
+      security:
+        - bearerAuth: []
+      tags:
+        - Reponses commentaires
+      responses:
+        '201':
+          description: Create a reponse commentaire
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - idCommentaire : 1
+                  idUtilisateur : 2
+                  contenu : "C'est une bonne idée"
+  /reponsesCommentaires/{id}/disable:
+    patch:
+      summary: Disable a reponse commentaire by id
+      security:
+        - bearerAuth: []
+      tags:
+        - Reponses commentaires
+      parameters:
+        - name: id
+          in: path
+          description: ID of the reponse commentaire
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Disable a reponse commentaire by id
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: 'Reponse disabled'
+  /reponsesCommentaires/{id}/report:
+    patch:
+      summary: Report a reponse commentaire by id
+      security:
+        - bearerAuth: []
+      tags:
+        - Reponses commentaires
+      parameters:
+        - name: id
+          in: path
+          description: ID of the reponse commentaire
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Report a reponse commentaire by id
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: 'Reponse reported'
+  /reponsesCommentaires/{id}:
+    get:
+      summary: Get a reponse commentaire by id
+      tags:
+        - Reponses commentaires
+      parameters:
+        - name: id
+          in: path
+          description: ID of the reponse commentaire
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Get a reponse commentaire by id
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - id: 1
+                  contenu: 'Bonjour, je suis une réponse commentaire'
+                  nombreSignalements: 0
+                  idUtilisateur: 17
+                  idCommentaire: 135
+                  datePublication: 2023-01-02 21:16:55
+                  reponseSupprime: false                  
+    delete:
+      summary: Delete a reponse commentaire by id
+      security:
+        - bearerAuth: []
+      tags:
+        - Reponses commentaires
+      parameters:
+        - name: id
+          in: path
+          description: ID of the reponse commentaire
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Delete a reponse commentaire by id
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: "Reponse deleted"
   #endregion
 
   #region Ressources
@@ -632,6 +927,8 @@ paths:
                   idCategorie: 3
     post:
       summary: Create a ressource
+      security:
+        - bearerAuth: []
       description: Create a ressource by sending a JSON object
       tags:
         - Ressources
@@ -647,10 +944,12 @@ paths:
                   contenu : "Contenu de la nouvelle ressource"
                   idUtilisateur : 1
                   idCategorie : 2
-                  idPieceJointe : 3   
-    #TODO ressources/{id}/accept
+                  idPieceJointe : 3           
     patch:
       summary: Refuse a ressource
+      operationId: refuseRessource
+      security:
+        - bearerAuth: []
       description: Moderate and give a refusal reason for a ressource
       tags:
         - Ressources
@@ -676,6 +975,34 @@ paths:
                 type: object
               example:
                 message : "Ressource refused"
+  /ressources/{id}/enable:
+    patch:
+      summary: Accept a ressource
+      operationId: acceptRessource
+      security:
+        - bearerAuth: []
+      description: Moderate and accept a ressource
+      tags:
+        - Ressources
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+            example:
+              id: 1
+      responses:
+        '200':
+          description: Accept a ressource
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message : "Ressource accepted"
   /ressources/{id}:
     get:
       summary: Get a ressource by id
@@ -709,6 +1036,8 @@ paths:
                   idCategorie: 2
     delete:
       summary: Delete a ressource
+      security:
+        - bearerAuth: []
       description: Delete a single ressource by its id
       tags:
         - Ressources
@@ -722,3 +1051,370 @@ paths:
               example:
                 message : "Ressource deleted"
   #endregion
+
+  #region Roles
+  /roles:
+    get:
+      summary: Get all roles
+      description: Get all roles as a JSON array
+      tags: 
+        - Roles
+      parameters:
+            - name: perPage
+              in: query
+              description: Set the number of roles per page
+              required: false
+              schema:
+                type: integer
+            - name: <key>[<operator>]=<value>
+              in: query
+              description: Allow to filter roles with operators like equals, greater than, less than, greater than equals, less than equals
+              required: false
+              schema:
+                type: string
+      responses:
+        '200':
+          description: Get all Roles
+          content:
+            application/json:
+              schema:
+                type: array
+              example:
+                - id: 1
+                  nom: administrateur
+                - id: 2
+                  nom: utilisateur
+    post:
+      summary: Create a role
+      security:
+        - bearerAuth: []
+      description: Create a role by sending a JSON object
+      tags:
+        - Roles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nom:
+                  type: string
+            example:
+              nom: "Super modérateur"
+      responses:
+        '201':
+          description: Create a role
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - nom : "Super modérateur"
+  /roles/{id}:
+    get:
+      summary: Get a role by id
+      description: Get a single role by its id
+      tags:
+        - Roles
+      parameters:
+        - name: id
+          in: path
+          description: ID of the role
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Get a role by id
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - id: 1
+                  nom: administrateur
+    delete:
+      summary: Delete a role
+      security:
+        - bearerAuth: []
+      description: Delete a single role by its id
+      tags:
+        - Roles
+      responses:
+        '200':
+          description: Delete a role
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message : "Role deleted"
+  #endregion
+
+  #region Recherche
+  /search:
+    post:
+      summary: Search a user or a ressource 
+      description: Search a user by its name or surname, or a ressource by its title or content
+      tags:
+        - Recherche
+      requestBody:
+        required: true
+        content: 
+          application/json:
+            schema:
+              type: object
+              properties:
+                ressourceQuery:
+                  type: string
+                  example: "Quis dolores"
+                utilisateurQuery:
+                  type: string
+                  example: "John"
+      responses:
+        '200':
+          description: Search a ressource
+          content:
+            application/json:
+              schema:
+                type: array
+              example:
+                - id: 1
+                  dateCreation: 2023-01-02 21:16:55
+                  status: PENDING
+                  idUtilisateur: 1
+                  partage: RESTRICTED
+                  titre: Quis dolores repellendus fuga ut sit perferendis.
+                  contenu: Voluptas cum sint accusamus quo officiis qui. Eum voluptatem autem aut nisi. Quae molestiae optio et ut. Voluptatem vel hic temporibus ea animi magni totam.
+                  datePublication: null
+                  raisonRefus: null
+                  idCategorie: 2
+  #endregion
+
+  #region Types Relation
+  /typesRelation:
+    get:
+      summary: Get all types relation
+      description: Get all types relation as a JSON array
+      tags: 
+        - Types Relation
+      parameters:
+            - name: perPage
+              in: query
+              description: Set the number of types relation per page
+              required: false
+              schema:
+                type: integer
+            - name: <key>[<operator>]=<value>
+              in: query
+              description: Allow to filter types relation with operators like equals, greater than, less than, greater than equals, less than equals
+              required: false
+              schema:
+                type: string
+      responses:
+        '200':
+          description: Get all Types Relation
+          content:
+            application/json:
+              schema:
+                type: array
+              example:
+                - id: 1
+                  nom: Ami
+                - id: 2
+                  nom: Collègue
+    post:
+      summary: Create a type relation
+      security:
+        - bearerAuth: []
+      description: Create a type relation by sending a JSON object
+      tags:
+        - Types Relation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nom:
+                  type: string
+            example:
+              nom: "Ami"
+      responses:
+        '201':
+          description: Create a type relation
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - id: 1
+                  nom : "Ami"
+  /typesRelation/{id}:
+    get:
+      summary: Get a type relation by id
+      description: Get a single type relation by its id
+      tags:
+        - Types Relation
+      parameters:
+        - name: id
+          in: path
+          description: ID of the type relation
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Get a type relation by id
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - id: 1
+                  nom: Ami
+    delete:
+      summary: Delete a type relation
+      security:
+        - bearerAuth: []
+      description: Delete a single type relation by its id
+      tags:
+        - Types Relation
+      responses:
+        '200':
+          description: Delete a type relation
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message : "Type relation deleted"
+  #endregion
+
+  #region Utilisateurs
+  /utilisateurs:
+    get:
+      summary: Get all utilisateurs
+      description: Get all utilisateurs as a JSON array
+      tags: 
+        - Utilisateurs
+      parameters:
+            - name: perPage
+              in: query
+              description: Set the number of utilisateurs per page
+              required: false
+              schema:
+                type: integer
+            - name: <key>[<operator>]=<value>
+              in: query
+              description: Allow to filter utilisateurs with operators like equals, greater than, less than, greater than equals, less than equals
+              required: false
+              schema:
+                type: string
+      responses:
+        '200':
+          description: Get all Utilisateurs
+          content:
+            application/json:
+              schema:
+                type: array
+              example:
+                - id: 1
+                  mail: "john.doe@gmail.com"
+                  motDePasse: "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+                  dateInscription: 2023-01-02 21:16:55
+                  dateNaissance: 2002-01-02 00:00:00
+                  codePostal: 75000
+                  nom: "Doe"
+                  prenom: "John"
+                  cheminPhoto: "/uploads/1.jpg"
+                  bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc."
+                  urlProfil: "users/1"
+                  compteActif: true
+                  raisonBan: null
+                  idRole: 1
+    post:
+      summary: Create an utilisateur
+      security:
+        - bearerAuth: []
+      description: Create an utilisateur by sending a JSON object
+      tags:
+        - Utilisateurs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mail:
+                  type: string
+                motDePasse:
+                  type: string
+                dateInscription:
+                  type: string
+                dateNaissance:
+                  type: string
+                codePostal:
+                  type: integer
+                nom:
+                  type: string
+                prenom:
+                  type: string
+                cheminPhoto:
+                  type: string
+                bio:
+                  type: string
+                urlProfil:
+                  type: string
+                compteActif:
+                  type: boolean
+                raisonBan:
+                  type: string
+                idRole:
+                  type: integer
+            example:
+              - id: 1
+                mail: "john.doe@gmail.com"
+                motDePasse: "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+                dateInscription: 2023-01-02 21:16:55
+                dateNaissance: 2002-01-02 00:00:00
+                codePostal: 75000
+                nom: "Doe"
+                prenom: "John"
+                cheminPhoto: "/uploads/1.jpg"
+                bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc."
+                urlProfil: "users/1"
+                compteActif: true
+                raisonBan: null
+                idRole: 1
+      responses:
+        '201':
+          description: Create an utilisateur
+          content:
+           application/json:
+             schema:
+               type: object
+             example:
+               - id: 1
+                 mail: "john.doe@gmail.com"
+                 motDePasse: "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+                 dateInscription: 2023-01-02 21:16:55
+                 dateNaissance: 2002-01-02 00:00:00
+                 codePostal: 75000
+                 nom: "Doe"
+                 prenom: "John"
+                 cheminPhoto: "/uploads/1.jpg"
+                 bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc."
+                 urlProfil: "users/1"
+                 compteActif: true
+                 raisonBan: null
+                 idRole: 1
+
+  #endregion
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

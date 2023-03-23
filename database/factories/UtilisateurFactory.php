@@ -4,10 +4,8 @@ namespace Database\Factories;
 
 use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Utilisateur>
- */
 class UtilisateurFactory extends Factory
 {
     /**
@@ -19,7 +17,7 @@ class UtilisateurFactory extends Factory
     {
         return [
             'mail_uti' => $this->faker->email,
-            'mdp_uti' => $this->faker->password,
+            'mdp_uti' => Hash::make($this->faker->password),
             'date_inscription_uti' => $this->faker->date(),
             'date_naissance_uti' => $this->faker->date(),
             'code_postal_uti' => $this->faker->postcode,

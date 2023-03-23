@@ -21,26 +21,33 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // api/v1
 Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1'], function () {
+
+    //Protected routes
+
     //PATCH 
         //(Disable)
-    Route::patch('utilisateurs/disable', 'UtilisateurController@disable');
-    Route::patch('ressources/disable', 'RessourceController@disable');
-            //No need to pass a form, the id is in the URL then
-    Route::patch('commentaires/{id}/disable', 'CommentaireController@disable');
-    Route::patch('reponsesCommentaires/{id}/disable', 'ReponseCommentaireController@disable');
+        Route::patch('utilisateurs/disable', 'UtilisateurController@disable');
+        Route::patch('ressources/disable', 'RessourceController@disable');
+        Route::patch('commentaires/{id}/disable', 'CommentaireController@disable');
+        Route::patch('reponsesCommentaires/{id}/disable', 'ReponseCommentaireController@disable');
         //(Report)
-    Route::patch('commentaires/{id}/report', 'CommentaireController@report');
-    Route::patch('reponsesCommentaires/{id}/report', 'ReponseCommentaireController@report');
+        Route::patch('commentaires/{id}/report', 'CommentaireController@report');
+        Route::patch('reponsesCommentaires/{id}/report', 'ReponseCommentaireController@report');
         //(Like) (unlike is a DELETE)
-    Route::patch('ressources/like', 'FavorisController@like');
+        Route::patch('ressources/like', 'FavorisController@like');
         //Enable (Accept a pending resource)
-    Route::patch('ressources/{id}/enable', 'RessourceController@enable');
-
+        Route::patch('ressources/{id}/enable', 'RessourceController@enable');    
+    //POST    
+        //(POST)
+    Route::post('login', 'LoginController@login');
+    
+    //Public routes
+    //Search (POST)
     Route::post('search', 'SearchController@search');
     
-    //GET / HEAD / POST / DELETE
-    Route::apiResource('categories', CategorieController::class);
-    Route::apiResource('commentaires', CommentaireController::class);
+    //GET / HEAD / POST / PUT / PATCH / DELETE
+    Route::apiResource('categories', CategorieController::class)->except(['get', 'head'])->middleware('auth');
+    Route::apiResource('commentaires', CommentaireController::class)->middleware('auth');
     Route::apiResource('favoris', FavorisController::class);
     Route::apiResource('groupes', GroupeController::class);
     Route::apiResource('piecesJointes', PieceJointeController::class);
