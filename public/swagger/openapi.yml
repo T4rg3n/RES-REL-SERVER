@@ -38,6 +38,73 @@ paths:
                 - token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjIyN"
   #endregion
   
+  #region Administration
+  /promouvoir:
+    post:
+      summary: Promote a user
+      description: Promote a user to a higher role (you need to be an admin to do this)
+      security:
+        - bearerAuth: []
+      tags:
+        - Administration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                idUtilisateur:
+                  type: integer
+                  description: ID of the user
+                  example: 1
+                idRole:
+                  type: integer
+                  description: ID of the role
+                  example: 4
+      responses:
+        '200':
+          description: Promote a user
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - idUtilisateur: 1
+                  role: modérateur
+  /retrograder:
+    post:
+      summary: Demote a user
+      description: Demote a user to a lower role (you need to be an admin to do this)
+      security:
+        - bearerAuth: []
+      tags:
+        - Administration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                idUtilisateur:
+                  type: integer
+                  description: ID of the user
+                  example: 1
+                idRole:
+                  type: integer
+                  description: ID of the role
+                  example: 1
+      responses:
+        '200':
+          description: Demote a user
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - idUtilisateur: 1
+                  role: utilisateur
+  #endregion
+
   #region Categories
   /categories:
     get:
