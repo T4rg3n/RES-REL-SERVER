@@ -12,12 +12,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-/*
-Route::get('/', function () {
-    //redirect to /swagger/#/
-    return redirect('/swagger/#/');
-});
-*/
+
 Route::get('/', function () {
     return redirect('/swagger/#');
 });
