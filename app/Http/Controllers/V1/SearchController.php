@@ -25,7 +25,7 @@ class SearchController extends Controller
 
         if(isset($request->ressourceQuery)) {
             $ressourceSearch = Ressource::where('titre_ressource', 'LIKE', "%$request->ressourceQuery%")
-            ->orWhere('contenu_texte_ressource', 'LIKE', "%$request->ressourceQuery%")
+            //->orWhere('contenu_texte_ressource', 'LIKE', "%$request->ressourceQuery%")
             ->where('status', '=', "APPROVED")
             ->orderBy('date_publication_ressource', 'asc')
             ->take(25)
