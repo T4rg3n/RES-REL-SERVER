@@ -41,7 +41,7 @@ paths:
   #region Administration
   /promouvoir:
     post:
-      summary: Promote a user
+      summary: Promote a user [Work in progress, subject to change]
       description: Promote a user to a higher role (you need to be an admin to do this)
       security:
         - bearerAuth: []
@@ -73,7 +73,7 @@ paths:
                   role: modérateur
   /retrograder:
     post:
-      summary: Demote a user
+      summary: Demote a user [Work in progress, subject to change]
       description: Demote a user to a lower role (you need to be an admin to do this)
       security:
         - bearerAuth: []

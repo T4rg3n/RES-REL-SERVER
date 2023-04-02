@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\V1\CategorieController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,8 +27,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1', 'middl
         Route::patch('ressources/like', 'FavorisController@like');
         //Enable (Accept a pending resource)
         Route::patch('ressources/{id}/enable', 'RessourceController@enable');    
-    //POST    
-    Route::post('login', 'LoginController@login');
+        //Demote 
+        Route::patch('retrograder', 'DemoteController@patch');
+        //Promote
+        Route::patch('promouvoir', 'PromoteController@patch');
 
     //PUT / PATCH / DELETE
         //only/except: index, create, store, show, edit, update, destroy
@@ -44,13 +45,15 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1', 'middl
     Route::apiResource('roles', RoleController::class)->except(['index', 'show']);
     Route::apiResource('typesRelation', TypeRelationController::class)->except(['index', 'show']);
     Route::apiResource('utilisateurs', UtilisateurController::class)->except(['index', 'show']);
+
 });
 
-// public routes (no favorites or relations, only authenticated users)
+// public routes (no favorites or relations)
 Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1'], function () {
     //POST
     Route::post('search', 'SearchController@search');
-   
+    Route::post('login', 'LoginController@login');
+
     //GET / HEAD
     Route::apiResource('categories', CategorieController::class)->only(['index', 'show']);
     Route::apiResource('commentaires', CommentaireController::class)->only(['index', 'show']);
@@ -60,5 +63,6 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1'], funct
     Route::apiResource('ressources', RessourceController::class)->only(['index', 'show']);
     Route::apiResource('roles', RoleController::class)->only(['index', 'show']);
     Route::apiResource('typesRelation', TypeRelationController::class)->only(['index', 'show']);
-    Route::apiResource('utilisateurs', UtilisateurController::class)->only(['index', 'show']);
+    //GET / HEAD / POST (for register)
+    Route::apiResource('utilisateurs', UtilisateurController::class)->only(['index', 'show', 'edit']);
 });
