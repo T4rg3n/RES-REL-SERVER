@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\LoginRequest;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Utilisateur;
+use App\Services\V1\TokenAttributor;
 
 class LoginController extends Controller
 {
@@ -31,26 +32,11 @@ class LoginController extends Controller
             ], 401);
         }
 
-        switch($user->role->nom_role) {
-            case 'super-admin':
-                $token = $user->createToken('authToken', ['super-admin']);
-                break;
-            case 'admin':
-                $token = $user->createToken('authToken', ['admin']);
-                break;
-            case 'moderateur':
-                $token = $user->createToken('authToken', ['moderateur']);
-                break;
-            case 'utilisateur':
-                $token = $user->createToken('authToken', ['utilisateur']);
-                break;
-            default:
-                $token = $user->createToken('authToken');
-        }
+        $token = (new TokenAttributor)->createToken($user);
 
         return response()->json([
             'user' => $user,
-            'token' => $token->plainTextToken
+            'token' => $token
         ], 200);
 
     }

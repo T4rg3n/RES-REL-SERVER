@@ -11,6 +11,8 @@ return new class extends Migration
         Schema::create('roles', function (Blueprint $table) {
             $table->id('id_role');
             $table->string('nom_role');
+            $table->string('ascendant_role')->nullable();
+            $table->string('descendant_role');
         });
     }
 

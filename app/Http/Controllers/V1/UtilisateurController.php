@@ -10,6 +10,7 @@ use App\Http\Resources\V1\UtilisateurCollection;
 use App\Http\Requests\V1\StoreUtilisateurRequest;
 use App\Http\Requests\V1\BanUtilisateurRequest;
 use App\Services\V1\QueryFilter;
+use App\Services\V1\TokenAttributor;
 
 class UtilisateurController extends Controller
 {
@@ -99,28 +100,12 @@ class UtilisateurController extends Controller
         }
 
         $utilisateur = Utilisateur::create($request->all());
-        
-        switch($utilisateur->role->nom_role) {
-            case 'super-admin':
-                $token = $utilisateur->createToken('authToken', ['super-admin']);
-                break;
-            case 'admin':
-                $token = $utilisateur->createToken('authToken', ['admin']);
-                break;
-            case 'moderateur':
-                $token = $utilisateur->createToken('authToken', ['moderateur']);
-                break;
-            case 'utilisateur':
-                $token = $utilisateur->createToken('authToken', ['utilisateur']);
-                break;
-            default:
-                $token = $utilisateur->createToken('authToken');
-        }
+        $token = (new TokenAttributor)->createToken($utilisateur);
 
         $utilisateur->save();
         $id = $utilisateur->id_uti;
 
-        return response()->json(['response' => $this->show($id), 'token' => $token->plainTextToken], 201);
+        return response()->json(['response' => $this->show($id), 'token' => $token], 201);
     }
     
     /**
