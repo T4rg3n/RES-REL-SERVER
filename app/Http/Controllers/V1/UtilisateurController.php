@@ -136,6 +136,25 @@ class UtilisateurController extends Controller
     }
 
     /**
+     * Logout the specified user
+     */
+    public function logout(Request $request)
+    {
+        $request->validate([
+            'idUtilisateur' => 'required',
+            'token' => 'required'
+        ]);
+
+        $utilisateur = Utilisateur::findOrfail($request->idUtilisateur);
+        $token = $utilisateur->tokens()->where('token', $request->token)->first();
+        $token->delete();
+
+        return response()->json([
+            'message' => 'Logged out successfully'
+        ], 200);
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id_uti

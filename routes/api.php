@@ -53,7 +53,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1', 'middl
 Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1'], function () {
     //POST
     Route::post('search', 'SearchController@search');
-    Route::post('login', 'LoginController@login');
+    Route::post('connexion', 'LoginController@login');
+    Route::post('inscription', 'UtilisateurController@store');
+    Route::post('deconnexion', 'UtilisateurController@logout');
+    
 
     //GET / HEAD
     Route::apiResource('categories', CategorieController::class)->only(['index', 'show']);
@@ -66,6 +69,6 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1'], funct
     Route::apiResource('ressources', RessourceController::class)->only(['index', 'show']);
     Route::apiResource('roles', RoleController::class)->only(['index', 'show']);
     Route::apiResource('typesRelation', TypeRelationController::class)->only(['index', 'show']);
-    //GET / HEAD / POST (for register)
-    Route::apiResource('utilisateurs', UtilisateurController::class)->only(['store']);
+    //GET / HEAD / POST
+    Route::apiResource('utilisateurs', UtilisateurController::class)->only(['index', 'show']);
 });

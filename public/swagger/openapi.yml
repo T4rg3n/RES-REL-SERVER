@@ -7,7 +7,7 @@ servers:
 
 paths:
   #region Authentification
-  /login:
+  /connexion:
     post:
       summary: Login
       description: Login a user with an email password and get a bearer token to issue API requests. 
@@ -36,6 +36,108 @@ paths:
                 type: object
               example:
                 - token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjIyN"
+  /inscription:
+     post:
+        summary: Create an utilisateur
+        description: Create an utilisateur by sending a JSON object. The user is automatically given a beared token. Default role is user.
+        tags:
+         - Authentification
+        requestBody:
+         content:
+           application/json:
+            schema:
+              type: object
+              properties:
+                mail:
+                  type: string
+                motDePasse:
+                  type: string
+                dateInscription:
+                 type: string
+                dateNaissance:
+                  type: string
+                codePostal:
+                  type: integer
+                nom:
+                  type: string
+                prenom:
+                  type: string
+      # TODO : Add photo upload
+      #          cheminPhoto:
+      #            type: string
+                bio:
+                  type: string
+                urlProfil:
+                  type: string
+                compteActif:
+                  type: boolean
+                raisonBan:
+                  type: string
+                idRole:
+                  type: integer
+              example:
+               - id: 1
+                 mail: "john.doe@gmail.com"
+                 motDePasse: "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+                 dateInscription: 2023-01-02 21:16:55
+                 dateNaissance: 2002-01-02 00:00:00
+                 codePostal: 75000
+                 nom: "Doe"
+                 prenom: "John"
+                 bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc."
+        responses:
+          '201':
+            description: Create an utilisateur
+            content:
+             application/json:
+               schema:
+                 type: object
+               example:
+                 - id: 1
+                   mail: "john.doe@gmail.com"
+                   motDePasse: "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+                   dateInscription: 2023-01-02 21:16:55
+                   dateNaissance: 2002-01-02 00:00:00
+                   codePostal: 75000
+                   nom: "Doe"
+                   prenom: "John"
+                   cheminPhoto: "/uploads/1.jpg"
+                   bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc."
+                   urlProfil: "users/1"
+                   compteActif: true
+                   raisonBan: null
+                   idRole: 4
+  /deconnexion:
+    post:
+      summary: Logout
+      description: Logout a user by invalidating the bearer token
+      security:
+        - bearerAuth: []
+      tags:
+        - Authentification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                idUtilisateur:
+                  type: integer
+                  description: ID of the user
+                  example: 1
+                token:
+                  type: string
+                  description: Bearer token
+                  example: 
+      responses:
+        '200':
+          description: Logout
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - message: "Logged out successfully"
   #endregion
   
   #region Administration
@@ -1466,82 +1568,6 @@ paths:
                   compteActif: true
                   raisonBan: null
                   idRole: 1
-    post:
-      summary: Create an utilisateur
-      security:
-        - bearerAuth: []
-      description: Create an utilisateur by sending a JSON object. Role is user by default
-      tags:
-        - Utilisateurs
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                mail:
-                  type: string
-                motDePasse:
-                  type: string
-                dateInscription:
-                  type: string
-                dateNaissance:
-                  type: string
-                codePostal:
-                  type: integer
-                nom:
-                  type: string
-                prenom:
-                  type: string
-                cheminPhoto:
-                  type: string
-                bio:
-                  type: string
-                urlProfil:
-                  type: string
-                compteActif:
-                  type: boolean
-                raisonBan:
-                  type: string
-                idRole:
-                  type: integer
-            example:
-              - id: 1
-                mail: "john.doe@gmail.com"
-                motDePasse: "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
-                dateInscription: 2023-01-02 21:16:55
-                dateNaissance: 2002-01-02 00:00:00
-                codePostal: 75000
-                nom: "Doe"
-                prenom: "John"
-                cheminPhoto: "/uploads/1.jpg"
-                bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc."
-                urlProfil: "users/1"
-                compteActif: true
-                raisonBan: null
-      responses:
-        '201':
-          description: Create an utilisateur
-          content:
-           application/json:
-             schema:
-               type: object
-             example:
-               - id: 1
-                 mail: "john.doe@gmail.com"
-                 motDePasse: "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
-                 dateInscription: 2023-01-02 21:16:55
-                 dateNaissance: 2002-01-02 00:00:00
-                 codePostal: 75000
-                 nom: "Doe"
-                 prenom: "John"
-                 cheminPhoto: "/uploads/1.jpg"
-                 bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc."
-                 urlProfil: "users/1"
-                 compteActif: true
-                 raisonBan: null
-                 idRole: 4
-
   #endregion
 
 components:
