@@ -65,17 +65,17 @@ class PieceJointeController extends Controller
         $includes = $request->query('include');
         if ($includes) {
             $includedArray = explode(',', $includes);
-            foreach($includedArray as $include) {
+            foreach ($includedArray as $include) {
                 if (in_array($include, $this->allowedIncludes)) {
                     $piecesJointes->with($include);
                 } else {
                     return response()->json([
-                        'error' => 'Invalid include'
+                        'message' => 'Invalid include'
                     ], 400);
                 }
             }
         }
-        
+
         return new PieceJointeCollection($piecesJointes->paginate($perPage)->appends($request->query()));
     }
 
@@ -86,23 +86,23 @@ class PieceJointeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(StorePieceJointeRequest $request)
-    {    
+    {
         $pieceJointe = PieceJointe::create($request->all());
         $id = $pieceJointe->id_piece_jointe;
-        
+
         //For any case but 'ACTIVITE', the content is the path to the file
-        if($request->input('type_pj') != 'ACTIVITE') {
+        if ($request->input('type_pj') != 'ACTIVITE') {
             $filePath = 'user-files/' . $pieceJointe->fk_id_uti;
             $uploadedFile = $request->file('file');
 
             switch ($request->input('type_pj')) {
-                case('IMAGE'):
+                case ('IMAGE'):
                     $filePath .= '//image//';
                     break;
-                case('VIDEO'):
+                case ('VIDEO'):
                     $filePath .= '//video//';
                     break;
-                case('PDF'):
+                case ('PDF'):
                     $filePath .= '//pdf//';
                 default:
                     break;
@@ -111,11 +111,11 @@ class PieceJointeController extends Controller
             //TODO fill contenu with the path to the file
             //dont seem to work [edit : maybe after moving the file?]
             // $request->merge(['contenu_pj' => $filePath . $uploadedFile->getClientOriginalName()]);
-            
+
             $fileName = $id . '_' . $uploadedFile->getClientOriginalName();
             $request->file->move(public_path($filePath), $fileName);
         }
-        
+
         $pieceJointe->save();
         return response()->json($this->show($id), 201);
     }
@@ -133,18 +133,50 @@ class PieceJointeController extends Controller
         $includes = request()->query('include');
         if ($includes) {
             $includedArray = explode(',', $includes);
-            foreach($includedArray as $include) {
+            foreach ($includedArray as $include) {
                 if (in_array($include, $this->allowedIncludes)) {
                     $pieceJointe = $pieceJointe->loadMissing($include);
                 } else {
                     return response()->json([
-                        'error' => 'Invalid include'
+                        'message' => 'Invalid include'
                     ], 400);
                 }
             }
         }
 
         return new PieceJointeResource($pieceJointe);
+    }
+
+    /**
+     * Launch download from an ID
+     * 
+     * @param int $idPieceJointe
+     * @return file
+     */
+    public function download($idPieceJointe)
+    {
+        $pieceJointe = PieceJointe::findOrfail($idPieceJointe);
+
+        if ($pieceJointe->type_pj == "ACTIVITE") {
+            return response()->json([
+                'message' => 'Activite isnt a valid type for download'
+            ]);
+        }
+
+        $filePath = public_path() . $pieceJointe->contenu_pj;
+
+        if(!file_exists($filePath)) {
+            return response()->json([
+                'message' => 'This piece jointe doesnt have any attachement'
+            ], 404);
+        }
+        $fileMimeType = mime_content_type($filePath);
+
+        //File mimes : png, jpg, jpeg, gif, mp4, webm, pdf'
+        header('Content-Type: ' . $fileMimeType);
+        header('Content-Disposition: attachment; filename="filename.extension"');
+
+        return response()->download($filePath);
     }
 
     /**

@@ -46,6 +46,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1', 'middl
     Route::apiResource('typesRelation', TypeRelationController::class)->except(['index', 'show']);
     Route::apiResource('utilisateurs', UtilisateurController::class)->except(['index', 'show']);
 
+
 });
 
 // public routes (no favorites or relations)
@@ -59,10 +60,12 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1'], funct
     Route::apiResource('commentaires', CommentaireController::class)->only(['index', 'show']);
     Route::apiResource('groupes', GroupeController::class)->only(['index', 'show']);
     Route::apiResource('piecesJointes', PieceJointeController::class)->only(['index', 'show']);
+        //to download file attachement
+        Route::get('piecesJointes/{id}/download', 'PieceJointeController@download');
     Route::apiResource('reponsesCommentaires', ReponseCommentaireController::class)->only(['index', 'show']);
     Route::apiResource('ressources', RessourceController::class)->only(['index', 'show']);
     Route::apiResource('roles', RoleController::class)->only(['index', 'show']);
     Route::apiResource('typesRelation', TypeRelationController::class)->only(['index', 'show']);
     //GET / HEAD / POST (for register)
-    Route::apiResource('utilisateurs', UtilisateurController::class)->only(['index', 'show', 'edit']);
+    Route::apiResource('utilisateurs', UtilisateurController::class)->only(['store']);
 });

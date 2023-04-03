@@ -694,6 +694,21 @@ paths:
       responses:
         '204':
           description: Delete a piece jointe by id
+  /piecesJointes/{id}/download:
+    get:
+      summary: Download a piece jointe by id
+      tags:
+        - Pieces jointes
+      parameters:
+        - name: id
+          in: path
+          description: ID of the piece jointe
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Download a piece jointe by id
   #endregion
 
   #region Relations
