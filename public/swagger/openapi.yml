@@ -39,7 +39,7 @@ paths:
   /inscription:
      post:
         summary: Create an utilisateur
-        description: Create an utilisateur by sending a JSON object and a file. The user is automatically given a beared token. Default role is user.
+        description: Create an utilisateur by sending a JSON object and an image file for its profile picture. The user is automatically given a beared token. Default role is user.
         tags:
          - Authentification
         requestBody:
@@ -113,23 +113,6 @@ paths:
                 type: object
               example:
                 - message: "Logged out successfully"
-  # /identification:
-  #   get:
-  #     summary: Get user id from a bearer token
-  #     description: Get user information by sending a bearer token
-  #     security:
-  #       - bearerAuth: []
-  #     tags:
-  #       - Authentification
-  #     responses:
-  #       '200':
-  #         description: Get user information
-  #         content:
-  #           application/json:
-  #             schema:
-  #               type: object
-  #             example:
-  #               token: 1|EojGLORUas6xz0OmRvuaZ4ReNhjqVVM5pdcUevJg 
   #endregion
   
   #region Administration
@@ -1561,6 +1544,29 @@ paths:
                   compteActif: true
                   raisonBan: null
                   idRole: 1
+  /utilisateurs/{id}/download:
+    get:
+      summary: Download a user's profile picture
+      description: Download a user's profile picture by its id
+      tags:
+        - Utilisateurs
+      parameters:
+        - name: id
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Download a user's profile picture
+          content:
+            multiform/form-data:
+              schema:
+                type: object
+                format: binary
+              example:
+                - file: "1_photoProfil.jpg"            
   #endregion
 
 components:

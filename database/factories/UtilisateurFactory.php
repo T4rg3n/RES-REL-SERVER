@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Role;
+use App\Models\Utilisateur;
+use Closure;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 
@@ -15,6 +17,10 @@ class UtilisateurFactory extends Factory
      */
     public function definition()
     {
+        $banStatus = $this->faker->boolean;
+        if($banStatus)
+            $raisonBan = $this->faker->text;
+            
         return [
             'mail_uti' => $this->faker->email,
             'mdp_uti' => Hash::make($this->faker->password),
@@ -23,12 +29,19 @@ class UtilisateurFactory extends Factory
             'code_postal_uti' => $this->faker->postcode,
             'nom_uti' => $this->faker->lastName,
             'prenom_uti' => $this->faker->firstName,
-            'photo_uti' => $this->faker->imageUrl(),
+            'photo_uti' => '/assets/default-assets/default-user.png',
             'bio_uti' => $this->faker->text,
-            //todo vraie url 
-            'url_profil_uti' => $this->faker->url,
+            'url_profil_uti' => null,
             'compte_actif_uti' => $this->faker->boolean,
+            'raison_banni_uti' => $banStatus ? $raisonBan : null,
             'fk_id_role' => Role::all()->random()->id_role,
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (Utilisateur $utilisateur) {
+            $utilisateur->url_profil_uti = public_path() . '//user-files/' . $utilisateur->id_uti . '/';
+        });
     }
 }

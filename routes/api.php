@@ -46,7 +46,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1', 'middl
     Route::apiResource('typesRelation', TypeRelationController::class)->except(['index', 'show']);
     Route::apiResource('utilisateurs', UtilisateurController::class)->except(['index', 'show']);
     
-    Route::post('deconnexion', 'UtilisateurController@logout');
+    Route::get('deconnexion', 'UtilisateurController@logout');
 
 });
 
@@ -71,4 +71,5 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1'], funct
     Route::apiResource('typesRelation', TypeRelationController::class)->only(['index', 'show']);
     //GET / HEAD / POST
     Route::apiResource('utilisateurs', UtilisateurController::class)->only(['index', 'show']);
+        Route::get('utilisateurs/{id}/download', 'UtilisateurController@download');
 });
