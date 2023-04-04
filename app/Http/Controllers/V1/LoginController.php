@@ -35,7 +35,7 @@ class LoginController extends Controller
         $token = (new TokenAttributor)->createToken($user);
 
         return response()->json([
-            'user' => $user,
+            'idUti' => $user->id_uti,
             'token' => $token
         ], 200);
 

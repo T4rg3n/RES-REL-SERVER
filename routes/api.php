@@ -19,6 +19,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1', 'middl
         Route::patch('utilisateurs/disable', 'UtilisateurController@disable');
         Route::patch('ressources/disable', 'RessourceController@disable');
         Route::patch('commentaires/{id}/disable', 'CommentaireController@disable');
+        Route::patch('commentaires/{id}/report', 'CommentaireController@report');
         Route::patch('reponsesCommentaires/{id}/disable', 'ReponseCommentaireController@disable');
         //(Report)
         Route::patch('commentaires/{id}/report', 'CommentaireController@report');

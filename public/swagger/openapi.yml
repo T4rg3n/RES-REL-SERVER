@@ -6,7 +6,7 @@ servers:
   - url: https://api.victor-gombert.fr/api/v1
 
 paths:
-  #region Authentification
+  #region Authentification (review : ok)
   /connexion:
     post:
       summary: Login
@@ -36,6 +36,7 @@ paths:
                 type: object
               example:
                 - token: "1|EojGLORUas6xz0OmRvuaZ4ReNhjqVVM5pdcUevJg"
+                  idUti: 1
   /inscription:
      post:
         summary: Create an utilisateur
@@ -82,20 +83,23 @@ paths:
                schema:
                  type: object
                example:
-                 - id: 1
-                   mail: "john.doe@gmail.com"
-                   motDePasse: "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
-                   dateInscription: 2023-01-02 21:16:55
-                   dateNaissance: 2002-01-02 00:00:00
-                   codePostal: "75000"
-                   nom: "Doe"
-                   prenom: "John"
-                   cheminPhoto: "/uploads/1.jpg"
-                   bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc."
-                   urlProfil: "users/1"
-                   compteActif: true
-                   raisonBan: nulSl
-                   idRole: 4
+                 - response:
+                    id: 1
+                    mail: "john.doe@gmail.com"
+                    motDePasse: "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+                    dateInscription: 2023-01-02 21:16:55
+                    dateNaissance: 2002-01-02 00:00:00
+                    codePostal: "75000"
+                    nom: "Doe"
+                    prenom: "John"
+                    cheminPhoto: "/uploads/1.jpg"
+                    bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc."
+                    urlProfil: "users/1"
+                    compteActif: true
+                    raisonBan: nulSl
+                    idRole: 4
+                 - token: "1|EojGLORUas6xz0OmRvuaZ4ReNhjqVVM5pdcUevJg"
+                   
   /deconnexion:
     get:
       summary: Logout
@@ -116,73 +120,73 @@ paths:
   #endregion
   
   #region Administration
-  /promouvoir:
-    post:
-      summary: Promote a user [Work in progress, subject to change]
-      description: Promote a user to a higher role (you need to be an admin to do this)
-      security:
-        - bearerAuth: []
-      tags:
-        - Administration
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                idUtilisateur:
-                  type: integer
-                  description: ID of the user
-                  example: 1
-                idRole:
-                  type: integer
-                  description: ID of the role
-                  example: 4
-      responses:
-        '200':
-          description: Promote a user
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                - idUtilisateur: 1
-                  role: modérateur
-  /retrograder:
-    post:
-      summary: Demote a user [Work in progress, subject to change]
-      description: Demote a user to a lower role (you need to be an admin to do this)
-      security:
-        - bearerAuth: []
-      tags:
-        - Administration
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                idUtilisateur:
-                  type: integer
-                  description: ID of the user
-                  example: 1
-                idRole:
-                  type: integer
-                  description: ID of the role
-                  example: 1
-      responses:
-        '200':
-          description: Demote a user
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                - idUtilisateur: 1
-                  role: utilisateur
+  # /promouvoir:
+  #   post:
+  #     summary: Promote a user [Work in progress, subject to change]
+  #     description: Promote a user to a higher role (you need to be an admin to do this)
+  #     security:
+  #       - bearerAuth: []
+  #     tags:
+  #       - Administration
+  #     requestBody:
+  #       content:
+  #         application/json:
+  #           schema:
+  #             type: object
+  #             properties:
+  #               idUtilisateur:
+  #                 type: integer
+  #                 description: ID of the user
+  #                 example: 1
+  #               idRole:
+  #                 type: integer
+  #                 description: ID of the role
+  #                 example: 4
+  #     responses:
+  #       '200':
+  #         description: Promote a user
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: object
+  #             example:
+  #               - idUtilisateur: 1
+  #                 role: modérateur
+  # /retrograder:
+  #   post:
+  #     summary: Demote a user [Work in progress, subject to change]
+  #     description: Demote a user to a lower role (you need to be an admin to do this)
+  #     security:
+  #       - bearerAuth: []
+  #     tags:
+  #       - Administration
+  #     requestBody:
+  #       content:
+  #         application/json:
+  #           schema:
+  #             type: object
+  #             properties:
+  #               idUtilisateur:
+  #                 type: integer
+  #                 description: ID of the user
+  #                 example: 1
+  #               idRole:
+  #                 type: integer
+  #                 description: ID of the role
+  #                 example: 1
+  #     responses:
+  #       '200':
+  #         description: Demote a user
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: object
+  #             example:
+  #               - idUtilisateur: 1
+  #                 role: utilisateur
   #endregion
 
-  #region Categories
+  #region Categories (review : ok)
   /categories:
     get:
       summary: Get all categories
@@ -214,11 +218,31 @@ paths:
                   type: object
               example:
                 - id: 1
-                  nom: "Catégorie 1"
+                  nom: "Communication"
                 - id: 2
-                  nom: "Catégorie 2"
+                  nom: "Culture"
                 - id: 3
-                  nom: "Catégorie 3"
+                  nom: "Développement personnel"
+                - id: 4
+                  nom: "Intelligence émotionnelle"
+                - id: 5
+                  nom: "Loisirs"
+                - id: 6
+                  nom: "Monde professionnel"
+                - id: 7
+                  nom: "Parentalité"
+                - id: 8
+                  nom: "Qualité de vie"
+                - id: 9
+                  nom: "Recherche de sens"
+                - id: 10
+                  nom : "Santé physique"
+                - id: 11
+                  nom : "Santé psychique"
+                - id: 12
+                  nom : "Spiritualité"
+                - id: 13
+                  nom : "Vie affective"
     post:
       summary: Create a category
       security:
@@ -234,7 +258,7 @@ paths:
                 nom:
                   type: string
                   description: Name of the category
-                  example: "My super category"
+                  example: "Ma super categorie"
       responses:
         '201':
           description: Create a category
@@ -243,7 +267,8 @@ paths:
               schema:
                 type: object
               example:
-                - nom : "My super category"
+                - id: 14
+                  nom : "Ma super categorie"
   /categories/{id}:
     get:
       summary: Get a category by id
@@ -264,8 +289,9 @@ paths:
               schema:
                 type: object
               example:
-                - id: 1
-                  nom: "Catégorie 1"
+                data:
+                  id: 1
+                  nom: "Communication"
     delete:
       summary: Delete a category 
       security:
@@ -287,11 +313,10 @@ paths:
               schema:
                 type: object
               example:
-                - id: 1
-                  nom: "Catégorie 1"
+                message: "Categorie deleted"
   #endregion
 
-  #region Commentaires
+  #region Commentaires (review : ok)
   /commentaires:
     get:
       summary: Get all commentaires
@@ -320,28 +345,47 @@ paths:
                 items:
                   type: object
               example:
-                - id: 1
-                  dateCreation: 2023-01-02 21:16:55
-                  status: PENDING
-                  idUtilisateur: 1
-                  contenu: Voluptas cum sint accusamus quo officiis qui. Eum voluptatem autem aut nisi. Quae molestiae optio et ut. Voluptatem vel hic temporibus ea animi magni totam.
-                  datePublication: null
-                  raisonRefus: null
-                  idRessource: 2
-                - id: 2
-                  dateCreation: 2023-03-06 12:10:02
-                  status: PENDING
-                  idUtilisateur: 5
-                  contenu: Voluptas cum sint accusamus quo officiis qui. Eum voluptatem autem aut nisi. Quae molestiae optio et ut. Voluptatem vel hic temporibus ea animi magni totam.
-                  datePublication: null
-                  raisonRefus: null
-                  idRessource: 3
+                data:
+                  - id: 1
+                    contenu: "Voluptas cum sint accusamus quo officiis qui. Eum voluptatem autem aut nisi. Quae molestiae optio et ut. Voluptatem vel hic temporibus ea animi magni totam."
+                    datePublication: "2023-01-02 21:16:55"
+                    nombreReponses: 2
+                    supprime : false
+                    nombreSignalements: 0
+                    idUtilisateur: 1
+                    idRessource: 3
+                  - id: 2
+                    contenu: "Voluptas cum sint accusamus quo officiis qui. Eum voluptatem autem aut nisi. Quae molestiae optio et ut. Voluptatem vel hic temporibus ea animi magni totam."
+                    datePublication: "2023-01-02 21:16:55"
+                    nombreReponses: 0
+                    supprime : true
+                    nombreSignalements: 4
+                    idUtilisateur: 2
+                    idRessource: 3
     post:
       summary: Create a commentaire
       security:
         - bearerAuth: []
       tags:
         - Commentaires
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                contenu:
+                  type: string
+                  description: Contenu of the commentaire
+                  example: "Contenu du nouveau commentaire"
+                idUtilisateur:
+                  type: integer
+                  description: Id of the user
+                  example: 1
+                idRessource:
+                  type: integer
+                  description: Id of the ressource
+                  example: 2
       responses:
         '201':
           description: Create a commentaire
@@ -350,9 +394,15 @@ paths:
               schema:
                 type: object
               example:
-                - contenu : "Contenu du nouveau commentaire"
+                - id: 10
+                  contenu : "Contenu du nouveau commentaire"
+                  datePublication: 2023-01-02 21:16:55
+                  nombreReponses: 0
+                  supprime : false
+                  nombreSignalements: 0
                   idUtilisateur : 1
                   idRessource : 2
+  /commentaires/{id}/disable:
     patch:
       summary: Disable a commentaire
       security:
@@ -367,42 +417,8 @@ paths:
               schema:
                 type: object
               example:
-                - id: 1
-                  dateCreation: 2023-01-02 21:16:55
-                  status: PENDING
-                  idUtilisateur: 1
-                  contenu: Voluptas cum sint accusamus quo officiis qui. Eum voluptatem autem aut nisi. Quae molestiae optio et ut. Voluptatem vel hic temporibus ea animi magni totam.
-                  datePublication: null
-                  raisonRefus: null
-                  idRessource: 2
-  /commentaires/{id}:
-    get:
-      summary: Get a commentaire by id
-      tags:
-        - Commentaires
-      parameters:
-        - name: id
-          in: path
-          description: ID of the commentaire
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: Get a commentaire by id
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                - id: 1
-                  dateCreation: 2023-01-02 21:16:55
-                  status: PENDING
-                  idUtilisateur: 1
-                  contenu: Voluptas cum sint accusamus quo officiis qui. Eum voluptatem autem aut nisi. Quae molestiae optio et ut. Voluptatem vel hic temporibus ea animi magni totam.
-                  datePublication: null
-                  raisonRefus: null
-                  idRessource: 2
+                message: "Commentaire disabled"
+  /commentaires/{id}/report:
     patch:
       summary: Report a commentaire
       security:
@@ -425,6 +441,35 @@ paths:
                 type: object
               example:
                 message: "Commentaire reported"
+  /commentaires/{id}:
+    get:
+      summary: Get a commentaire by id
+      tags:
+        - Commentaires
+      parameters:
+        - name: id
+          in: path
+          description: ID of the commentaire
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Get a commentaire by id
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 1
+                  dateCreation: 2023-01-02 21:16:55
+                  status: PENDING
+                  idUtilisateur: 1
+                  contenu: Voluptas cum sint accusamus quo officiis qui. Eum voluptatem autem aut nisi. Quae molestiae optio et ut. Voluptatem vel hic temporibus ea animi magni totam.
+                  datePublication: null
+                  raisonRefus: null
+                  idRessource: 2 
     delete:
       summary: Delete a commentaire 
       security:
@@ -449,7 +494,7 @@ paths:
                 message: "Commentaire deleted"
   #endregion
 
-  #region Favoris
+  #region Favoris (review: work in progress (get done))
   /favoris:
     get:
       summary: Get all favoris
@@ -480,14 +525,13 @@ paths:
                 items:
                   type: object
               example:
+                data:
                 - id: 1
-                  dateCreation: 2023-01-02 21:16:55
-                  status: PENDING
+                  dateFav: 2023-03-06 12:10:02
                   idUtilisateur: 1
                   idRessource: 2
                 - id: 2
-                  dateCreation: 2023-03-06 12:10:02
-                  status: PENDING
+                  dateFav: 2023-03-06 12:10:02
                   idUtilisateur: 5
                   idRessource: 3
     post:
