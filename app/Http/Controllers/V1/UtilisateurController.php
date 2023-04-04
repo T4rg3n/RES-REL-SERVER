@@ -109,6 +109,8 @@ class UtilisateurController extends Controller
     
             $fileName = $utilisateur->id_uti . "_photoProfil." . $uploadedFile->getClientOriginalExtension();
             $request->photoProfil->move(public_path($filePath), $fileName);
+        } else {
+            $utilisateur->photo_uti = public_path() . '/assets/default-assets/default-user.png';
         }
         
         $utilisateur->fk_id_role = 4;
@@ -157,16 +159,17 @@ class UtilisateurController extends Controller
     {
         $utilisateur = Utilisateur::findOrfail($idUtilisateur);
         $filePath = $utilisateur->photo_uti;
-      //  $fileName = $utilisateur->id_uti . "_photoProfil." . pathinfo($filePath, PATHINFO_EXTENSION);
-
+        
+        //  $fileName = $utilisateur->id_uti . "_photoProfil." . pathinfo($filePath, PATHINFO_EXTENSION);
         if($filePath) {
             $fileMimeType = pathinfo($filePath, PATHINFO_EXTENSION);    
             header('Content-Type: image/' . $fileMimeType);
-            header('Content-Disposition: attachment; filename="filename.extension"');
-
-            return response()->download(public_path($filePath . '.' . $fileMimeType));
+            //header('Content-Disposition: attachment; filename="filename.extension"');
+            return response()->download(public_path() . $filePath);
         } else {
-            return response()->download(public_path('default-user.png'));
+            header('Content-Type: image/png');
+            header('Content-Disposition: attachment; filename="filename.extension"');
+            return response()->download(public_path() . '/assets/default-assets/default-user.png');
         }
     }
 
@@ -177,20 +180,7 @@ class UtilisateurController extends Controller
      */
     public function logout(Request $request)
     {
-        $request->validate([
-            'idUtilisateur' => 'required',
-            'token' => 'required'
-        ]);
-
-        $utilisateur = Utilisateur::findOrfail($request->idUtilisateur);
-        $token = $utilisateur->tokens()->where('token', $request->token)->first();
-        if(!$token) {
-            return response()->json([
-                'message' => 'Token not found'
-            ], 404);
-        }
-
-        $token->delete();
+        $request->user()->currentAccessToken()->delete();
 
         return response()->json([
             'message' => 'Logged out successfully'
