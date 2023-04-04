@@ -24,7 +24,7 @@ class Utilisateur extends Authenticatable
         'prenom_uti',
         'photo_uti',
         'bio_uti',
-        'fk_id_role',
+        'photo_uti'
     ];
 
     /**

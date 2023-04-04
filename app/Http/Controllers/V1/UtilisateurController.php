@@ -11,6 +11,7 @@ use App\Http\Requests\V1\StoreUtilisateurRequest;
 use App\Http\Requests\V1\BanUtilisateurRequest;
 use App\Services\V1\QueryFilter;
 use App\Services\V1\TokenAttributor;
+use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
 class UtilisateurController extends Controller
 {
@@ -64,8 +65,7 @@ class UtilisateurController extends Controller
     {
         $perPage = request()->input('perPage', 15);
         $queryContent = $request->all();
-        $filter = new QueryFilter();
-        $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
+        $eloquentQuery = (new QueryFilter)->transform($queryContent, $this->allowedParams, $this->columnMap);
         $utilisateurs = Utilisateur::where($eloquentQuery);
 
         $includes = $request->query('include');
@@ -100,9 +100,21 @@ class UtilisateurController extends Controller
         }
 
         $utilisateur = Utilisateur::create($request->all());
-        $token = (new TokenAttributor)->createToken($utilisateur);
-
+       
+        //users can optionally upload a photo
+        if($request->hasFile('photoProfil')) {
+            $filePath = 'user-files/' . $utilisateur->id_uti;
+            $uploadedFile = $request->file('photoProfil');
+            $utilisateur->photo_uti = $filePath;
+    
+            $fileName = $utilisateur->id_uti . "_photoProfil." . $uploadedFile->getClientOriginalExtension();
+            $request->photoProfil->move(public_path($filePath), $fileName);
+        }
+        
+        $utilisateur->fk_id_role = 4;
         $utilisateur->save();
+
+        $token = (new TokenAttributor)->createToken($utilisateur);
         $id = $utilisateur->id_uti;
 
         return response()->json(['response' => $this->show($id), 'token' => $token], 201);
@@ -137,6 +149,8 @@ class UtilisateurController extends Controller
 
     /**
      * Logout the specified user
+     * 
+     * @param Request request with idUser & bearer token
      */
     public function logout(Request $request)
     {
@@ -147,6 +161,12 @@ class UtilisateurController extends Controller
 
         $utilisateur = Utilisateur::findOrfail($request->idUtilisateur);
         $token = $utilisateur->tokens()->where('token', $request->token)->first();
+        if(!$token) {
+            return response()->json([
+                'message' => 'Token not found'
+            ], 404);
+        }
+
         $token->delete();
 
         return response()->json([

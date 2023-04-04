@@ -45,7 +45,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1', 'middl
     Route::apiResource('roles', RoleController::class)->except(['index', 'show']);
     Route::apiResource('typesRelation', TypeRelationController::class)->except(['index', 'show']);
     Route::apiResource('utilisateurs', UtilisateurController::class)->except(['index', 'show']);
-
+    
+    Route::post('deconnexion', 'UtilisateurController@logout');
 
 });
 
@@ -55,7 +56,6 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1'], funct
     Route::post('search', 'SearchController@search');
     Route::post('connexion', 'LoginController@login');
     Route::post('inscription', 'UtilisateurController@store');
-    Route::post('deconnexion', 'UtilisateurController@logout');
     
 
     //GET / HEAD

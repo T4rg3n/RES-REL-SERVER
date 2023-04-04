@@ -34,6 +34,7 @@ class StoreUtilisateurRequest extends FormRequest
             'nom' => ['required', 'string', 'max:255'],
             'prenom' => ['required', 'string', 'max:255'],
             'bio' => ['required', 'string', 'max:255'],
+            'photoProfil' => ['nullable', 'file', 'mimes:png,jpg,jpeg', 'max:5000'],
             //'exists:roles,id_role'
             //'role' => ['required', 'integer'],
         ];
@@ -70,6 +71,9 @@ class StoreUtilisateurRequest extends FormRequest
             'bio.required' => 'bio is required',
             'bio.string' => 'bio must be a string',
             'bio.max' => 'bio must not be greater than 255 characters',
+            'photoProfil.file' => 'photoProfil must be a file',
+            'photoProfil.mimes' => 'photoProfil must be a file of type: png, jpg, jpeg',
+            'photoProfil.max' => 'photoProfil must not be greater than 5000 kilobytes',
         ];
     }
 

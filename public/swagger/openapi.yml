@@ -35,16 +35,16 @@ paths:
               schema:
                 type: object
               example:
-                - token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjIyN"
+                - token: "1|EojGLORUas6xz0OmRvuaZ4ReNhjqVVM5pdcUevJg"
   /inscription:
      post:
         summary: Create an utilisateur
-        description: Create an utilisateur by sending a JSON object. The user is automatically given a beared token. Default role is user.
+        description: Create an utilisateur by sending a JSON object and a file. The user is automatically given a beared token. Default role is user.
         tags:
          - Authentification
         requestBody:
          content:
-           application/json:
+           multiform/form-data:
             schema:
               type: object
               properties:
@@ -52,39 +52,28 @@ paths:
                   type: string
                 motDePasse:
                   type: string
-                dateInscription:
-                 type: string
                 dateNaissance:
                   type: string
                 codePostal:
-                  type: integer
+                  type: string
                 nom:
                   type: string
                 prenom:
                   type: string
-      # TODO : Add photo upload
-      #          cheminPhoto:
-      #            type: string
+                photoProfil:
+                  type: string
+                  format: binary
                 bio:
                   type: string
-                urlProfil:
-                  type: string
-                compteActif:
-                  type: boolean
-                raisonBan:
-                  type: string
-                idRole:
-                  type: integer
               example:
-               - id: 1
                  mail: "john.doe@gmail.com"
-                 motDePasse: "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
-                 dateInscription: 2023-01-02 21:16:55
+                 motDePasse: "password01"
                  dateNaissance: 2002-01-02 00:00:00
                  codePostal: 75000
                  nom: "Doe"
                  prenom: "John"
-                 bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc."
+                 photoProfil: photoProfil=@"/C:/Users/user/Desktop/profile_picture_resrel.jpg
+                 bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc."        
         responses:
           '201':
             description: Create an utilisateur
@@ -98,37 +87,23 @@ paths:
                    motDePasse: "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
                    dateInscription: 2023-01-02 21:16:55
                    dateNaissance: 2002-01-02 00:00:00
-                   codePostal: 75000
+                   codePostal: "75000"
                    nom: "Doe"
                    prenom: "John"
                    cheminPhoto: "/uploads/1.jpg"
                    bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc."
                    urlProfil: "users/1"
                    compteActif: true
-                   raisonBan: null
+                   raisonBan: nulSl
                    idRole: 4
   /deconnexion:
-    post:
+    get:
       summary: Logout
-      description: Logout a user by invalidating the bearer token
+      description: Logout a user by invalidating the bearer token sent in the auth header. 
       security:
         - bearerAuth: []
       tags:
         - Authentification
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                idUtilisateur:
-                  type: integer
-                  description: ID of the user
-                  example: 1
-                token:
-                  type: string
-                  description: Bearer token
-                  example: 
       responses:
         '200':
           description: Logout
@@ -138,6 +113,23 @@ paths:
                 type: object
               example:
                 - message: "Logged out successfully"
+  # /identification:
+  #   get:
+  #     summary: Get user id from a bearer token
+  #     description: Get user information by sending a bearer token
+  #     security:
+  #       - bearerAuth: []
+  #     tags:
+  #       - Authentification
+  #     responses:
+  #       '200':
+  #         description: Get user information
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: object
+  #             example:
+  #               token: 1|EojGLORUas6xz0OmRvuaZ4ReNhjqVVM5pdcUevJg 
   #endregion
   
   #region Administration
@@ -749,8 +741,9 @@ paths:
               example:
                 - idUtilisateur : 1
                   idRessource : 2
-                  nom : "Annexe PDF sur la situation géopolitique au Zimbabwe"
-                  chemin : /1/pdf/1_ressource.pdr
+                  type : PDF
+                  titre : "Annexe PDF sur la situation géopolitique au Zimbabwe"
+                  description: "Lorem ipsum ceci est une description"
   /pieceJointes/{id}:
     get:
       summary: Get a piece jointe by id

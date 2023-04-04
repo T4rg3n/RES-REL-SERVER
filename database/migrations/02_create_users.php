@@ -21,7 +21,8 @@ return new class extends Migration
             $table->string('url_profil_uti')->nullable(); //TODO générer automatiquement 
             $table->boolean('compte_actif_uti')->default(true);
             $table->string('raison_banni_uti')->nullable();
-            $table->unsignedBigInteger('fk_id_role');
+            //1 = super-admin, 2 = admin, 3 = moderateur, 4 = utilisateur
+            $table->unsignedBigInteger('fk_id_role')->default(4);
 
             $table->foreign('fk_id_role')
             ->references('id_role')
