@@ -15,7 +15,7 @@ class RessourceSeeder extends Seeder
     public function run()
     {
        Ressource::factory()
-            ->count(100)
+            ->count(10000)
             ->create();
     }
 }

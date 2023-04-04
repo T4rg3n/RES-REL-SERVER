@@ -15,7 +15,7 @@ class PieceJointeSeeder extends Seeder
     public function run()
     {
         PieceJointe::factory()
-            ->count(250)
+            ->count(500)
             ->create();
     }
 }

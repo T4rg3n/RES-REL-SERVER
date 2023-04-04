@@ -15,7 +15,7 @@ class UtilisateurSeeder extends Seeder
     public function run()
     {
         Utilisateur::factory()
-            ->count(100)
+            ->count(1000)
             ->create();
     }
 }
