@@ -71,4 +71,5 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1'], funct
     Route::apiResource('typesRelation', TypeRelationController::class)->only(['index', 'show']);
     //GET / HEAD / POST
     Route::apiResource('utilisateurs', UtilisateurController::class)->only(['index', 'show']);
+        Route::get('utilisateurs/{id}/download', 'UtilisateurController@download');
 });

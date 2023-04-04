@@ -148,6 +148,29 @@ class UtilisateurController extends Controller
     }
 
     /**
+     * Download the profile picture of the user if defined.
+     * If it isnt it returns a default picture.
+     * 
+     * @param int $idUtilisateur
+     */
+    public function download($idUtilisateur)
+    {
+        $utilisateur = Utilisateur::findOrfail($idUtilisateur);
+        $filePath = $utilisateur->photo_uti;
+      //  $fileName = $utilisateur->id_uti . "_photoProfil." . pathinfo($filePath, PATHINFO_EXTENSION);
+
+        if($filePath) {
+            $fileMimeType = pathinfo($filePath, PATHINFO_EXTENSION);    
+            header('Content-Type: image/' . $fileMimeType);
+            header('Content-Disposition: attachment; filename="filename.extension"');
+
+            return response()->download(public_path($filePath . '.' . $fileMimeType));
+        } else {
+            return response()->download(public_path('default-user.png'));
+        }
+    }
+
+    /**
      * Logout the specified user
      * 
      * @param Request request with idUser & bearer token
