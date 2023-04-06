@@ -93,7 +93,13 @@ class PieceJointeController extends Controller
         //For any case but 'ACTIVITE', the content is the path to the file
         if ($request->input('type_pj') != 'ACTIVITE') {
             $filePath = 'user-files/' . $pieceJointe->fk_id_uti;
+           
             $uploadedFile = $request->file('file');
+            if(!$uploadedFile) {
+                return response()->json([
+                    'message' => 'No file uploaded'
+                ], 400);
+            }
 
             switch ($request->input('type_pj')) {
                 case ('IMAGE'):
