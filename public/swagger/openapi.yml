@@ -98,8 +98,7 @@ paths:
                     compteActif: true
                     raisonBan: nulSl
                     idRole: 4
-                 - token: "1|EojGLORUas6xz0OmRvuaZ4ReNhjqVVM5pdcUevJg"
-                   
+                 - token: "1|EojGLORUas6xz0OmRvuaZ4ReNhjqVVM5pdcUevJg"             
   /deconnexion:
     get:
       summary: Logout
@@ -494,7 +493,7 @@ paths:
                 message: "Commentaire deleted"
   #endregion
 
-  #region Favoris (review: work in progress (get done))
+  #region Favoris (review: ok)
   /favoris:
     get:
       summary: Get all favoris
@@ -540,6 +539,20 @@ paths:
         - bearerAuth: []
       tags:
         - Favoris
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                idUtilisateur:
+                  type: integer
+                  description: Id of the user
+                  example: 1
+                idRessource:
+                  type: integer
+                  description: Id of the ressource
+                  example: 2
       responses:
         '201':
           description: Create a favori
@@ -601,7 +614,8 @@ paths:
                 message: "Favori deleted"
   #endregion
 
-  #region Groupes
+  #region Groupes (review ok)
+    #TODO ne pas ouvrir cet endpoint sur l'api publique
   /groupes:
     get:
       summary: Get all groupes
@@ -632,24 +646,41 @@ paths:
                 items:
                   type: object
               example:
-                - id: 1
-                  dateCreation: 2023-01-02 21:16:55
-                  status: PENDING
-                  nom: "Groupe 1"
-                  description: "Description du groupe 1"
-                  idUtilisateur: 1
-                - id: 2
-                  dateCreation: 2023-03-06 12:10:02
-                  status: PENDING
-                  nom: "Groupe 2"
-                  description: "Description du groupe 2"
-                  idUtilisateur: 5
+                data:
+                  - id: 1
+                    nom: "Groupe 1"
+                    description: "Description du groupe 1"
+                    estPrive: true
+                  - id: 2
+                    nom: "Groupe 2"
+                    description: "Description du groupe 2"
+                    estPrive: false
+    #TODO ajouter des gens dans les groupes
+    #TODO check si le nom du groupe est déjà pris
     post:
       summary: Create a groupe
       security:
         - bearerAuth: []
       tags:
         - Groupes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nom:
+                  type: string
+                  description: Name of the groupe
+                  example: "Groupe 3"
+                description:
+                  type: string
+                  description: Description of the groupe
+                  example: "Description du groupe 3"
+                estPrive:
+                  type: boolean
+                  description: Is the groupe private
+                  example: true
       responses:
         '201':
           description: Create a groupe
@@ -660,7 +691,7 @@ paths:
               example:
                 - nom : "Groupe 3"
                   description : "Description du groupe 3"
-                  idUtilisateur : 1
+                  estPrive : true
   /groupes/{id}: 
     get:
       summary: Get a groupe by id
@@ -683,12 +714,11 @@ paths:
               schema:
                 type: object
               example:
-                - id: 1
-                  dateCreation: 2023-01-02 21:16:55
-                  status: PENDING
-                  nom: "Groupe 1"
-                  description: "Description du groupe 1"
-                  idUtilisateur: 1
+                data:
+                  - id: 1
+                    nom: "Groupe 1"
+                    description: "Description du groupe 1"
+                    estPrive: true
     delete:
       summary: Delete a groupe by id
       security:
@@ -703,11 +733,19 @@ paths:
           schema:
             type: integer
       responses:
-        '204':
+        '200':
           description: Delete a groupe by id
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: "Groupe deleted"
   #endregion
  
-  #region Pieces jointes
+  #region Pieces jointes (review ok)
+  #TODO Add type ressource texte (dans contenu)
+  #TODO Add dossier "activites" (dans contenu)
   /piecesJointes:
     get:
       summary: Get all pieces jointes
@@ -738,26 +776,64 @@ paths:
                 items:
                   type: object
               example:
-                - id: 1
-                  dateCreation: 2023-01-02 21:16:55
-                  status: PENDING
-                  idUtilisateur: 1
-                  idRessource: 2
-                  nom: "Annexe PDF sur la situation géopolitique au Zimbabwe"
-                  chemin: /1/pdf/1_ressource.pdf
-                - id: 2
-                  dateCreation: 2023-03-06 12:10:02
-                  status: PENDING
-                  idUtilisateur: 5
-                  idRessource: 3
-                  nom: "Annexe PDF sur la situation géopolitique au Zimbabwe"
-                  chemin: /1/pdf/1_ressource.pdf
+                data:
+                  - id: 1
+                    type: "PDF"
+                    titre: "Annexe PDF sur la situation géopolitique au Zimbabwe"
+                    dateCreation: 2023-01-02 21:16:55
+                    description: "Rapport de l'ONU de 2015 au Zimbabwe"
+                    contenu: "/user-files/1/pdf/1_ressource.pdf"
+                    dateActivite: null
+                    lieu: null
+                    codePostal: null
+                    idUtilisateur: 1
+                  - id: 2
+                    type: "ACTIVITE"
+                    titre: "Clean walk à Dijon"
+                    dateCreation: 2023-03-06 12:10:02
+                    description: "Ramassage des déchets dans le centre ville de Dijon"
+                    contenu: "/user-files/1/activites/1_ressource.pdf"
+                    dateActivite: null
+                    lieu: null
+                    codePostal: null
+                    idUtilisateur: 5
     post:
       summary: Create a piece jointe
       security:
         - bearerAuth: []
       tags:
         - Pieces jointes
+      requestBody:
+        content:
+          application/form-data:
+            schema:
+              type: object
+              properties:
+                idUtilisateur:
+                  type: integer
+                  description: ID of the user
+                  example: 1
+                idRessource:
+                  type: integer
+                  description: ID of the ressource
+                  example: 2
+                type:
+                  type: string
+                  description: Type of the piece jointe
+                  example: "PDF"
+                titre:
+                  type: string
+                  description: Title of the piece jointe
+                  example: "Annexe PDF sur la situation géopolitique au Zimbabwe"
+                description:
+                  type: string
+                  description: Description of the piece jointe
+                  example: "Lorem ipsum ceci est une description"
+                file:
+                  type: string
+                  format: binary
+                  description: File of the piece jointe
+                  example: "C:\\Users\\user\\Documents\\file.pdf"
       responses:
         '201':
           description: Create a piece jointe
@@ -793,13 +869,17 @@ paths:
               schema:
                 type: object
               example:
-                - id: 1
-                  dateCreation: 2023-01-02 21:16:55
-                  status: PENDING
-                  idUtilisateur: 1
-                  idRessource: 2
-                  nom: "Annexe PDF sur la situation géopolitique au Zimbabwe"
-                  chemin: /1/pdf/1_ressource.pdf
+                data:
+                  - id: 1
+                    type: "PDF"
+                    titre: "Annexe PDF sur la situation géopolitique au Zimbabwe"
+                    dateCreation: 2023-01-02 21:16:55
+                    description: "Rapport de l'ONU de 2015 au Zimbabwe"
+                    contenu: "/user-files/1/pdf/1_ressource.pdf"
+                    dateActivite: null
+                    lieu: null
+                    codePostal: null
+                    idUtilisateur: 1
     delete:
       summary: Delete a piece jointe by id
       security:
@@ -814,8 +894,14 @@ paths:
           schema:
             type: integer
       responses:
-        '204':
+        '200':
           description: Delete a piece jointe by id
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: "Piece jointe deleted"
   /piecesJointes/{id}/download:
     get:
       summary: Download a piece jointe by id
@@ -833,7 +919,7 @@ paths:
           description: Download a piece jointe by id
   #endregion
 
-  #region Relations
+  #region Relations (review ok)
   /relations:
     get:
       summary: Get all relations
@@ -864,16 +950,22 @@ paths:
                 items:
                   type: object
               example:
-                - id: 1
-                  dateCreation: 2023-01-02 21:16:55
-                  idDemandeur: 1
-                  idReceveur: 2
-                  accepte: true
-                - id: 2
-                  dateCreation: 2023-03-06 12:10:02
-                  idDemandeur: 3
-                  idReceveur: 3
-                  accepte: null
+                data:
+                  - id: 1
+                    typeRelation: 1
+                    idDemandeur: 1
+                    idReceveur: 2
+                    dateDemande: 2023-01-02 21:16:55
+                    dateAcceptation: 2023-02-02 13:18:02
+                    accepte: true
+                  - id: 2
+                    typeRelation: 3
+                    idDemandeur: 178
+                    idReceveur: 918
+                    dateDemande: 2023-01-02 21:16:55
+                    dateAcceptation: null
+                    accepte: null
+    #TODO typeRelation dans StoreRelationRequest
     post:
       summary: Create a relation
       security:
@@ -890,6 +982,7 @@ paths:
               example:
                 - idDemandeur : 1
                   idReceveur : 2
+                  typeRelation : 1
   /relation/{id}:
     get:
       summary: Get a relation by id
@@ -912,11 +1005,14 @@ paths:
               schema:
                 type: object
               example:
-                - id: 1
-                  dateCreation: 2023-01-02 21:16:55
-                  idDemandeur: 1
-                  idReceveur: 2
-                  accepte: true
+                data:
+                  - id: 1
+                    typeRelation: 1
+                    idDemandeur: 1
+                    idReceveur: 2
+                    dateDemande: 2023-01-02 21:16:55
+                    dateAcceptation: 2023-01-02 22:02:03
+                    accepte: true
     delete:
       summary: Delete a relation by id
       security:
