@@ -15,7 +15,7 @@ class CommentaireSeeder extends Seeder
     public function run()
     {
         Commentaire::factory()
-            ->count(2500)
+            ->count(10000)
             ->create();
     }
 }

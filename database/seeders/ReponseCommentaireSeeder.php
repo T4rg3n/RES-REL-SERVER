@@ -15,7 +15,7 @@ class ReponseCommentaireSeeder extends Seeder
     public function run()
     {
         ReponseCommentaire::factory()
-            ->count(100)
+            ->count(10000)
             ->create();
     }
 }
