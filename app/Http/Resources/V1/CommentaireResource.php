@@ -22,7 +22,9 @@ class CommentaireResource extends JsonResource
             'supprime' => $this->commentaire_supprime,
             'nombreSignalements' => $this->nombre_signalement_commentaire,
             'idUtilisateur' => $this->fk_id_uti,
+            'utilisateur' => new UtilisateurResource($this->whenLoaded('utilisateur')),
             'idRessource' => $this->fk_id_ressource,
+            'ressource' => new RessourceResource($this->whenLoaded('ressource')),
         ];   
     }
 }

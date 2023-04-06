@@ -42,8 +42,8 @@ class CommentaireController extends Controller
      * Allowed includes
      */
     protected $allowedIncludes = [
-        'idUtilisateur',
-        'idRessource'
+        'utilisateur',
+        'ressource'
     ];
 
     /**
@@ -57,9 +57,23 @@ class CommentaireController extends Controller
         $queryContent = $request->all();
         $filter = new QueryFilter();
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
-        $commentaires = Commentaire::where($eloquentQuery)->paginate($perPage);
+        $commentaires = Commentaire::where($eloquentQuery);
 
-        return new CommentaireCollection($commentaires->appends($request->query()));
+        $includes = $request->query('include');
+        if ($includes) {
+            $includedArray = explode(',', $includes);
+            foreach($includedArray as $include) {
+                if (in_array($include, $this->allowedIncludes)) {
+                    $commentaires->with($include);
+                } else {
+                    return response()->json([
+                        'message' => 'Invalid include'],
+                    400);
+                }
+            }
+        }
+
+        return new CommentaireCollection($commentaires->paginate($perPage)->appends($request->query()));
     }
 
     /**
