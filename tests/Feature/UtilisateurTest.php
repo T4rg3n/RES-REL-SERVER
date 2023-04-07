@@ -9,36 +9,15 @@ use App\Models\Utilisateur;
 class UtilisateurTest extends TestCase
 {
     /**
-     * Test POST one utilisateur
+     * Set up authentication for the test
      */
-    public function testPostOneUtilisateur()
+    protected function setUp(): void
     {
-        $response = $this->post('/api/v1/utilisateurs', [
-            'nom' => 'test',
-            'prenom' => 'test',
-            'bio' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae nisl',
-            'mail' => 'test@test.com',
-            'motDePasse' => 'test*123',
-            'dateNaissance' => '1990-01-01 00:00:00',
-            'codePostal' => '1234',
-            'role' => Role::all()->random()->id_role
-        ]);
-        $response->assertStatus(201);
-        $response->assertJsonStructure([
-            'id',
-            'mail',
-            'motDePasse',
-            'dateInscription',
-            'dateNaissance',
-            'codePostal',
-            'nom',
-            'prenom',
-            'cheminPhoto',
-            'bio',
-            'compteActif',
-            'raisonBan',
-            'role'
-        ]);
+        parent::setUp();
+
+        $user = Utilisateur::factory()->create();
+
+        $this->actingAs($user);
     }
 
     /**

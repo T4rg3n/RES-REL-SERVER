@@ -3,12 +3,26 @@
 namespace Tests\Feature;
 
 use App\Models\Role;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+use App\Models\Utilisateur;
 
 class RoleTest extends TestCase
 {
+    use DatabaseTransactions;
+
+    /**
+     * Set up authentication for the test
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $user = Utilisateur::factory()->create();
+
+        $this->actingAs($user);
+    }
+
     /**
      * Test POST one role
      */

@@ -2,13 +2,27 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\TypeRelation;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Models\Utilisateur;
 
 class TypeRelationTest extends TestCase
 {
+    use DatabaseTransactions;
+
+    /**
+     * Set up authentication for the test
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $user = Utilisateur::factory()->create();
+
+        $this->actingAs($user);
+    }
+
     /**
      * Test POST one typeRelation
      */

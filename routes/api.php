@@ -38,7 +38,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1', 'middl
     Route::apiResource('categories', CategorieController::class)->except(['index', 'show']);
     Route::apiResource('commentaires', CommentaireController::class)->except(['index', 'show']);
     Route::apiResource('favoris', FavorisController::class);
-    Route::apiResource('groupes', GroupeController::class)->except(['index', 'show']);
+    Route::apiResource('groupes', GroupeController::class);
     Route::apiResource('piecesJointes', PieceJointeController::class)->except(['index', 'show']);
     Route::apiResource('relations', RelationController::class);
     Route::apiResource('reponsesCommentaires', ReponseCommentaireController::class)->except(['index', 'show']);
@@ -58,11 +58,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1'], funct
     Route::post('connexion', 'LoginController@login');
     Route::post('inscription', 'UtilisateurController@store');
     
-
     //GET / HEAD
     Route::apiResource('categories', CategorieController::class)->only(['index', 'show']);
     Route::apiResource('commentaires', CommentaireController::class)->only(['index', 'show']);
-    Route::apiResource('groupes', GroupeController::class)->only(['index', 'show']);
     Route::apiResource('piecesJointes', PieceJointeController::class)->only(['index', 'show']);
         //to download file attachement
         Route::get('piecesJointes/{id}/download', 'PieceJointeController@download');

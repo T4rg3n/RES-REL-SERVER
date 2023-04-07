@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Categorie;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+use App\Models\Utilisateur;
 
 class CategorieTest extends TestCase
 {
@@ -12,6 +13,18 @@ class CategorieTest extends TestCase
     use DatabaseTransactions;
 
     //TODO Add test for ?perPage
+    
+    /**
+     * Set up authentication for the test
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $user = Utilisateur::factory()->create();
+
+        $this->actingAs($user);
+    }
 
     /**
      * Test POST one category

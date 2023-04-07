@@ -3,14 +3,27 @@
 namespace Tests\Feature;
 
 use App\Models\Utilisateur;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 
 class PieceJointeTest extends TestCase
 {
+    use DatabaseTransactions;
+
+    /**
+     * Set up authentication for the test
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $user = Utilisateur::factory()->create();
+
+        $this->actingAs($user);
+    }
+
     /**
      * Test POST one piece jointe (Image)
      */

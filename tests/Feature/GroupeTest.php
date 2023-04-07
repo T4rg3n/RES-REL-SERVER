@@ -5,10 +5,23 @@ namespace Tests\Feature;
 use App\Models\Groupe;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+use App\Models\Utilisateur;
 
 class GroupeTest extends TestCase
 {
     use DatabaseTransactions;
+
+    /**
+     * Set up authentication for the test
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $user = Utilisateur::factory()->create();
+
+        $this->actingAs($user);
+    }
 
     /**
      * Test POST one group

@@ -14,6 +14,18 @@ class RessourceTest extends TestCase
     use DatabaseTransactions;
 
     /**
+     * Set up authentication for the test
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $user = Utilisateur::factory()->create();
+
+        $this->actingAs($user);
+    }
+
+    /**
      * Test POST one ressource 
      */
     public function testPostOneRessource()
