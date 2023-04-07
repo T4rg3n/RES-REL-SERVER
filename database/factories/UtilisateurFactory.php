@@ -31,7 +31,6 @@ class UtilisateurFactory extends Factory
             'prenom_uti' => $this->faker->firstName,
             'photo_uti' => '/assets/default-assets/default-user.png',
             'bio_uti' => $this->faker->text,
-            'url_profil_uti' => null,
             'compte_actif_uti' => $this->faker->boolean,
             'raison_banni_uti' => $banStatus ? $raisonBan : null,
             'fk_id_role' => Role::all()->random()->id_role,

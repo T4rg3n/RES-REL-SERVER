@@ -25,7 +25,6 @@ class UtilisateurResource extends JsonResource
             'prenom' => $this->prenom_uti,
             'cheminPhoto' => $this->photo_uti,
             'bio' => $this->bio_uti,
-            'urlProfil' => $this->url_profil_uti,
             'compteActif' => $this->compte_actif_uti,
             'raisonBan' => $this->raison_banni_uti,
             'idRole' => $this->fk_id_role,

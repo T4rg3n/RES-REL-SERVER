@@ -27,7 +27,6 @@ class UtilisateurController extends Controller
         'nom' => ['equals'],
         'prenom' => ['equals'],
         'cheminPhoto' => ['equals'],
-        'urlProfil' => ['equals'],
         'compteActif' => ['equals'],
         'role' => ['equals']
     ];
@@ -44,7 +43,6 @@ class UtilisateurController extends Controller
         'nom' => 'nom_uti',
         'prenom' => 'prenom_uti',
         'cheminPhoto' => 'photo_uti',
-        'urlProfil' => 'url_profil_uti',
         'compteActif' => 'compte_actif_uti',
         'role' => 'fk_id_role'
     ];

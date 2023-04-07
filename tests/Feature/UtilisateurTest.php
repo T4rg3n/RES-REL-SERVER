@@ -35,7 +35,6 @@ class UtilisateurTest extends TestCase
             'prenom',
             'cheminPhoto',
             'bio',
-            'urlProfil',
             'compteActif',
             'raisonBan',
             'role'
@@ -62,7 +61,6 @@ class UtilisateurTest extends TestCase
                     'prenom',
                     'cheminPhoto',
                     'bio',
-                    'urlProfil',
                     'compteActif',
                     'raisonBan',
                     'role'
@@ -91,7 +89,6 @@ class UtilisateurTest extends TestCase
                 'prenom',
                 'cheminPhoto',
                 'bio',
-                'urlProfil',
                 'compteActif',
                 'raisonBan',
                 'role'

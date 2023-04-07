@@ -94,7 +94,6 @@ paths:
                     prenom: "John"
                     cheminPhoto: "/uploads/1.jpg"
                     bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc."
-                    urlProfil: "users/1"
                     compteActif: true
                     raisonBan: nulSl
                     idRole: 4
@@ -1680,7 +1679,6 @@ paths:
                   prenom: "John"
                   cheminPhoto: "/uploads/1.jpg"
                   bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc."
-                  urlProfil: "users/1"
                   compteActif: true
                   raisonBan: null
                   idRole: 1
