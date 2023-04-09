@@ -3,6 +3,8 @@
 namespace App\Http\Requests\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use \Illuminate\Validation\ValidationException;
 
 class StoreRessourceRequest extends FormRequest
 {
@@ -66,5 +68,21 @@ class StoreRessourceRequest extends FormRequest
             'fk_id_categorie' => $this->idCategorie,
             'fk_id_piece_jointe' => $this->idPieceJointe,
         ]);
+    }
+
+    /**
+     * Handle a failed validation attempt.
+     *
+     * @param  \Illuminate\Contracts\Validation\Validator  $validator
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        throw new ValidationException($validator, response()->json([
+            'message' => 'The given data was invalid.',
+            'errors' => $validator->errors(),
+        ], 422));
     }
 }

@@ -3,6 +3,9 @@
 namespace App\Http\Requests\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use \Illuminate\Validation\ValidationException;
+
 
 class StoreGroupeRequest extends FormRequest
 {
@@ -60,5 +63,21 @@ class StoreGroupeRequest extends FormRequest
             'description_groupe' => $this->description,
             'est_prive_groupe' => $this->estPrive,
         ]);
+    }
+
+    /**
+     * Handle a failed validation attempt.
+     *
+     * @param  \Illuminate\Contracts\Validation\Validator  $validator
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        throw new ValidationException($validator, response()->json([
+            'message' => 'The given data was invalid.',
+            'errors' => $validator->errors(),
+        ], 422));
     }
 }

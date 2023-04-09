@@ -4,6 +4,8 @@ namespace App\Http\Requests\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Contracts\Validation\Validator;
+use \Illuminate\Validation\ValidationException;
 
 class LoginRequest extends FormRequest
 {
@@ -50,7 +52,7 @@ class LoginRequest extends FormRequest
         ];
     }
 
-   /**
+    /**
      * Translate request parameters to database columns
      * for the columns that need to be translated
      */
@@ -60,5 +62,21 @@ class LoginRequest extends FormRequest
             'mail_uti' => $this->mail,
             'mdp_uti' => Hash::make($this->motDePasse)
         ]);
+    }
+
+    /**
+     * Handle a failed validation attempt.
+     *
+     * @param  \Illuminate\Contracts\Validation\Validator  $validator
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        throw new ValidationException($validator, response()->json([
+            'message' => 'The given data was invalid.',
+            'errors' => $validator->errors()
+        ], 422));
     }
 }

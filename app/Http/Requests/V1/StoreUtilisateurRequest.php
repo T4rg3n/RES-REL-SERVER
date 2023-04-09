@@ -108,7 +108,6 @@ class StoreUtilisateurRequest extends FormRequest
     protected function failedValidation(Validator $validator)
     {
         throw new ValidationException($validator, response()->json([
-            'status' => 'error',
             'message' => 'The given data was invalid.',
             'errors' => $validator->errors(),
         ], 422));

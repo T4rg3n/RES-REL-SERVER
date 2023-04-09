@@ -3,6 +3,9 @@
 namespace App\Http\Requests\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use \Illuminate\Validation\ValidationException;
+
 
 class StoreRelationRequest extends FormRequest
 {
@@ -55,5 +58,21 @@ class StoreRelationRequest extends FormRequest
             'demandeur_id' => $this->idDemandeur,
             'receveur_id' => $this->idReceveur,
         ]);
+    }
+
+    /**
+     * Handle a failed validation attempt.
+     *
+     * @param  \Illuminate\Contracts\Validation\Validator  $validator
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        throw new ValidationException($validator, response()->json([
+            'message' => 'The given data was invalid.',
+            'errors' => $validator->errors(),
+        ], 422));
     }
 }

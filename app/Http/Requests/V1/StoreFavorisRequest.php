@@ -3,6 +3,8 @@
 namespace App\Http\Requests\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use \Illuminate\Validation\ValidationException;
 
 class StoreFavorisRequest extends FormRequest
 {
@@ -55,5 +57,21 @@ class StoreFavorisRequest extends FormRequest
             'fk_id_uti' => $this->idUtilisateur,
             'fk_id_ressource' => $this->idRessource,
         ]);
+    }
+
+    /**
+     * Handle a failed validation attempt.
+     *
+     * @param  \Illuminate\Contracts\Validation\Validator  $validator
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        throw new ValidationException($validator, response()->json([
+            'message' => 'The given data was invalid.',
+            'errors' => $validator->errors(),
+        ], 422));
     }
 }

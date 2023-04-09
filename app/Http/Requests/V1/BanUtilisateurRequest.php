@@ -47,7 +47,7 @@ class BanUtilisateurRequest extends FormRequest
         ];
     }
 
-     /**
+    /**
      * Translate request parameters to database columns
      * for the columns that need to be translated
      */
