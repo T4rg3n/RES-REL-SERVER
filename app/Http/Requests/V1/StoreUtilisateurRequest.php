@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests\V1;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class StoreUtilisateurRequest extends FormRequest
 {
@@ -26,7 +28,6 @@ class StoreUtilisateurRequest extends FormRequest
     public function rules()
     {
         return [
-            //'mail' => ['required', 'string', 'email', 'max:255', 'unique:utilisateurs'],
             'mail' => ['required', 'string', 'email', 'max:255'],
             'motDePasse' => ['required', 'string', 'min:8', 'max:255'],
             'dateNaissance' => ['required', 'date'],
@@ -94,5 +95,22 @@ class StoreUtilisateurRequest extends FormRequest
             //1 = super-admin, 2 = admin, 3 = moderateur, 4 = utilisateur
             'fk_id_role' => 4,
         ]);
+    }
+
+    /**
+     * Handle a failed validation attempt.
+     *
+     * @param  \Illuminate\Contracts\Validation\Validator  $validator
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        throw new ValidationException($validator, response()->json([
+            'status' => 'error',
+            'message' => 'The given data was invalid.',
+            'errors' => $validator->errors(),
+        ], 422));
     }
 }
