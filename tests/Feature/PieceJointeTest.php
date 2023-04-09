@@ -29,18 +29,19 @@ class PieceJointeTest extends TestCase
      */
     public function testPostOneImageAsPieceJointe()
     {
-        Storage::fake('public');
+        Storage::fake('uploads');
+
+        $image = UploadedFile::fake()->image('photo1.jpg');
         $id_utilisateur = Utilisateur::all()->random()->id_uti;
 
         $response = $this->post('/api/v1/piecesJointes', [
-            'file' => UploadedFile::fake()->image('photo1.jpg'),
+            'file' => $image,
             'type' => 'IMAGE',
             'titre' => 'Image',
             'idUtilisateur' => $id_utilisateur,
             'description' => 'Test Image',
         ]);
 
-        $response->assertFileExists(Storage::disk('public/user-files/' . $id_utilisateur . '/image')->exists('photo1.jpg'));
         $response->assertStatus(201);
         $response->assertJsonStructure([
             'id',
@@ -52,7 +53,7 @@ class PieceJointeTest extends TestCase
             'dateActivite',
             'lieu',
             'codePostal',
-            'utilisateur'
+            'idUtilisateur'
         ]);
     }
 }

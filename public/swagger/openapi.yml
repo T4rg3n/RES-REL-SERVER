@@ -614,7 +614,6 @@ paths:
   #endregion
 
   #region Groupes (review ok)
-    #TODO ne pas ouvrir cet endpoint sur l'api publique
   /groupes:
     get:
       summary: Get all groupes
@@ -812,10 +811,6 @@ paths:
                   type: integer
                   description: ID of the user
                   example: 1
-                idRessource:
-                  type: integer
-                  description: ID of the ressource
-                  example: 2
                 type:
                   type: string
                   description: Type of the piece jointe
