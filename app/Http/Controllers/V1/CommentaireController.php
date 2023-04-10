@@ -57,7 +57,20 @@ class CommentaireController extends Controller
         $queryContent = $request->all();
         $filter = new QueryFilter();
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
-        $commentaires = Commentaire::where($eloquentQuery);
+
+        $typeOrder = 'asc';
+        $fieldOrder = 'id_commentaire';
+
+        $orderBy = $request->query('orderBy');
+        if($orderBy) {
+            $orderByArray = explode(',', $orderBy);
+            if (count($orderByArray) == 2) {
+                $fieldOrder = $orderByArray[0];
+                $typeOrder = $orderByArray[1];
+            }
+        }
+
+        $commentaires = Commentaire::where($eloquentQuery)->orderBy($fieldOrder, $typeOrder);
 
         $includes = $request->query('include');
         if ($includes) {
