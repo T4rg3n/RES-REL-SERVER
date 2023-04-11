@@ -9,7 +9,7 @@ use App\Http\Resources\V1\CategorieCollection;
 use App\Http\Requests\V1\StoreCategorieRequest;
 use App\Http\Requests\V1\UpdateCategorieRequest;
 use Illuminate\Http\Request;
-use App\Services\V1\QueryFilter;
+use App\Services\V1\QueryService;
 
 class CategorieController extends Controller
 {
@@ -38,7 +38,7 @@ class CategorieController extends Controller
     {
         $perPage = request()->input('perPage', 15);
         $queryContent = $request->all();
-        $filter = new QueryFilter();
+        $filter = new QueryService();
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
         $categories = Categorie::where($eloquentQuery)->paginate($perPage);
 
@@ -91,10 +91,10 @@ class CategorieController extends Controller
      * @param  \App\Models\Categorie  $categorie
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCategorieRequest $request, Categorie $categorie)
-    {
-        //
-    }
+    // public function update(UpdateCategorieRequest $request, Categorie $categorie)
+    // {
+    //     
+    // }
 
     /**
      * Remove the specified resource from storage.

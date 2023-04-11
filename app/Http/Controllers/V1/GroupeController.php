@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\GroupeResource;
 use App\Http\Resources\V1\GroupeCollection;
 use App\Http\Requests\V1\StoreGroupeRequest;
-use App\Services\V1\QueryFilter;
+use App\Services\V1\QueryService;
 
 class GroupeController extends Controller
 {
@@ -39,11 +39,14 @@ class GroupeController extends Controller
     {
         $perPage = request()->input('perPage', 15);
         $queryContent = $request->all();
-        $filter = new QueryFilter();
+        $filter = new QueryService();
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
-        $groupe = Groupe::where($eloquentQuery)->paginate($perPage);    
 
-        return new GroupeCollection($groupe->appends($request->query()));
+        // Order by
+        [$fieldOrder, $typeOrder] = (new QueryService)->translateOrderBy($request->query('orderBy'), 'id_groupe', $this->columnMap); 
+        $groupe = Groupe::where($eloquentQuery)->orderBy($fieldOrder, $typeOrder);
+
+        return new GroupeCollection($groupe->paginate($perPage)->appends($request->query()));
     }
 
     /**

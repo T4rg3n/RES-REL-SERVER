@@ -9,7 +9,7 @@ use App\Http\Resources\V1\UtilisateurResource;
 use App\Http\Resources\V1\UtilisateurCollection;
 use App\Http\Requests\V1\StoreUtilisateurRequest;
 use App\Http\Requests\V1\BanUtilisateurRequest;
-use App\Services\V1\QueryFilter;
+use App\Services\V1\QueryService;
 use App\Services\V1\TokenAttributor;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
@@ -63,8 +63,11 @@ class UtilisateurController extends Controller
     {
         $perPage = request()->input('perPage', 15);
         $queryContent = $request->all();
-        $eloquentQuery = (new QueryFilter)->transform($queryContent, $this->allowedParams, $this->columnMap);
-        $utilisateurs = Utilisateur::where($eloquentQuery);
+        $eloquentQuery = (new QueryService)->transform($queryContent, $this->allowedParams, $this->columnMap);
+        
+        // Order by
+        [$fieldOrder, $typeOrder] = (new QueryService)->translateOrderBy($request->query('orderBy'), 'id_uti', $this->columnMap); 
+        $utilisateurs = Utilisateur::where($eloquentQuery)->orderBy($fieldOrder, $typeOrder); 
 
         $includes = $request->query('include');
         if ($includes) {

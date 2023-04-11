@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\CommentaireResource;
 use App\Http\Resources\V1\CommentaireCollection;
 use App\Http\Requests\V1\StoreCommentaireRequest;
-use App\Services\V1\QueryFilter;
+use App\Services\V1\QueryService;
 
 class CommentaireController extends Controller
 {
@@ -55,23 +55,14 @@ class CommentaireController extends Controller
     {
         $perPage = request()->input('perPage', 15);
         $queryContent = $request->all();
-        $filter = new QueryFilter();
+        $filter = new QueryService();
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
 
-        $typeOrder = 'asc';
-        $fieldOrder = 'id_commentaire';
-
-        $orderBy = $request->query('orderBy');
-        if($orderBy) {
-            $orderByArray = explode(',', $orderBy);
-            if (count($orderByArray) == 2) {
-                $fieldOrder = $orderByArray[0];
-                $typeOrder = $orderByArray[1];
-            }
-        }
-
+        // Order by
+        [$fieldOrder, $typeOrder] = (new QueryService)->translateOrderBy($request->query('orderBy'), 'id_commentaire', $this->columnMap); 
         $commentaires = Commentaire::where($eloquentQuery)->orderBy($fieldOrder, $typeOrder);
-
+     
+        //Todo Refactor this
         $includes = $request->query('include');
         if ($includes) {
             $includedArray = explode(',', $includes);
