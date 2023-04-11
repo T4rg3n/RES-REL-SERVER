@@ -1,0 +1,38 @@
+site_name: RESREL-SERVER Documentation
+
+nav:
+  - Getting started: index.md
+  # - About: about.md
+  - Errors: 
+    - Request errors: errors/#request-errors
+    - Server errors: errors/#server-errors
+  - Endpoints:  
+    - Authenticated: enpoints/#authenticated
+    - Unauthenticated: enpoints/#unauthenticated
+
+theme:
+  name: 'material'
+  features:
+    - navigation.instant
+    - navigation.tracking
+    
+#    - navigation.tabs
+
+markdown_extensions:
+  - codehilite:
+      guess_lang: false
+      linenums: true
+  - toc:
+      permalink: true
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
