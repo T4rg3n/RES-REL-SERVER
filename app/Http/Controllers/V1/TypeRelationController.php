@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\TypeRelationResource;
 use App\Http\Resources\V1\TypeRelationCollection;
 use App\Http\Requests\V1\StoreTypeRelationRequest;
-use App\Services\V1\QueryFilter;
+use App\Services\V1\QueryService;
 
 /**
  * @OA\Info(title="Search API", version="1.0.0")
@@ -42,11 +42,11 @@ class TypeRelationController extends Controller
     {
         $perPage = request()->input('perPage', 15);
         $queryContent = $request->all();
-        $filter = new QueryFilter();
+        $filter = new QueryService();
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
-        $typesRelations = TypeRelation::where($eloquentQuery)->paginate($perPage);
-
-        return new TypeRelationCollection($typesRelations->appends($request->query()));
+        $typesRelations = TypeRelation::where($eloquentQuery); 
+        
+        return new TypeRelationCollection($typesRelations->paginate($perPage)->appends($request->query()));
     }
 
     /**

@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\RoleResource;
 use App\Http\Resources\V1\RoleCollection;
 use App\Http\Requests\V1\StoreRoleRequest;
-use App\Services\V1\QueryFilter;
+use App\Services\V1\QueryService;
 
 class RoleController extends Controller
 {
@@ -35,11 +35,11 @@ class RoleController extends Controller
     {
         $perPage = request()->input('perPage', 15);
         $queryContent = $request->all();
-        $filter = new QueryFilter();
+        $filter = new QueryService();
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
-        $roles = Role::where($eloquentQuery)->paginate($perPage);
+        $roles = Role::where($eloquentQuery); 
 
-        return new RoleCollection($roles->appends($request->query()));
+        return new RoleCollection($roles->paginate($perPage)->appends($request->query()));
     }
 
     /**
