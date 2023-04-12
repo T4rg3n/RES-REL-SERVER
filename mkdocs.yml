@@ -2,16 +2,34 @@ site_name: RESREL-SERVER Documentation
 
 nav:
   - Getting started: index.md
-  # - About: about.md
   - Errors: 
     - Request errors: errors/#request-errors
     - Server errors: errors/#server-errors
-  - Endpoints:  
-    - Authenticated: enpoints/#authenticated
-    - Unauthenticated: enpoints/#unauthenticated
+  - Endpoints: 
+    - Operations: 
+      - Pagination: operations/#pagination
+      - Sorting: operations/#sorting
+      - Filtering: operations/#filtering
+      - Aggregating: operations/#aggregating
+    - List of endpoints:
+      - Authentification: enpoints/#authentification
+      - Categories: enpoints/#categories
+      - Comments: enpoints/#comments
+      - Favorites: enpoints/#favorites
+      - Groups: enpoints/#groups
+      - Pieces jointes: enpoints/#pieces-jointes
+      - Relations: enpoints/#relations
+      - Comment responses: enpoints/#comment-responses
+      - Resources: enpoints/#resources
+      - Roles: enpoints/#roles
+      - Search: enpoints/#search
+      - Relation types: enpoints/#relation-types
+      - Users: enpoints/#users
 
 theme:
   name: 'material'
+  logo: 'docs-favicon.png'
+  favicon: 'docs-favicon.png'
   features:
     - navigation.instant
     - navigation.tracking
