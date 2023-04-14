@@ -21,7 +21,6 @@ class TypeRelationController extends Controller
     protected $allowedParams = [
         'id' => ['equals'],
         'nom' => ['equals'],
-        'dateCreation' => ['equals', 'lowerThan', 'lowerThanEquals', 'greaterThan', 'greaterThanEquals'],
     ];
 
     /**
@@ -30,7 +29,6 @@ class TypeRelationController extends Controller
     protected $columnMap = [
         'id' => 'id_type_relation',
         'nom' => 'nom_type_relation',
-        'dateCreation' => 'date_creation',
     ];
 
     /**
