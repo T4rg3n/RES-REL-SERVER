@@ -28,7 +28,7 @@ class StoreGroupeRequest extends FormRequest
     public function rules()
     {
         return [
-            'nom' => ['required', 'string', 'max:255'],
+            'nom' => ['required', 'unique:groupes,nom_groupe', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:255'],
             'estPrive' => ['required', 'boolean'],
         ];
@@ -49,6 +49,7 @@ class StoreGroupeRequest extends FormRequest
             'description.string' => 'Groupe description must be a string',
             'description.max' => 'Groupe description must be less than 255 characters',
             'estPrive.boolean' => 'Groupe privacy must be a boolean',
+            'estPrive.required' => 'Groupe privacy is required',
         ];
     }
 

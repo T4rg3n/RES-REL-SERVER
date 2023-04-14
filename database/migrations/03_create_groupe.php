@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('groupes', function (Blueprint $table) {
             $table->id('id_groupe');
-            $table->string('nom_groupe');
+            $table->string('nom_groupe')->unique();
             $table->text('description_groupe');
             $table->boolean('est_prive_groupe')->default(true);
         });
