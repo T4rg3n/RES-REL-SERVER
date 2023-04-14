@@ -47,13 +47,11 @@ class AuthTest extends TestCase
 
         $this->assertArrayHasKey('id', $responseBody['response']);
         $this->assertArrayHasKey('mail', $responseBody['response']);
-        $this->assertArrayHasKey('motDePasse', $responseBody['response']);
         $this->assertArrayHasKey('dateInscription', $responseBody['response']);
         $this->assertArrayHasKey('dateNaissance', $responseBody['response']);
         $this->assertArrayHasKey('codePostal', $responseBody['response']);
         $this->assertArrayHasKey('nom', $responseBody['response']);
         $this->assertArrayHasKey('prenom', $responseBody['response']);
-        $this->assertArrayHasKey('cheminPhoto', $responseBody['response']);
         $this->assertArrayHasKey('bio', $responseBody['response']);
         $this->assertArrayHasKey('compteActif', $responseBody['response']);
         $this->assertArrayHasKey('raisonBan', $responseBody['response']);

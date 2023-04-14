@@ -26,7 +26,6 @@ class UtilisateurController extends Controller
         'codePostal' => ['equals'],
         'nom' => ['equals'],
         'prenom' => ['equals'],
-        'cheminPhoto' => ['equals'],
         'compteActif' => ['equals'],
         'role' => ['equals']
     ];
@@ -42,7 +41,6 @@ class UtilisateurController extends Controller
         'codePostal' => 'code_postal_uti',
         'nom' => 'nom_uti',
         'prenom' => 'prenom_uti',
-        'cheminPhoto' => 'photo_uti',
         'compteActif' => 'compte_actif_uti',
         'role' => 'fk_id_role'
     ];

@@ -71,7 +71,6 @@ Content-Type: application/json
     "codePostal": "75000",
     "nom": "Doe",
     "prenom": "John",
-    "cheminPhoto": "/user-files/1/1_photoProfil.jpg",
     "bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc.",
     "compteActif": true,
     "raisonBan": "nulSl",

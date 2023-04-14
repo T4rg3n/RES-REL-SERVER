@@ -86,13 +86,11 @@ paths:
                  - response:
                     id: 1
                     mail: "john.doe@gmail.com"
-                    motDePasse: "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
                     dateInscription: 2023-01-02 21:16:55
                     dateNaissance: 2002-01-02 00:00:00
                     codePostal: "75000"
                     nom: "Doe"
                     prenom: "John"
-                    cheminPhoto: "/uploads/1.jpg"
                     bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc."
                     compteActif: true
                     raisonBan: nulSl
@@ -1696,13 +1694,11 @@ paths:
                 data:
                   id: 1
                   mail: "john.doe@gmail.com"
-                  motDePasse: "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
                   dateInscription: 2023-01-02 21:16:55
                   dateNaissance: 2002-01-02 00:00:00
                   codePostal: 75000
                   nom: "Doe"
                   prenom: "John"
-                  cheminPhoto: "/uploads/1.jpg"
                   bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc."
                   compteActif: true
                   raisonBan: null
@@ -1785,13 +1781,11 @@ paths:
                 data:
                   id: 1
                   mail: "john.doe@gmail.com"
-                  motDePasse: "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
                   dateInscription: 2023-01-02 21:16:55
                   dateNaissance: 2002-01-02 00:00:00
                   codePostal: 75000
                   nom: "Doe"
                   prenom: "John"
-                  cheminPhoto: "/uploads/1.jpg"
                   bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc."
                   compteActif: true
                   raisonBan: null
