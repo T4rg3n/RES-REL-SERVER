@@ -29,6 +29,8 @@ class StoreRoleRequest extends FormRequest
     {
         return [
             'nom' => ['required', 'string'],
+            'ascendant' => ['required', 'string'],
+            'descendant' => ['required', 'string'],
         ];
     }
 
@@ -42,6 +44,10 @@ class StoreRoleRequest extends FormRequest
         return [
             'nom.required' => 'nom is required',
             'nom.string' => 'nom must be a string',
+            'ascendant.required' => 'ascendant is required',
+            'ascendant.string' => 'ascendant must be a string',
+            'descendant.required' => 'descendant is required',
+            'descendant.string' => 'descendant must be a string',        
         ];
     }
 
@@ -53,6 +59,8 @@ class StoreRoleRequest extends FormRequest
     {
         $this->merge([
             'nom_role' => $this->nom,
+            'ascendant_role' => $this->ascendant,
+            'descendant_role' => $this->descendant,
         ]);
     }
 

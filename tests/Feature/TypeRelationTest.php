@@ -35,7 +35,6 @@ class TypeRelationTest extends TestCase
         $response->assertJsonStructure([
             'id',
             'nom',
-            'dateCreation'
         ]);
     }
 
@@ -51,7 +50,6 @@ class TypeRelationTest extends TestCase
                 '*' => [
                     'id',
                     'nom',
-                    'dateCreation'
                 ]
             ]
         ]);

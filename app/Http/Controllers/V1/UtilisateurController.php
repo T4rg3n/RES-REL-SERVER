@@ -200,7 +200,7 @@ class UtilisateurController extends Controller
         $utilisateur->delete();
 
         return response()->json([
-            'message' => 'Utilisateur deleted successfully'
+            'message' => 'Utilisateur deleted'
         ], 200);
     }
     
