@@ -1031,7 +1031,7 @@ paths:
                 message: "Relation deleted"
   #endregion
 
-  #region Reponses commentaires
+  #region Reponses commentaires (review ok)
   /reponsesCommentaires:
     get:
       summary: Get all reponses commentaires
@@ -1061,15 +1061,19 @@ paths:
                   type: object
               example:
                 - id: 1
-                  dateCreation: 2023-01-02 21:16:55
-                  idCommentaire: 1
+                  contenu: "C'est une bonne idée"
+                  nombreSignalements: 0
                   idUtilisateur: 2
-                  contenu: "C'est une bonne idée"
+                  idCommentaire: 1
+                  datePublication: 2023-01-02 21:16:55
+                  reponseSupprime: false
                 - id: 2
-                  dateCreation: 2023-03-06 12:10:02
-                  idCommentaire: 2
-                  idUtilisateur: 3
-                  contenu: "C'est une bonne idée"
+                  contenu: "Ouep je suis d'accord"
+                  nombreSignalements: 0
+                  idUtilisateur: 2
+                  idCommentaire: 1
+                  datePublication: 2023-01-02 21:16:55
+                  reponseSupprime: false
     post:
       summary: Create a reponse commentaire
       security:
@@ -1153,13 +1157,14 @@ paths:
               schema:
                 type: object
               example:
-                - id: 1
-                  contenu: 'Bonjour, je suis une réponse commentaire'
+                data:
+                  id: 2
+                  contenu: "Bonjour je suis une réponse commentaire"
                   nombreSignalements: 0
-                  idUtilisateur: 17
-                  idCommentaire: 135
-                  datePublication: 2023-01-02 21:16:55
-                  reponseSupprime: false                  
+                  idUtilisateur: 2
+                  idCommentaire: 1
+                  datePublication: 2023-04-14 09:52:12
+                  reponseSupprime: false        
     delete:
       summary: Delete a reponse commentaire by id
       security:
@@ -1184,7 +1189,7 @@ paths:
                 message: "Reponse deleted"
   #endregion
 
-  #region Ressources
+  #region Ressources (review ok)
   /ressources:
     get:
       summary: Get all ressources
@@ -1218,7 +1223,7 @@ paths:
                   dateCreation: 2023-01-02 21:16:55
                   status: PENDING
                   idUtilisateur: 1
-                  partage: RESTRICTED
+                  partage: PRIVATE
                   titre: Quis dolores repellendus fuga ut sit perferendis.
                   contenu: Voluptas cum sint accusamus quo officiis qui. Eum voluptatem autem aut nisi. Quae molestiae optio et ut. Voluptatem vel hic temporibus ea animi magni totam.
                   datePublication: null
@@ -1226,9 +1231,9 @@ paths:
                   idCategorie: 2
                 - id: 2
                   dateCreation: 2023-03-06 12:10:02
-                  status: PENDING
+                  status: APPROVED
                   idUtilisateur: 5
-                  partage: PRIVATE
+                  partage: PUBLIC
                   titre: Quis dolores repellendus fuga ut sit perferendis.
                   contenu: Voluptas cum sint accusamus quo officiis qui. Eum voluptatem autem aut nisi. Quae molestiae optio et ut. Voluptatem vel hic temporibus ea animi magni totam.
                   datePublication: null
@@ -1241,6 +1246,27 @@ paths:
       description: Create a ressource by sending a JSON object
       tags:
         - Ressources
+      requestBody:
+        content:
+          application/form-data:
+            schema:   
+              type: object
+              properties:
+                titre:
+                  example: "Ajout d'une nouvelle ressource"
+                  type: string
+                contenu:
+                  example: "Contenu de la nouvelle ressource"
+                  type: string
+                idUtilisateur:
+                  example: 1
+                  type: integer
+                idCategorie:
+                  example: 2
+                  type: integer
+                idPieceJointe:
+                  example: 3
+                  type: integer
       responses:
         '201':
           description: Create a ressource
@@ -1254,6 +1280,7 @@ paths:
                   idUtilisateur : 1
                   idCategorie : 2
                   idPieceJointe : 3           
+  /ressources/disable: 
     patch:
       summary: Refuse a ressource
       operationId: refuseRessource
@@ -1270,11 +1297,11 @@ paths:
               properties:
                 id:
                   type: integer
-                raisonRefus:
+                raison:
                   type: string
             example:
               id: 1
-              raisonRefus: "Raison du refus"
+              raison: "Raison du refus"
       responses:
         '200':
           description: Refuse a ressource
@@ -1300,16 +1327,6 @@ paths:
       description: Moderate and accept a ressource
       tags:
         - Ressources
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                id:
-                  type: integer
-            example:
-              id: 1
       responses:
         '200':
           description: Accept a ressource
@@ -1340,7 +1357,8 @@ paths:
               schema:
                 type: object
               example:
-                - id: 1
+                data:
+                  id: 1
                   dateCreation: 2023-01-02 21:16:55
                   status: PENDING
                   idUtilisateur: 1
@@ -1350,6 +1368,7 @@ paths:
                   datePublication: null
                   raisonRefus: null
                   idCategorie: 2
+                  idPieceJointe: 3
     delete:
       summary: Delete a ressource
       security:
@@ -1409,6 +1428,7 @@ paths:
                   nom: administrateur
                 - id: 2
                   nom: utilisateur
+    #TODO fix post & passer les ascendant et descandant en int 
     post:
       summary: Create a role
       security:
@@ -1424,8 +1444,14 @@ paths:
               properties:
                 nom:
                   type: string
+                ascendant:
+                  type: string
+                descandant:
+                  type: string
             example:
               nom: "Super modérateur"
+              ascendant : "administrateur"
+              descandant : "utilisateur"
       responses:
         '201':
           description: Create a role
@@ -1434,7 +1460,8 @@ paths:
               schema:
                 type: object
               example:
-                - nom : "Super modérateur"
+                - nom : "modérateur"
+                 
   /roles/{id}:
     get:
       summary: Get a role by id
@@ -1456,7 +1483,8 @@ paths:
               schema:
                 type: object
               example:
-                - id: 1
+                data:
+                  id: 1
                   nom: administrateur
     delete:
       summary: Delete a role
@@ -1483,7 +1511,7 @@ paths:
                 message : "Role deleted"
   #endregion
 
-  #region Recherche
+  #region Recherche (review ok)
   /search:
     post:
       summary: Search a user or a ressource 
@@ -1525,7 +1553,7 @@ paths:
                   idCategorie: 2
   #endregion
 
-  #region Types Relation
+  #region Types Relation (review ok but need fixes)
   /typesRelation:
     get:
       summary: Get all types relation
@@ -1607,8 +1635,9 @@ paths:
               schema:
                 type: object
               example:
-                - id: 1
-                  nom: Ami
+                data:
+                  id: 1
+                  nom: Soi
     delete:
       summary: Delete a type relation
       security:
@@ -1634,7 +1663,7 @@ paths:
                 message : "Type relation deleted"
   #endregion
 
-  #region Utilisateurs
+  #region Utilisateurs (review ok but)
   /utilisateurs:
     get:
       summary: Get all utilisateurs
@@ -1664,7 +1693,8 @@ paths:
                 items:
                   type: object
               example:
-                - id: 1
+                data:
+                  id: 1
                   mail: "john.doe@gmail.com"
                   motDePasse: "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
                   dateInscription: 2023-01-02 21:16:55
@@ -1677,6 +1707,37 @@ paths:
                   compteActif: true
                   raisonBan: null
                   idRole: 1
+
+  /utilisateur/disable:  
+    post:
+      summary: Disable an utilisateur
+      security:
+        - bearerAuth: []
+      description: Disable (ban) an utilisateur by sending a JSON object
+      tags:
+        - Utilisateurs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                raison:
+                  type: string
+            example:
+              id: 1
+              compteActif: false
+      responses:
+        '201':
+          description: Disable an utilisateur
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message : "Utilisateur disabled"
   /utilisateurs/{id}/download:
     get:
       summary: Download a user's profile picture
@@ -1700,6 +1761,65 @@ paths:
                 format: binary
               example:
                 - file: "1_photoProfil.jpg"            
+  /utilisateurs/{id}:
+    get:
+      summary: Get an utilisateur by id
+      description: Get a single utilisateur by its id
+      tags:
+        - Utilisateurs
+      parameters:
+        - name: id
+          in: path
+          description: ID of the utilisateur
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Get an utilisateur by id
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 1
+                  mail: "john.doe@gmail.com"
+                  motDePasse: "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+                  dateInscription: 2023-01-02 21:16:55
+                  dateNaissance: 2002-01-02 00:00:00
+                  codePostal: 75000
+                  nom: "Doe"
+                  prenom: "John"
+                  cheminPhoto: "/uploads/1.jpg"
+                  bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc."
+                  compteActif: true
+                  raisonBan: null
+                  idRole: 1
+    delete:
+      summary: Delete an utilisateur
+      security:
+        - bearerAuth: []
+      description: Delete a single utilisateur by its id. 
+      tags:
+        - Utilisateurs
+      parameters:
+        - name: id
+          in: path
+          description: ID of the utilisateur
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Delete an utilisateur
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message : "Utilisateur deleted"
+
   #endregion
 
 components:
