@@ -18,8 +18,14 @@ class PieceJointeFactory extends Factory
      */
     public function definition()
     {
-        //TODO maybe more logic for each type of piece jointe
         $pj = $this->faker->randomElement(['IMAGE', 'VIDEO', 'PDF', 'ACTIVITE']);
+
+        $extensionMap = [
+            'IMAGE' => 'jpg',
+            'VIDEO' => 'mp4',
+            'PDF' => 'pdf',
+            'ACTIVITE' => 'jpg',
+        ];
 
         if ($pj == 'ACTIVITE') {
             return [
@@ -34,16 +40,18 @@ class PieceJointeFactory extends Factory
                 'fk_id_uti' => Utilisateur::all()->random()->id_uti,
             ];
         } else {
+            $id_uti = Utilisateur::all()->random()->id_uti;
+
             return [
                 'type_pj' => $pj,
                 'titre_pj' => $this->faker->word,
                 'date_creation_pj' => $this->faker->dateTimeBetween('-1 year', 'now'),
                 'description_pj' => $this->faker->text(25),
-                'contenu_pj' => 'lien vers le fichier sur le serveur',
+                'contenu_pj' => '/user-files/' . $id_uti . '/' . $pj . '/' . $this->faker->numberBetween(1, 10000) . '.' . $extensionMap[$pj],
                 'date_activite_pj' => null,
                 'lieu_pj' => null,
                 'code_postal_pj' => null,
-                'fk_id_uti' => Utilisateur::all()->random()->id_uti,
+                'fk_id_uti' => $id_uti,
             ];
         }
     }
