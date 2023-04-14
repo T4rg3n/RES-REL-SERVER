@@ -18,7 +18,7 @@ class ReponseCommentaireController extends Controller
     protected $allowedParams = [
         'id' => ['equals'],
         'date' => ['equals', 'lowerThan', 'lowerThanEquals', 'greaterThan', 'greaterThanEquals'],
-        'supprime' => ['equals'],
+        'reponseSupprime' => ['equals'],
         'nombreSignalements' => ['equals', 'lowerThan', 'lowerThanEquals', 'greaterThan', 'greaterThanEquals'],
         'idUtilisateur' => ['equals'],
         'idCommentaire' => ['equals'],
@@ -30,7 +30,7 @@ class ReponseCommentaireController extends Controller
     protected $columnMap = [
         'id' => 'id_reponse',
         'datePublication' => 'date_publication_reponse',
-        'supprime' => 'reponse_supprime',
+        'reponseSupprime' => 'reponse_supprime',
         'nombreSignalements' => 'nombre_signalement_commentaire',
         'idUtilisateur' => 'fk_id_uti',
         'idCommentaire' => 'fk_id_commentaire',
@@ -73,8 +73,6 @@ class ReponseCommentaireController extends Controller
                 }
             }
         }
-
-        //BUG 'supprime' et 'date' s'affichent alors qu'ils ne devraient pas (ces champs sont traduits)
 
         return new ReponseCommentaireCollection($reponsesCommentaires->paginate($perPage)->appends($request->query())); 
     }
