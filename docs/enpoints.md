@@ -105,7 +105,15 @@ Authorization: Bearer 1|EojGLORUas6xz0OmRvuaZ4ReNhjqVVM5pdcUevJg
 
 ### `/categories`
 
-This endpoint is used to get a list of all categories or create a new category. The response will contain a list of all categories.
+#### GET 
+
+This endpoint is used to get a list of all categories. It accepts a GET request with optional query parameters.
+
+| Parameter                        | Type    | Required | Description                                                                              |
+|----------------------------------|---------|----------|------------------------------------------------------------------------------------------|
+| `perPage`                        |`integer`| `false`  | Set the number of categories per page.                                                   |
+| `<key>[<operator>]=<value>`      |`string` | `false`  | Filter categories with operators like `equals`, `notEquals`, `lowerThan`, `lowerThanEquals`, `greaterThan`, `greaterThanEquals`. |
+
 
 **Example request:**
 ```http
@@ -114,19 +122,252 @@ Host: api.victor-gombert.fr
 Accept: application/json
 ```
 
+**Example response:**
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
 
-<br>
-**Work in progress**
+[
+  {
+    "id": 1,
+    "nom": "Communication"
+  },
+  {
+    "id": 2,
+    "nom": "Culture"
+  }
+]
+```
+#### POST
 
-## Comments
+You can create a new category by sending a POST request with a JSON payload :
+
+**Example request :**
+```http
+POST /connexion HTTP/1.1
+Content-Type: application/json
+
+{
+  "nom": "Ma super categorie"
+}
+```
+
+**Example response:**
+```http
+HTTP/1.1 201 Created
+Content-Type: application/json
+
+{
+  "id": 14,
+  "nom": "Ma super categorie"
+}
+```
+
+### `/categories/{id}`
+
+#### GET
+
+This endpoint is used to get a category by its id. It accepts a GET request with the category's id as a path parameter.
+
+| Parameter                        | Type    | Required | Description                                                                              |
+|----------------------------------|---------|----------|------------------------------------------------------------------------------------------|
+| `id`                             |`integer`| `true`   | The id of the category.                                                                  |
+
+**Example request:**
+```http
+GET /api/v1/categories/1 HTTP/1.1
+Accept: application/json
+```
+
+*** Example response:***
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+{
+  "id": 1,
+  "nom": "Communication"
+}
+```
+
+#### DELETE
+
+This endpoint is used to delete a category by its id. It accepts a DELETE request with the category's id as a path parameter.
+
+| Parameter                        | Type    | Required | Description                                                                              |
+|----------------------------------|---------|----------|------------------------------------------------------------------------------------------|
+| `id`                             |`integer`| `true`   | The id of the category.                                                                  |
+
+**Example request:**
+```http
+DELETE /categories/1 HTTP/1.1
+Accept: application/json
+Authorization: Bearer 1|EojGLORUas6xz0OmRvuaZ4ReNhjqVVM5pdcUevJg
+```
+
+**Example response:**
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "message": "Categorie deleted"
+}
+```
+
+## Commentaires
 
 ### `/commentaires`
 
+#### GET
+
+This endpoint is used to get all commentaires. It accepts a GET request with optional query parameters.
+
+| Parameter                        | Type    | Required | Description                                                                              |
+|----------------------------------|---------|----------|------------------------------------------------------------------------------------------|
+| `perPage`                        |`integer`| `false`  | Set the number of categories per page.                                                   |
+| `<key>[<operator>]=<value>`      |`string` | `false`  | Filter comments with operators like `equals`, `notEquals`, `lowerThan`, `lowerThanEquals`, `greaterThan`, `greaterThanEquals`. |
+
+#### POST
+
+This endpoint is used to create a new commentaire. It accepts a POST request with a JSON payload containing the commentaire's information.
+
+**Example request:**
+```http
+POST /commentaires HTTP/1.1
+Content-Type: application/json
+{
+  "contenu": "Contenu du nouveau commentaire",
+  "idUtilisateur": 1,
+  "idRessource": 2
+}
+```
+
+**Example response:**
+```http
+HTTP/1.1 201 Created
+Content-Type: application/json
+{
+  "id": 10,
+  "contenu": "Contenu du nouveau commentaire",
+  "datePublication": "2023-01-02 21:16:55",
+  "nombreReponses": 0,
+  "supprime": false,
+  "nombreSignalements": 0,
+  "idUtilisateur": 1,
+  "idRessource": 2
+}
+```
+
 ### `/commentaires/{id}/disable`
+
+This endpoint is used to disable a commentaire. It accepts a PATCH request with the commentaire's id as a path parameter.
+
+| Parameter                        | Type    | Required | Description                                                                              |
+|----------------------------------|---------|----------|------------------------------------------------------------------------------------------|
+| `id`                             |`integer`| `true`   | The id of the commentaire.                                                               |
+
+
+**Example request:**
+```http
+PATCH /commentaires/1/disable HTTP/1.1
+Accept: application/json
+Authorization: Bearer 1|EojGLORUas6xz0OmRvuaZ4ReNhjqVVM5pdcUevJg
+```
+
+**Example response:**
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "message": "Commentaire disabled"
+}
+```
+
 
 ### `/commentaires/{id}/report`
 
+This endpoint is used to report a commentaire. It accepts a PATCH request with the commentaire's id as a path parameter.
+
+| Parameter                        | Type    | Required | Description                                                                              |
+|----------------------------------|---------|----------|------------------------------------------------------------------------------------------|
+| `id`                             |`integer`| `true`   | The id of the commentaire.                                                               |
+
+
+
+**Example request:**
+```http	
+PATCH /commentaires/1/report HTTP/1.1
+Accept: application/json
+Authorization: Bearer 1|EojGLORUas6xz0OmRvuaZ4ReNhjqVVM5pdcUevJg
+```
+
+**Example response:**
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "message": "Commentaire reported"
+}
+```
+
 ### `/commentaires/{id}`
+
+#### GET
+
+This endpoint is used to get a commentaire by its id. It accepts a GET request with the commentaire's id as a path parameter.
+
+
+**Example request:**
+```http
+GET /commentaires/1 HTTP/1.1
+Accept: application/json
+```
+
+**Example response:**
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+```
+{
+  "data": {
+    "id": 1,
+    "dateCreation": "2023-01-02 21:16:55",
+    "status": "PENDING",
+    "idUtilisateur": 1,
+    "contenu": "Voluptas cum sint accusamus quo officiis qui. Eum voluptatem autem aut
+    "datePublication": null,
+    "raisonRefus": null,
+    "idRessource": 2
+  }
+}
+```
+
+#### DELETE
+
+This endpoint is used to delete a commentaire. It accepts a DELETE request with the commentaire's id as a path parameter.
+
+| Parameter                        | Type    | Required | Description                                                                              |
+|----------------------------------|---------|----------|------------------------------------------------------------------------------------------|
+| `id`                             |`integer`| `true`   | The id of the commentaire.                                                               |
+
+**Example request:**
+```http
+DELETE /commentaires/1 HTTP/1.1
+Accept: application/json
+Bearer 1|EojGLORUas6xz0OmRvuaZ4ReNhjqVVM5pdcUevJg
+```
+
+**Example response:**
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "message": "Commentaire deleted"
+}
+```
 
 ## Favorites
 
@@ -176,9 +417,81 @@ Accept: application/json
 
 ### `/roles/{id}`
 
-## Search
+## Rechercher
 
-### `/search`
+### `/rechercher`
+
+If you need to search for resources or users, you can use this endpoint. It accepts a POST request with a JSON payload containing the search parameters. The response will contain a list of resources or users that match the search parameters.
+
+You can either search for resources or users, or both. If you want to include ressources authors, you can pass the `include` parameter in the `ressource` object. The `include` parameter takes an array of strings. 
+
+**Example request:**
+```http
+POST /api/v1/rechercher HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+{
+    "query": {
+        "ressource": {
+            "q": "ipsum",
+            "include": ["utilisateur"]
+        },
+        "utilisateur": {
+            "q": "John"
+        }
+    }
+}
+```
+
+**Example response :**
+```json
+{
+    "ressources": [
+        {
+            "id": 2481,
+            "dateCreation": "2023-04-04 19:17:05",
+            "status": "APPROVED",
+            "idUtilisateur": 902,
+            "utilisateur": {
+                "id": 902,
+                "mail": "kohler.demetris@schumm.net",
+                "dateInscription": "1970-03-12 00:00:00",
+                "dateNaissance": "2006-07-08 00:00:00",
+                "codePostal": "22371",
+                "nom": "Haag",
+                "prenom": "Garnet",
+                "bio": "Fugiat ducimus vel voluptate optio tenetur id. Provident est quis voluptatibus et. Itaque quod corrupti unde ex fugit. Quos odio inventore id aut in reiciendis qui.",
+                "compteActif": 1,
+                "raisonBan": null,
+                "idRole": 2
+            },
+            "partage": "RESTRICTED",
+            "titre": "Est officiis necessitatibus ipsum esse.",
+            "contenu": "Voluptatem distinctio similique magni architecto esse ipsa. Doloribus non voluptas eaque omnis quae laudantium. Nesciunt omnis quos cupiditate. Quasi nesciunt qui porro aut quisquam.",
+            "datePublication": "1971-06-25 10:19:51",
+            "raisonRefus": null,
+            "idCategorie": 13,
+            "idPieceJointe": 207
+        },
+    ],
+   "utilisateurs": [
+        {
+            "id": 129,
+            "mail": "gleason.etha@hotmail.com",
+            "dateInscription": "1980-01-09 00:00:00",
+            "dateNaissance": "1986-06-02 00:00:00",
+            "codePostal": "67589",
+            "nom": "Johnston",
+            "prenom": "Alexandra",
+            "bio": "Et necessitatibus consequatur voluptate asperiores perspiciatis deserunt. Fugit nam fugit maiores incidunt deleniti. Et ex maxime in est quos accusamus doloremque. Eum eos iure ut non neque qui.",
+            "compteActif": 1,
+            "raisonBan": null,
+            "idRole": 2
+        },
+   ]
+}
+```
 
 ## Relation types
 
