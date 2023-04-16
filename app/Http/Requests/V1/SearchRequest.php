@@ -27,8 +27,13 @@ class SearchRequest extends FormRequest
     public function rules()
     {
         return [
-            'ressourceQuery' => ['string', 'max:255'],
-            'utilisateurQuery' => ['string', 'max:255']
+            'query' => 'required|array',
+            'query.ressource' => 'sometimes|array',
+            'query.ressource.q' => 'sometimes|string',
+            'query.ressource.include' => 'sometimes|array',
+            'query.ressource.include.*' => 'string|in:utilisateur',
+            'query.utilisateur' => 'sometimes|array',
+            'query.utilisateur.q' => 'sometimes|string',
         ];
     }
 
@@ -45,6 +50,21 @@ class SearchRequest extends FormRequest
         ];
     }
     
+    public function formatted()
+    {
+        $data = $this->validated();
+
+        $ressourceQuery = $data['query']['ressource']['q'] ?? null;
+        $ressourceInclude = $data['query']['ressource']['include'] ?? [];
+        $utilisateurQuery = $data['query']['utilisateur']['q'] ?? null;
+
+        return [
+            'ressourceQuery' => $ressourceQuery,
+            'ressourceInclude' => $ressourceInclude,
+            'utilisateurQuery' => $utilisateurQuery,
+        ];
+    }
+
     /**
      * Handle a failed validation attempt.
      *

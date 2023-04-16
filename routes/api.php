@@ -54,7 +54,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1', 'middl
 // public routes (no favorites or relations)
 Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1'], function () {
     //POST
-    Route::post('search', 'SearchController@search');
+    Route::post('rechercher', 'SearchController@rechercher');
     Route::post('connexion', 'LoginController@login');
     Route::post('inscription', 'UtilisateurController@store');
     

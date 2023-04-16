@@ -1,4 +1,4 @@
-openapi: '3.0.2'
+openapi: '3.1.0'
 info:
   title: Ressources Relationnelles
   version: '1.0'
@@ -1510,7 +1510,7 @@ paths:
   #endregion
 
   #region Recherche (review ok)
-  /search:
+  /rechercher:
     post:
       summary: Search a user or a ressource 
       description: Search a user by its name or surname, or a ressource by its title or content
@@ -1523,12 +1523,26 @@ paths:
             schema:
               type: object
               properties:
-                ressourceQuery:
-                  type: string
-                  example: "Quis dolores"
-                utilisateurQuery:
-                  type: string
-                  example: "John"
+                query:
+                  type: object
+                  properties:
+                    ressource:
+                      type: object
+                      properties:
+                        q:
+                          type: string
+                          example: "Quis dolores"
+                        include:
+                          type: array
+                          items:
+                            type: string
+                          example: ["utilisateur"]
+                    utilisateur:
+                      type: object
+                      properties:
+                        q:
+                          type: string
+                          example: "John"
       responses:
         '200':
           description: Search a ressource
@@ -1539,7 +1553,8 @@ paths:
                 items:
                   type: object
               example:
-                - id: 1
+                ressources:
+                  id: 1
                   dateCreation: 2023-01-02 21:16:55
                   status: PENDING
                   idUtilisateur: 1
@@ -1549,6 +1564,18 @@ paths:
                   datePublication: null
                   raisonRefus: null
                   idCategorie: 2
+                utilisateurs:
+                  id: 1,
+                  mail: john.doe@gmail.com
+                  dateInscription: 2023-01-02 15:07:55
+                  dateNaissance: 2002-01-02
+                  codePostal: 75000
+                  nom: Doe
+                  prenom: John
+                  bio: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquet nisl, eget aliquet nunc nisl eget nunc.
+                  compteActif: true
+                  raisonBan: null
+                  idRole: 1
   #endregion
 
   #region Types Relation (review ok but need fixes)
