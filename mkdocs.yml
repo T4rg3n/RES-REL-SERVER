@@ -5,12 +5,13 @@ nav:
   - Errors: 
     - Request errors: errors/#request-errors
     - Server errors: errors/#server-errors
+  - Operations: 
+    - Pagination: operations/#pagination
+    - Sorting: operations/#sorting
+    - Filtering: operations/#filtering
+    - Aggregating: operations/#aggregating
   - Endpoints: 
-    - Operations: 
-      - Pagination: operations/#pagination
-      - Sorting: operations/#sorting
-      - Filtering: operations/#filtering
-      - Aggregating: operations/#aggregating
+    - Summary: endpoints-summary.md
     - List of endpoints:
       - Authentification: enpoints/#authentification
       - Categories: enpoints/#categories

@@ -13,7 +13,7 @@ You can monitor your rate limit status by checking the `X-RateLimit-Limit` and `
 ## Authentication
 
 ### Registration
-The RESREL API uses a **Bearer token** to authenticate requests. You will need to provide a valid username and password in order to access the API. This is a quick example, [the full documentation is available here](enpoints/#authentification).
+The RESREL API uses a **Bearer token** to authenticate requests. You will need to provide a valid username and password in order to access the API. This is a quick example, [the full documentation is available here](endpoints-summary).
 
 To obtain a token, send a POST request to the `/api/v1/inscription` endpoint. The request body should be a JSON object with the following fields:
 
