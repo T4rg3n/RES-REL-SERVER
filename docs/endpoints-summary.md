@@ -1,16 +1,19 @@
 # Endpoints Summary
 
+This is a detailed list of all endpoints available in the RESREL API. 
+I also have a Swagger documentation [available here](https://api.victor-gombert.fr/swagger/#) that you can use to test the API.
+
 | Section                                                | Endpoint                                                                         | Method | Authenticated | Description                         |
 | ------------------------------------------------------ | -------------------------------------------------------------------------------- | ------ | ------------- | ----------------------------------- |
-| [Authentication](/endpoints#Authentication)            |                                                                                  |        |               |                                     |
-|                                                        | [/connexion](/endpoints#connexion)                                               | POST   | false         | Log in a user                       |
-|                                                        | [/inscription](/endpoints#inscription)                                           | POST   | false         | Register a new user                 |
-|                                                        | [/deconnexion](/endpoints#deconnexion)                                           | GET    | true          | Log out a user                      |
-| [Categories](/endpoints#Categories)                    |                                                                                  |        |               |                                     |
-|                                                        | [/categories](/endpoints#get-categories)                                         | GET    | false         | List all categories                 |
-|                                                        | [/categories/{id}](/endpoints#categories-id)                                     | GET    | false         | Get a category by ID                |
-|                                                        |                                                                                  | DELETE | true          | Delete a category by ID             |
-| [Commentaires](/endpoints#Commentaires)                |                                                                                  |        |               |                                     |
+| [Authentication](/endpoints/authentication)            |                                                                                  |        |               |                                     |
+|                                                        | [/connexion](/endpoints/authentication#connexion)                                | POST   | false         | Log in a user                       |
+|                                                        | [/inscription](/endpoints/authentication#inscription)                            | POST   | false         | Register a new user                 |
+|                                                        | [/deconnexion](/endpoints/authentication#deconnexion)                            | GET    | true          | Log out a user                      |
+| [Categories](/endpoints/categories/#categories)        |                                                                                  |        |               |                                     |
+|                                                        | [/categories](/endpoints/categories/#categories)                                 | GET    | false         | List all categories                 |
+|                                                        | [/categories/{id}](/endpoints/categories/#categoriesid)                          | GET    | false         | Get a category by ID                |
+|                                                        | [/categories/{id}](/endpoints/categories/#delete)                                | DELETE | true          | Delete a category by ID             |
+| [Commentaires](/endpoints/commentaires/#commentaires)    |                                                                                  |        |               |                                     |
 |                                                        | [/commentaires](/endpoints#commentaires)                                         | GET    | false         | List all commentaires               |
 |                                                        |                                                                                  | POST   | true          | Create a commentaire                |
 |                                                        | [/commentaires/{id}](/endpoints#commentaires-id)                                 | GET    | false         | Get a commentaire by ID             |

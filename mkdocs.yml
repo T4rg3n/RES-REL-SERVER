@@ -13,9 +13,9 @@ nav:
   - Endpoints: 
     - Summary: endpoints-summary.md
     - List of endpoints:
-      - Authentification: enpoints/#authentification
-      - Categories: enpoints/#categories
-      - Comments: enpoints/#comments
+      - Authentification: endpoints/authentication.md
+      - Categories: endpoints/categories.md
+      - Comments: endpoints/comments.md
       - Favorites: enpoints/#favorites
       - Groups: enpoints/#groups
       - Pieces jointes: enpoints/#pieces-jointes
@@ -34,7 +34,7 @@ theme:
   features:
     - navigation.instant
     - navigation.tracking
-    
+    - navigation.footer
 #    - navigation.tabs
 
 markdown_extensions:
@@ -55,3 +55,8 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
+  - attr_list
+  - md_in_html #grids (to test)
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
