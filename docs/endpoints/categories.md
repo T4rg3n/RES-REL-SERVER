@@ -4,16 +4,15 @@
 
 This endpoint is used to get a list of all categories. It accepts a GET request with optional query parameters.
 
-| Parameter                        | Type    | Required | Description                                                                              |
-|----------------------------------|---------|----------|------------------------------------------------------------------------------------------|
-| `perPage`                        |`integer`| `false`  | Set the number of categories per page.                                                   |
-| `<key>[<operator>]=<value>`      |`string` | `false`  | Filter categories with operators like `equals`, `notEquals`, `lowerThan`, `lowerThanEquals`, `greaterThan`, `greaterThanEquals`. |
+| Parameter                   | Type      | Required | Description                                                                                                                      |
+| --------------------------- | --------- | -------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `perPage`                   | `integer` | `false`  | Set the number of categories per page.                                                                                           |
+| `<key>[<operator>]=<value>` | `string`  | `false`  | Filter categories with operators like `equals`, `notEquals`, `lowerThan`, `lowerThanEquals`, `greaterThan`, `greaterThanEquals`. |
 
 
 **Example request:**
 ```http
 GET /api/v1/categories HTTP/1.1
-Host: api.victor-gombert.fr
 Accept: application/json
 ```
 
@@ -35,11 +34,11 @@ Content-Type: application/json
 ```
 #### POST
 
-You can create a new category by sending a POST request with a JSON payload :
+You can create a new category by sending a POST request with a JSON payload containing the category's information.
 
 **Example request :**
 ```http
-POST /connexion HTTP/1.1
+POST api/v1/connexion HTTP/1.1
 Content-Type: application/json
 
 {
@@ -64,9 +63,9 @@ Content-Type: application/json
 
 This endpoint is used to get a category by its id. It accepts a GET request with the category's id as a path parameter.
 
-| Parameter                        | Type    | Required | Description                                                                              |
-|----------------------------------|---------|----------|------------------------------------------------------------------------------------------|
-| `id`                             |`integer`| `true`   | The id of the category.                                                                  |
+| Parameter | Type      | Required | Description             |
+| --------- | --------- | -------- | ----------------------- |
+| `id`      | `integer` | `true`   | The id of the category. |
 
 **Example request:**
 ```http
@@ -88,9 +87,9 @@ Content-Type: application/json
 
 This endpoint is used to delete a category by its id. It accepts a DELETE request with the category's id as a path parameter.
 
-| Parameter                        | Type    | Required | Description                                                                              |
-|----------------------------------|---------|----------|------------------------------------------------------------------------------------------|
-| `id`                             |`integer`| `true`   | The id of the category.                                                                  |
+| Parameter | Type      | Required | Description             |
+| --------- | --------- | -------- | ----------------------- |
+| `id`      | `integer` | `true`   | The id of the category. |
 
 **Example request:**
 ```http

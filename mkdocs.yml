@@ -16,12 +16,12 @@ nav:
       - Authentification: endpoints/authentication.md
       - Categories: endpoints/categories.md
       - Comments: endpoints/comments.md
-      - Favorites: enpoints/#favorites
-      - Groups: enpoints/#groups
-      - Pieces jointes: enpoints/#pieces-jointes
-      - Relations: enpoints/#relations
-      - Comment responses: enpoints/#comment-responses
-      - Resources: enpoints/#resources
+      - Favorites: endpoints/favorites.md
+      - Groups: endpoints/groups.md
+      - Pieces jointes: endpoints/pieces-jointes.md #TODO below from here
+      - Relations: endpoints/relations.md
+      - Comment responses: enpoints/reponses-commentaire.md
+      - Resources: enpoints/resources.md
       - Roles: enpoints/#roles
       - Search: enpoints/#search
       - Relation types: enpoints/#relation-types
@@ -60,3 +60,4 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
+  - abbr #tooltips

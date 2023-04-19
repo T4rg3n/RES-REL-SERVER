@@ -1,0 +1,5 @@
+## Resources
+
+### `/ressources`
+
+### `/ressources/{id}`

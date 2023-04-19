@@ -560,7 +560,8 @@ paths:
               schema:
                 type: object
               example:
-                - idUtilisateur : 1
+                - id: 10
+                  idUtilisateur : 1
                   idRessource : 2
   /favoris/{id}:
     get:

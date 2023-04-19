@@ -1,57 +1,3 @@
-# List of endpoints
-
-
-Auth, categories and commentaires have been moved to their respective pages. See summary.
-
-
-## Favorites
-
-### `/favoris`
-
-### `/favoris/{id}`
-
-## Groups
-
-### `/groupes`
-
-### `/groupes/{id}`
-
-## Pieces jointes
-
-### `/piecesJointes`
-
-### `/piecesJointes/{id}`
-
-### `/piecesJointes/{id}/download`
-
-## Relations
-
-### `/relations`
-
-### `/relations/{id}`
-
-## Comment responses
-
-### `/reponsesCommentaires`
-
-### `/reponsesCommentaires/{id}/disable`
-
-### `/reponsesCommentaires/{id}/report`
-
-### `/reponsesCommentaires/{id}`
-
-## Resources
-
-### `/ressources`
-
-### `/ressources/{id}`
-
-## Roles
-
-### `/roles`
-
-### `/roles/{id}`
-
 ## Rechercher
 
 ### `/rechercher`
@@ -127,15 +73,3 @@ Content-Type: application/json
    ]
 }
 ```
-
-## Relation types
-
-### `/typesRelations`
-
-### `/typesRelations/{id}`
-
-## Users
-
-### `//utilisateurs/{id}`
-
-### `//utilisateurs/{id}/download`

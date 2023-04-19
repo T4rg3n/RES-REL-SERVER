@@ -4,7 +4,7 @@ This endpoint is used to log in a user. It accepts a POST request with a JSON pa
 
 **Example request:**
 ```http
-POST /connexion HTTP/1.1
+POST /api/v1/connexion HTTP/1.1
 Content-Type: application/json
 
 {
@@ -34,7 +34,7 @@ The response will contain an access token that can be used for subsequent authen
 
 **Example request:**
 ```http
-POST /inscription HTTP/1.1
+POST /api/v1/inscription HTTP/1.1
 Content-Type: application/json
 
 {
@@ -92,14 +92,3 @@ Authorization: Bearer 1|EojGLORUas6xz0OmRvuaZ4ReNhjqVVM5pdcUevJg
     "message": "Logged out successfully."
 }
 ```
-<!-- 
-</br>
-<center>
-<span>
-<div class="grid cards" markdown>
-
-[:material-arrow-left: Summary](#){ .md-button }   [Categories :material-arrow-right:](#){ .md-button } 
-
-</div>
-</span>
-</center> -->
