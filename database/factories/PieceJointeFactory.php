@@ -20,12 +20,12 @@ class PieceJointeFactory extends Factory
     {
         $pj = $this->faker->randomElement(['IMAGE', 'VIDEO', 'PDF', 'ACTIVITE']);
 
-        $extensionMap = [
-            'IMAGE' => 'jpg',
-            'VIDEO' => 'mp4',
-            'PDF' => 'pdf',
-            'ACTIVITE' => 'jpg',
-        ];
+        // $extensionMap = [
+        //     'IMAGE' => 'jpg',
+        //     'VIDEO' => 'mp4',
+        //     'PDF' => 'pdf',
+        //     'ACTIVITE' => 'jpg',
+        // ];
 
         if ($pj == 'ACTIVITE') {
             return [
@@ -47,7 +47,8 @@ class PieceJointeFactory extends Factory
                 'titre_pj' => $this->faker->word,
                 'date_creation_pj' => $this->faker->dateTimeBetween('-1 year', 'now'),
                 'description_pj' => $this->faker->text(25),
-                'contenu_pj' => '/user-files/' . $id_uti . '/' . $pj . '/' . $this->faker->numberBetween(1, 10000) . '.' . $extensionMap[$pj],
+                //contenu_pj' => '/user-files/' . $id_uti . '/' . $pj . '/' . $this->faker->numberBetween(1, 10000) . '.' . $extensionMap[$pj],
+                'contenu_pj' => 'fake file',
                 'date_activite_pj' => null,
                 'lieu_pj' => null,
                 'code_postal_pj' => null,
