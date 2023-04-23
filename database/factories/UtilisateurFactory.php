@@ -29,7 +29,7 @@ class UtilisateurFactory extends Factory
             'code_postal_uti' => $this->faker->postcode,
             'nom_uti' => $this->faker->lastName,
             'prenom_uti' => $this->faker->firstName,
-            'photo_uti' => '/assets/default-assets/default-user.png',
+            'photo_uti' => 'fake user photo',
             'bio_uti' => $this->faker->text,
             'compte_actif_uti' => $this->faker->boolean,
             'raison_banni_uti' => $banStatus ? $raisonBan : null,
