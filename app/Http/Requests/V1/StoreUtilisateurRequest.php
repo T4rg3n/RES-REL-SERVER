@@ -34,7 +34,7 @@ class StoreUtilisateurRequest extends FormRequest
             'codePostal' => ['required', 'string', 'max:255'],
             'nom' => ['required', 'string', 'max:255'],
             'prenom' => ['required', 'string', 'max:255'],
-            'bio' => ['required', 'string', 'max:255'],
+            'bio' => ['nullable', 'string', 'max:255'],
             'photoProfil' => ['nullable', 'file', 'mimes:png,jpg,jpeg', 'max:5000'],
             //'exists:roles,id_role'
             //'role' => ['required', 'integer'],
@@ -69,7 +69,6 @@ class StoreUtilisateurRequest extends FormRequest
             'prenom.required' => 'prenom is required',
             'prenom.string' => 'prenom must be a string',
             'prenom.max' => 'prenom must not be greater than 255 characters',
-            'bio.required' => 'bio is required',
             'bio.string' => 'bio must be a string',
             'bio.max' => 'bio must not be greater than 255 characters',
             'photoProfil.file' => 'photoProfil must be a file',
