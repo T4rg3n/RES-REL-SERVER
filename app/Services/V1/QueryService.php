@@ -84,4 +84,29 @@ class QueryService
 
         return [$orderByColumn, $orderByType];
     }
+
+    /**
+     * Includes related data in query
+     * 
+     * @param request $request 
+     * @param  $allowedIncludes
+     * @return array 
+     */
+    public function include($request, $allowedIncludes)
+    {
+        $includes = $request->query('include');
+        $includedArray = [];
+
+        if ($includes) {
+            $includedArray = explode(',', $includes);
+            //return $includedArray;
+            foreach ($includedArray as $include) {
+                if (!in_array($include, $allowedIncludes)) {
+                    return abort(400, 'Invalid include parameter');
+                }
+            }
+        }
+
+        return $includedArray;
+    }
 }

@@ -60,19 +60,9 @@ class ReponseCommentaireController extends Controller
         [$fieldOrder, $typeOrder] = (new QueryService)->translateOrderBy($request->query('orderBy'), 'id_reponse', $this->columnMap); 
         $reponsesCommentaires = ReponseCommentaire::where($eloquentQuery)->orderBy($fieldOrder, $typeOrder); 
 
-        $includes = $request->query('include');
-        if ($includes) {
-            $includedArray = explode(',', $includes);
-            foreach($includedArray as $include) {
-                if (in_array($include, $this->allowedIncludes)) {
-                    $reponsesCommentaires->with($include);
-                } else {
-                    return response()->json([
-                        'message' => 'Invalid include'],
-                    400);
-                }
-            }
-        }
+        $include = (new QueryService)->include(request(), $this->allowedIncludes);
+        if ($include)
+            $reponsesCommentaires->with($include);
 
         return new ReponseCommentaireCollection($reponsesCommentaires->paginate($perPage)->appends($request->query())); 
     }
@@ -102,19 +92,9 @@ class ReponseCommentaireController extends Controller
     {
         $reponseCommentaire = ReponseCommentaire::findorFail($id_reponse);
 
-        $includes = request()->query('include');
-        if ($includes) {
-            $includedArray = explode(',', $includes);
-            foreach($includedArray as $include) {
-                if (in_array($include, $this->allowedIncludes)) {
-                    $reponseCommentaire = $reponseCommentaire->loadMissing($include);
-                } else {
-                    return response()->json([
-                        'message' => 'Invalid include'],
-                    400);
-                }
-            }
-        }
+        $ $include = (new QueryService)->include(request(), $this->allowedIncludes);
+        if ($include)
+            $reponsesCommentaires->loadMissing($include);
 
         return new ReponseCommentaireResource($reponseCommentaire);
     }

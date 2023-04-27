@@ -66,19 +66,10 @@ class PieceJointeController extends Controller
         [$fieldOrder, $typeOrder] = (new QueryService)->translateOrderBy($request->query('orderBy'), 'id_piece_jointe', $this->columnMap);
         $piecesJointes = PieceJointe::where($eloquentQuery)->orderBy($fieldOrder, $typeOrder);
 
-        $includes = $request->query('include');
-        if ($includes) {
-            $includedArray = explode(',', $includes);
-            foreach ($includedArray as $include) {
-                if (in_array($include, $this->allowedIncludes)) {
-                    $piecesJointes->with($include);
-                } else {
-                    return response()->json([
-                        'message' => 'Invalid include'
-                    ], 400);
-                }
-            }
-        }
+        $include = (new QueryService)->include(request(), $this->allowedIncludes);
+        if ($include)
+            $piecesJointes->with($include);
+
 
         return new PieceJointeCollection($piecesJointes->paginate($perPage)->appends($request->query()));
     }
@@ -140,19 +131,10 @@ class PieceJointeController extends Controller
     {
         $pieceJointe = PieceJointe::findOrfail($idPieceJointe);
 
-        $includes = request()->query('include');
-        if ($includes) {
-            $includedArray = explode(',', $includes);
-            foreach ($includedArray as $include) {
-                if (in_array($include, $this->allowedIncludes)) {
-                    $pieceJointe = $pieceJointe->loadMissing($include);
-                } else {
-                    return response()->json([
-                        'message' => 'Invalid include'
-                    ], 400);
-                }
-            }
-        }
+        $include = (new QueryService)->include(request(), $this->allowedIncludes);
+        if ($include)
+            $pieceJointe->loadMissing($include);
+
 
         return new PieceJointeResource($pieceJointe);
     }

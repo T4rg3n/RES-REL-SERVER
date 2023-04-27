@@ -59,26 +59,16 @@ class RessourceController extends Controller
     {
         $perPage = request()->input('perPage', 15);
         $queryContent = $request->all();
-        $filter = new QueryService();
-        $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
+        $eloquentQuery = (new QueryService)->transform($queryContent, $this->allowedParams, $this->columnMap);
         
         // Order by
         [$fieldOrder, $typeOrder] = (new QueryService)->translateOrderBy($request->query('orderBy'), 'id_ressource', $this->columnMap); 
         $ressources = Ressource::where($eloquentQuery)->orderBy($fieldOrder, $typeOrder); 
 
-        $includes = $request->query('include');
-        if ($includes) {
-            $includedRessources = explode(',', $includes);
-            foreach($includedRessources as $includedRessource) {
-                if (in_array($includedRessource, $this->allowedIncludes)) {
-                    $ressources = $ressources->with($includedRessource);
-                } else {
-                    return response()->json([
-                        'message' => 'Invalid include'
-                    ], 400);
-                }
-            }
-        }
+        // Include
+        $include = (new QueryService)->include(request(), $this->allowedIncludes);
+        if ($include)
+            $ressources->with($include);
         
         return new RessourceCollection($ressources->paginate($perPage)->appends($request->query()));
     }
@@ -107,20 +97,10 @@ class RessourceController extends Controller
     public function show($id_ressource)
     {
         $ressource = Ressource::findOrfail($id_ressource);
-
-        $includes = request()->query('include');
-        if ($includes) {
-            $includedRessources = explode(',', $includes);
-            foreach($includedRessources as $includedRessource) {
-                if (in_array($includedRessource, $this->allowedIncludes)) {
-                    $ressource = $ressource->loadMissing($includedRessource);
-                } else {
-                    return response()->json([
-                        'message' => 'Invalid include'
-                    ], 400);
-                }
-            }
-        }
+        
+        $include = (new QueryService)->include(request(), $this->allowedIncludes);
+        if ($include)
+            $ressource->load($include);
 
         return new RessourceResource($ressource);
     }
