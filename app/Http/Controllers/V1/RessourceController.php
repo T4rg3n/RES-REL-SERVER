@@ -60,16 +60,29 @@ class RessourceController extends Controller
         $perPage = request()->input('perPage', 15);
         $queryContent = $request->all();
         $eloquentQuery = (new QueryService)->transform($queryContent, $this->allowedParams, $this->columnMap);
-        
+
+        // Allows multiple filters on the same column (ex: ?id[equals]=1&id[equals]=2) 
+        // Used for infinite scroll on the front-end, only on RessourceController
+        $ressources = Ressource::query();
+        foreach ($eloquentQuery as $columnName => $operators) {
+            foreach ($operators as $operator => $values) {
+                $ressources->where(function ($query) use ($columnName, $operator, $values) {
+                    foreach ($values as $value) {
+                        $query->orWhere($columnName, $operator, $value);
+                    }
+                });
+            }
+        }
+
         // Order by
-        [$fieldOrder, $typeOrder] = (new QueryService)->translateOrderBy($request->query('orderBy'), 'id_ressource', $this->columnMap); 
-        $ressources = Ressource::where($eloquentQuery)->orderBy($fieldOrder, $typeOrder); 
+        [$fieldOrder, $typeOrder] = (new QueryService)->translateOrderBy($request->query('orderBy'), 'id_ressource', $this->columnMap);
+        $ressources->orderBy($fieldOrder, $typeOrder);
 
         // Include
         $include = (new QueryService)->include(request(), $this->allowedIncludes);
         if ($include)
             $ressources->with($include);
-        
+
         return new RessourceCollection($ressources->paginate($perPage)->appends($request->query()));
     }
 
