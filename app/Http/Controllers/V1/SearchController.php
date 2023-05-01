@@ -12,7 +12,9 @@ use App\Models\Utilisateur;
 class SearchController extends Controller
 {
     protected $allowedIncludes = [
-        'utilisateur'
+        'utilisateur',
+        'categorie',
+        'pieceJointe'
     ];
 
     /**
@@ -28,6 +30,7 @@ class SearchController extends Controller
         $ressourcesResult = [];
         $utilisateursResult = [];
 
+        //TODO refactor this
         if (isset($formatted['ressourceQuery'])) {
             $ressourceSearch = Ressource::where('titre_ressource', 'LIKE', "%{$formatted['ressourceQuery']}%")
                 //->orWhere('contenu_texte_ressource', 'LIKE', "%{$formatted['ressourceQuery']}%")
