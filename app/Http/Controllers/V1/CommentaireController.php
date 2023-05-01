@@ -62,6 +62,7 @@ class CommentaireController extends Controller
         [$fieldOrder, $typeOrder] = (new QueryService)->translateOrderBy($request->query('orderBy'), 'id_commentaire', $this->columnMap); 
         $commentaires = Commentaire::where($eloquentQuery)->orderBy($fieldOrder, $typeOrder);
      
+        // Include
         $include = (new QueryService)->include(request(), $this->allowedIncludes);
         if ($include)
             $commentaires->with($include);

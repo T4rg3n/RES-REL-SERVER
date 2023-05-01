@@ -57,6 +57,7 @@ class FavorisController extends Controller
         [$fieldOrder, $typeOrder] = (new QueryService)->translateOrderBy($request->query('orderBy'), 'id_favoris', $this->columnMap); 
         $favoris = Favoris::where($eloquentQuery)->orderBy($fieldOrder, $typeOrder);
 
+        // Include
         $include = (new QueryService)->include(request(), $this->allowedIncludes);
         if ($include)
             $favoris->with($include);
@@ -92,7 +93,6 @@ class FavorisController extends Controller
         $include = (new QueryService)->include(request(), $this->allowedIncludes);
         if ($include)
             $favoris->loadMissing($include);
-
 
         return new FavorisResource($favoris);
     }
