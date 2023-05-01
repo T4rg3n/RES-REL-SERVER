@@ -12,6 +12,8 @@ use App\Http\Requests\V1\BanUtilisateurRequest;
 use App\Services\V1\QueryService;
 use App\Services\V1\TokenAttributor;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RegistrationMail;
 
 class UtilisateurController extends Controller
 {
@@ -117,6 +119,8 @@ class UtilisateurController extends Controller
 
         $token = (new TokenAttributor)->createToken($utilisateur);
         $id = $utilisateur->id_uti;
+
+        Mail::to('vic.gombert@gmail.com')->send(new RegistrationMail());
 
         return response()->json(['response' => $this->show($id), 'token' => $token], 201);
     }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Mail\RegistrationMail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -71,4 +72,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1'], funct
     //GET / HEAD / POST
     Route::apiResource('utilisateurs', UtilisateurController::class)->only(['index', 'show']);
         Route::get('utilisateurs/{id}/download', 'UtilisateurController@download');
+
+    //Dev only
+    Route::get('/test-email', function() {
+        return new RegistrationMail();
+     });
 });
