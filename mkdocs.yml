@@ -18,14 +18,14 @@ nav:
       - Comments: endpoints/comments.md
       - Favorites: endpoints/favorites.md
       - Groups: endpoints/groups.md
-      - Pieces jointes: endpoints/pieces-jointes.md #TODO below from here
+      - Pieces jointes: endpoints/pieces-jointes.md 
       - Relations: endpoints/relations.md
-      - Comment responses: enpoints/reponses-commentaire.md
-      - Resources: enpoints/resources.md
-      - Roles: enpoints/#roles
-      - Search: enpoints/#search
-      - Relation types: enpoints/#relation-types
-      - Users: enpoints/#users
+      - Comment responses: endpoints/reponses-commentaire.md
+      - Resources: endpoints/resources.md
+      - Roles: endpoints/roles.md
+      - Search: endpoints/search.md
+      - Relation types: endpoints/types-relation.md #TODO
+      - Users: endpoints/users.md #TODO
 
 theme:
   name: 'material'
