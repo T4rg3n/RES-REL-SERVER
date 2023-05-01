@@ -15,7 +15,7 @@ class RelationSeeder extends Seeder
     public function run()
     {
         Relation::factory()
-            ->count(100)
+            ->count(15000)
             ->create();
     }
 }
