@@ -43,8 +43,8 @@ jobs:
         DB_HOST: 127.0.0.1
         DB_PORT: 3306
         DB_DATABASE: testing_db
-        DB_USERNAME: laravel
-        DB_PASSWORD: laravelpassword
+        DB_USERNAME: root
+        DB_PASSWORD: rootpassword
       run: |
         echo "CREATE DATABASE ${{ env.DB_DATABASE }}" | mysql --host ${{ env.DB_HOST }} --user ${{ env.DB_USERNAME }} --password="${{ env.DB_PASSWORD }}"
         mysql --host ${{ env.DB_HOST }} --user ${{ env.DB_USERNAME }} --password="${{ env.DB_PASSWORD }}" ${{ env.DB_DATABASE }} < testing_db.sql
