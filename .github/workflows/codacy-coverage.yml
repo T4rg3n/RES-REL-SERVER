@@ -46,7 +46,7 @@ jobs:
         DB_USERNAME: root
         DB_PASSWORD: rootpassword
       run: |
-        echo "CREATE DATABASE ${{ env.DB_DATABASE }}" | mysql --host ${{ env.DB_HOST }} --user ${{ env.DB_USERNAME }} --password="${{ env.DB_PASSWORD }}"
+        echo "CREATE DATABASE IF NOT EXISTS ${{ env.DB_DATABASE }}" | mysql --host ${{ env.DB_HOST }} --user ${{ env.DB_USERNAME }} --password="${{ env.DB_PASSWORD }}"
         mysql --host ${{ env.DB_HOST }} --user ${{ env.DB_USERNAME }} --password="${{ env.DB_PASSWORD }}" ${{ env.DB_DATABASE }} < testing_db.sql
 
     - name: Run PHPUnit tests with code coverage
