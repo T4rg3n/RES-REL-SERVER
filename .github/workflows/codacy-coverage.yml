@@ -1,4 +1,4 @@
-name: Codacy Coverage
+name: Codacy-Coverage
 
 on:
   push:
@@ -36,7 +36,19 @@ jobs:
 
     - name: Setup Laravel environment
       run: cp .env.testing .env
-      
+
+    - name: Import testing database
+      env:
+        DB_CONNECTION: mysql
+        DB_HOST: 127.0.0.1
+        DB_PORT: 3306
+        DB_DATABASE: testing_db
+        DB_USERNAME: laravel
+        DB_PASSWORD: laravelpassword
+      run: |
+        echo "CREATE DATABASE ${{ env.DB_DATABASE }}" | mysql --host ${{ env.DB_HOST }} --user ${{ env.DB_USERNAME }} --password="${{ env.DB_PASSWORD }}"
+        mysql --host ${{ env.DB_HOST }} --user ${{ env.DB_USERNAME }} --password="${{ env.DB_PASSWORD }}" ${{ env.DB_DATABASE }} < testing_db.sql
+
     - name: Run PHPUnit tests with code coverage
       run: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 
