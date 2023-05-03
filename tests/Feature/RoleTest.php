@@ -30,6 +30,8 @@ class RoleTest extends TestCase
     {
         $response = $this->post('/api/v1/roles', [
             'nom' => 'test',
+            'ascendant' => 'test',
+            'descendant' => 'test',
         ]);
         $response->assertStatus(201);
         $response->assertJsonStructure([
@@ -50,6 +52,8 @@ class RoleTest extends TestCase
                 '*' => [
                     'id',
                     'nom',
+                    'ascendant',
+                    'descendant',
                 ]
             ]
         ]);
@@ -67,6 +71,8 @@ class RoleTest extends TestCase
             'data' => [
                 'id',
                 'nom',
+                'ascendant',
+                'descendant',
             ]
         ]);
     }
