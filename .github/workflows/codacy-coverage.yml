@@ -53,9 +53,11 @@ jobs:
       run: vendor/bin/phpunit --coverage-clover build/logs/clover.xml || true
 
     - name: Install Codacy Coverage Reporter
-      run: composer global require codacy/coverage
+      run: |
+        wget -O codacy-coverage-reporter https://github.com/codacy/codacy-coverage-reporter/releases/latest/download/codacy-coverage-reporter-linux
+        chmod +x codacy-coverage-reporter
 
     - name: Upload coverage report to Codacy
-      run: ~/.config/composer/vendor/bin/codacycoverage clover build/logs/clover.xml
+      run: ./codacy-coverage-reporter report -l PHP -r build/logs/clover.xml --project-token ${{ secrets.CODACY_PROJECT_TOKEN }}
       env:
         CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
