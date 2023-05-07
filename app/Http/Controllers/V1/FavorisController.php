@@ -57,20 +57,10 @@ class FavorisController extends Controller
         [$fieldOrder, $typeOrder] = (new QueryService)->translateOrderBy($request->query('orderBy'), 'id_favoris', $this->columnMap); 
         $favoris = Favoris::where($eloquentQuery)->orderBy($fieldOrder, $typeOrder);
 
-        //apply includes (refactor this)
-        $includes = $request->query('include');
-        if ($includes) {
-            $includedArray = explode(',', $includes);
-            foreach($includedArray as $include) {
-                if (in_array($include, $this->allowedIncludes)) {
-                    $favoris->with($include);
-                } else {
-                    return response()->json([
-                        'message' => 'Invalid include'
-                    ], 400);
-                }
-            }
-        }
+        // Include
+        $include = (new QueryService)->include(request(), $this->allowedIncludes);
+        if ($include)
+            $favoris->with($include);
         
         return new FavorisCollection($favoris->paginate($perPage)->appends($request->query()));
     }
@@ -100,19 +90,9 @@ class FavorisController extends Controller
     {
         $favoris = Favoris::findOrfail($id_favoris);
 
-        $includes = request()->query('include');
-        if ($includes) {
-            $includedArray = explode(',', $includes);
-            foreach($includedArray as $include) {
-                if (in_array($include, $this->allowedIncludes)) {
-                    $favoris = $favoris->loadMissing($include);
-                } else {
-                    return response()->json([
-                        'message' => 'Invalid include'
-                    ], 400);
-                }
-            }
-        }
+        $include = (new QueryService)->include(request(), $this->allowedIncludes);
+        if ($include)
+            $favoris->loadMissing($include);
 
         return new FavorisResource($favoris);
     }

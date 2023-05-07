@@ -31,7 +31,6 @@ class SearchRequest extends FormRequest
             'query.ressource' => 'sometimes|array',
             'query.ressource.q' => 'sometimes|string',
             'query.ressource.include' => 'sometimes|array',
-            'query.ressource.include.*' => 'string|in:utilisateur',
             'query.utilisateur' => 'sometimes|array',
             'query.utilisateur.q' => 'sometimes|string',
         ];

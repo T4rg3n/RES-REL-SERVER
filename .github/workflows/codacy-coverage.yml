@@ -1,0 +1,63 @@
+name: Codacy-Coverage
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: rootpassword
+          MYSQL_DATABASE: testing_db
+          MYSQL_USER: laravel
+          MYSQL_PASSWORD: laravelpassword
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1.15'
+        coverage: xdebug
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-interaction --no-progress
+
+    - name: Setup Laravel environment
+      run: cp .env.testing .env
+
+    - name: Import testing database
+      env:
+        DB_CONNECTION: mysql
+        DB_HOST: 127.0.0.1
+        DB_PORT: 3306
+        DB_DATABASE: testing_db
+        DB_USERNAME: root
+        DB_PASSWORD: rootpassword
+      run: |
+        echo "CREATE DATABASE IF NOT EXISTS ${{ env.DB_DATABASE }}" | mysql --host ${{ env.DB_HOST }} --user ${{ env.DB_USERNAME }} --password="${{ env.DB_PASSWORD }}"
+        mysql --host ${{ env.DB_HOST }} --user ${{ env.DB_USERNAME }} --password="${{ env.DB_PASSWORD }}" ${{ env.DB_DATABASE }} < testing_db.sql
+
+    - name: Run PHPUnit tests with code coverage
+      run: vendor/bin/phpunit --coverage-clover build/logs/clover.xml || true
+
+    - name: Install Codacy Coverage Reporter
+      run: |
+        wget -O codacy-coverage-reporter https://github.com/codacy/codacy-coverage-reporter/releases/latest/download/codacy-coverage-reporter-linux
+        chmod +x codacy-coverage-reporter
+
+    - name: Upload coverage report to Codacy
+      run: ./codacy-coverage-reporter report -l PHP -r build/logs/clover.xml --project-token ${{ secrets.CODACY_PROJECT_TOKEN }}
+      env:
+        CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}

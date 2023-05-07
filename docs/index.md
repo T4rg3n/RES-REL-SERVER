@@ -25,7 +25,7 @@ To obtain a token, send a POST request to the `/api/v1/inscription` endpoint. Th
   "codePostal": "<string>",
   "nom": "<string>",
   "prenom": "<string>",
-  "photoProfil": "<string>",
+  "photoProfil": "<file>",
   "bio": "<string>"
 }
 ```
@@ -34,7 +34,7 @@ The response in JSON will contain informations about the account you just create
 
 ### Login
 
-If you alrady have an account, you can obtain a new token by sending a POST request to the `/api/v1/login` endpoint. The request body should be a JSON object with the following fields:
+If you alrady have an account, you can obtain a new token by sending a POST request to the `/api/v1/connexion` endpoint. The request body should be a JSON object with the following fields:
 
 ```json
 {
@@ -47,4 +47,4 @@ The response will contain the token you can use to authenticate your requests.
 
 ### Logout
 
-The logout is a simple GET request to the `/api/v1/logout` endpoint with the token passed in the header. There isnt any body to send with this request.
+The logout is a simple GET request to the `/api/v1/deconnexion` endpoint with the token passed in the header. There isnt any body to send with this request.

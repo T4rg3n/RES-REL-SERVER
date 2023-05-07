@@ -62,20 +62,10 @@ class CommentaireController extends Controller
         [$fieldOrder, $typeOrder] = (new QueryService)->translateOrderBy($request->query('orderBy'), 'id_commentaire', $this->columnMap); 
         $commentaires = Commentaire::where($eloquentQuery)->orderBy($fieldOrder, $typeOrder);
      
-        //Todo Refactor this
-        $includes = $request->query('include');
-        if ($includes) {
-            $includedArray = explode(',', $includes);
-            foreach($includedArray as $include) {
-                if (in_array($include, $this->allowedIncludes)) {
-                    $commentaires->with($include);
-                } else {
-                    return response()->json([
-                        'message' => 'Invalid include'],
-                    400);
-                }
-            }
-        }
+        // Include
+        $include = (new QueryService)->include(request(), $this->allowedIncludes);
+        if ($include)
+            $commentaires->with($include);
 
         return new CommentaireCollection($commentaires->paginate($perPage)->appends($request->query()));
     }
@@ -104,6 +94,10 @@ class CommentaireController extends Controller
     public function show($id_commentaire)
     {
         $commentaire = Commentaire::findOrfail($id_commentaire);
+
+        $include = (new QueryService)->include(request(), $this->allowedIncludes);
+        if ($include)
+            $commentaire->load($include);
 
         return new CommentaireResource($commentaire);
     }

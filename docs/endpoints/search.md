@@ -1,10 +1,8 @@
-## Rechercher
-
 ### `/rechercher`
 
 If you need to search for resources or users, you can use this endpoint. It accepts a POST request with a JSON payload containing the search parameters. The response will contain a list of resources or users that match the search parameters.
 
-You can either search for resources or users, or both. If you want to include ressources authors, you can pass the `include` parameter in the `ressource` object. The `include` parameter takes an array of strings. 
+You can either search for resources or users, or both. If you want to include ressources authors, you can pass the `include` parameter in the `ressource` object. The `include` parameter takes an array of strings that can be `utilisateur`, `pieceJointe` or `categorie`. 
 
 **Example request:**
 ```http

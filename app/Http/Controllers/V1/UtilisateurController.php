@@ -69,19 +69,9 @@ class UtilisateurController extends Controller
         [$fieldOrder, $typeOrder] = (new QueryService)->translateOrderBy($request->query('orderBy'), 'id_uti', $this->columnMap); 
         $utilisateurs = Utilisateur::where($eloquentQuery)->orderBy($fieldOrder, $typeOrder); 
 
-        $includes = $request->query('include');
-        if ($includes) {
-            $includedArray = explode(',', $includes);
-            foreach ($includedArray as $include) {
-                if (in_array($include, $this->allowedIncludes)) {
-                    $utilisateurs->with($include);
-                } else {
-                    return response()->json([
-                        'message' => 'Invalid include parameter'
-                    ], 400);
-                }
-            }
-        }
+        $include = (new QueryService)->include(request(), $this->allowedIncludes);
+        if ($include)
+            $utilisateurs->with($include);
         
         return new UtilisateurCollection($utilisateurs->paginate($perPage)->appends($request->query()));
     }
@@ -135,19 +125,9 @@ class UtilisateurController extends Controller
     {
         $utilisateur = Utilisateur::findOrfail($id_uti);
 
-        $includes = request()->query('include');
-        if ($includes) {
-            $includedArray = explode(',', $includes);
-            foreach ($includedArray as $include) {
-                if (in_array($include, $this->allowedIncludes)) {
-                    $utilisateur = $utilisateur->loadMissing($include);
-                } else {
-                    return response()->json([
-                        'message' => 'Invalid include parameter'
-                    ], 400);
-                }
-            }
-        }
+        $include = (new QueryService)->include(request(), $this->allowedIncludes);
+        if ($include)
+            $utilisateur->load($include);
 
         return new UtilisateurResource($utilisateur);
     }

@@ -33,7 +33,11 @@ class QueryService
                     if (in_array($operator, $allowedParams[$param])) {
                         $columnName = $columnMap[$param];
                         $comparisonOperator = $this->operatorMap[$operator];
-                        $eloquentQuery[] = [$columnName, $comparisonOperator, $value];
+                        if (!isset($eloquentQuery[$columnName])) {
+                            $eloquentQuery[$columnName] = [];
+                        }
+                        $values = explode(',', $value);
+                        $eloquentQuery[$columnName][$comparisonOperator] = $values;
                     } else {
                         return abort(400, "Operator '{$operator}' not allowed for parameter '{$param}'");
                     }
@@ -83,5 +87,30 @@ class QueryService
         }
 
         return [$orderByColumn, $orderByType];
+    }
+
+    /**
+     * Includes related data in query
+     * 
+     * @param request $request 
+     * @param  $allowedIncludes
+     * @return array 
+     */
+    public function include($request, $allowedIncludes)
+    {
+        $includes = $request->query('include');
+        $includedArray = [];
+
+        if ($includes) {
+            $includedArray = explode(',', $includes);
+            //return $includedArray;
+            foreach ($includedArray as $include) {
+                if (!in_array($include, $allowedIncludes)) {
+                    return abort(400, 'Invalid include parameter');
+                }
+            }
+        }
+
+        return $includedArray;
     }
 }
