@@ -14,6 +14,7 @@ use App\Services\V1\TokenAttributor;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\RegistrationMail;
+use Illuminate\Auth\Events\Registered;
 
 class UtilisateurController extends Controller
 {
@@ -106,11 +107,13 @@ class UtilisateurController extends Controller
         
         $utilisateur->fk_id_role = 4;
         $utilisateur->save();
+        event(new Registered($utilisateur));
 
         $token = (new TokenAttributor)->createToken($utilisateur);
         $id = $utilisateur->id_uti;
 
-        Mail::to('vic.gombert@gmail.com')->send(new RegistrationMail());
+
+        //Mail::to('vic.gombert@gmail.com')->send(new RegistrationMail());
 
         return response()->json(['response' => $this->show($id), 'token' => $token], 201);
     }

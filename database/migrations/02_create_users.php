@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('prenom_uti');
             $table->string('photo_uti')->nullable();
             $table->text('bio_uti');
+            $table->timestamp('email_verified_at')->nullable();
             //url_profil_uti supprimé : calculé depuis profil/user_files/<id_uti>/
             $table->boolean('compte_actif_uti')->default(true);
             $table->string('raison_banni_uti')->nullable();
