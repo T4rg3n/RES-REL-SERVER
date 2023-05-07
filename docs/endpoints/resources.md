@@ -1,5 +1,3 @@
-## Resources
-
 ### `/ressources`
 
 #### GET

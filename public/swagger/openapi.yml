@@ -1733,7 +1733,6 @@ paths:
                   compteActif: true
                   raisonBan: null
                   idRole: 1
-
   /utilisateur/disable:  
     post:
       summary: Disable an utilisateur

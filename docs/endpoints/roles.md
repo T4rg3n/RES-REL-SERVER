@@ -1,5 +1,3 @@
-## Roles
-
 ### `/roles`
 
 #### GET

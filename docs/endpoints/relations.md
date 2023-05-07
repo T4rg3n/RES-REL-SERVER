@@ -1,5 +1,3 @@
-## Relations
-
 ### `/relations`
 
 #### GET

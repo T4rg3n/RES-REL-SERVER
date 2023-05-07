@@ -1,5 +1,3 @@
-## Rechercher
-
 ### `/rechercher`
 
 If you need to search for resources or users, you can use this endpoint. It accepts a POST request with a JSON payload containing the search parameters. The response will contain a list of resources or users that match the search parameters.
