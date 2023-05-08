@@ -4,8 +4,7 @@ namespace App\Http\Requests\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
-use \Illuminate\Validation\ValidationException;
-
+use Illuminate\Validation\ValidationException;
 
 class StoreRelationRequest extends FormRequest
 {

@@ -15,7 +15,7 @@ use App\Services\V1\QueryService;
  */
 class TypeRelationController extends Controller
 {
-        /**
+    /**
      * Allowed parameters for filtering
      */
     protected $allowedParams = [
@@ -42,14 +42,14 @@ class TypeRelationController extends Controller
         $queryContent = $request->all();
         $filter = new QueryService();
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
-        $typesRelations = TypeRelation::where($eloquentQuery); 
-        
+        $typesRelations = TypeRelation::where($eloquentQuery);
+
         return new TypeRelationCollection($typesRelations->paginate($perPage)->appends($request->query()));
     }
 
     /**
      * Store a newly created resource in storage.
-     * 
+     *
      * @param  \Illuminate\Http\StoreTypeRelationRequest  $request
      * @return \Illuminate\Http\Response
      */
@@ -59,7 +59,8 @@ class TypeRelationController extends Controller
         $typeRelation->save();
         $id = $typeRelation->id_type_relation;
 
-        return response()->json($this->show($id), 201);;
+        return response()->json($this->show($id), 201);
+        ;
     }
 
     /**

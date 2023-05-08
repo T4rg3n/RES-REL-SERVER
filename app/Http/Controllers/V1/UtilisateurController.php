@@ -61,22 +61,23 @@ class UtilisateurController extends Controller
     {
         $perPage = request()->input('perPage', 15);
         $queryContent = $request->all();
-        $eloquentQuery = (new QueryService)->transform($queryContent, $this->allowedParams, $this->columnMap);
-        
-        // Order by
-        [$fieldOrder, $typeOrder] = (new QueryService)->translateOrderBy($request->query('orderBy'), 'id_uti', $this->columnMap); 
-        $utilisateurs = Utilisateur::where($eloquentQuery)->orderBy($fieldOrder, $typeOrder); 
+        $eloquentQuery = (new QueryService())->transform($queryContent, $this->allowedParams, $this->columnMap);
 
-        $include = (new QueryService)->include(request(), $this->allowedIncludes);
-        if ($include)
+        // Order by
+        [$fieldOrder, $typeOrder] = (new QueryService())->translateOrderBy($request->query('orderBy'), 'id_uti', $this->columnMap);
+        $utilisateurs = Utilisateur::where($eloquentQuery)->orderBy($fieldOrder, $typeOrder);
+
+        $include = (new QueryService())->include(request(), $this->allowedIncludes);
+        if ($include) {
             $utilisateurs->with($include);
-        
+        }
+
         return new UtilisateurCollection($utilisateurs->paginate($perPage)->appends($request->query()));
     }
 
     /**
      * Store a newly created resource in storage.
-     * 
+     *
      * @param  \Illuminate\Http\StoreUtilisateurRequest  $request
      * @return \Illuminate\Http\Response
      */
@@ -89,28 +90,28 @@ class UtilisateurController extends Controller
         }
 
         $utilisateur = Utilisateur::create($request->all());
-       
+
         //users can optionally upload a photo
         if($request->hasFile('photoProfil')) {
             $filePath = 'user-files/' . $utilisateur->id_uti;
             $uploadedFile = $request->file('photoProfil');
             $utilisateur->photo_uti = $filePath;
-    
+
             $fileName = $utilisateur->id_uti . "_photoProfil." . $uploadedFile->getClientOriginalExtension();
             $request->photoProfil->move(public_path($filePath), $fileName);
         } else {
             $utilisateur->photo_uti = public_path() . '/assets/default-assets/default-user.png';
         }
-        
+
         $utilisateur->fk_id_role = 4;
         $utilisateur->save();
 
-        $token = (new TokenAttributor)->createToken($utilisateur);
+        $token = (new TokenAttributor())->createToken($utilisateur);
         $id = $utilisateur->id_uti;
 
         return response()->json(['response' => $this->show($id), 'token' => $token], 201);
     }
-    
+
     /**
      * Display the specified resource.
      *
@@ -121,9 +122,10 @@ class UtilisateurController extends Controller
     {
         $utilisateur = Utilisateur::findOrfail($id_uti);
 
-        $include = (new QueryService)->include(request(), $this->allowedIncludes);
-        if ($include)
+        $include = (new QueryService())->include(request(), $this->allowedIncludes);
+        if ($include) {
             $utilisateur->load($include);
+        }
 
         return new UtilisateurResource($utilisateur);
     }
@@ -131,29 +133,29 @@ class UtilisateurController extends Controller
     /**
      * Download the profile picture of the user if defined.
      * If it isnt it returns a default picture.
-     * 
+     *
      * @param int $idUtilisateur
      */
     public function download($idUtilisateur)
     {
         $utilisateur = Utilisateur::findOrfail($idUtilisateur);
         $filePath = $utilisateur->photo_uti;
-        
+
         //  $fileName = $utilisateur->id_uti . "_photoProfil." . pathinfo($filePath, PATHINFO_EXTENSION);
         //check if file exists
 
         //TODO refactor this
         if(file_exists(public_path() . $filePath)) {
-            $fileMimeType = pathinfo($filePath, PATHINFO_EXTENSION);    
+            $fileMimeType = pathinfo($filePath, PATHINFO_EXTENSION);
             header('Content-Type: image/' . $fileMimeType);
             //header('Content-Disposition: attachment; filename="filename.extension"');
             return response()->download(public_path() . $filePath);
         } else {
-            if(config('app.debug') && $utilisateur->photo_uti == 'fake user photo'){
+            if(config('app.debug') && $utilisateur->photo_uti == 'fake user photo') {
                 //TODO determine user gender an return a fake profile picture
                 $path = public_path() . '/assets/fake-profile-pictures/female';
                 $files = File::files($path);
-                $profilePictures = array_filter($files, function($file) {
+                $profilePictures = array_filter($files, function ($file) {
                     return in_array(File::extension($file), ['png', 'jpg', 'jpeg', 'gif']);
                 });
 
@@ -178,7 +180,7 @@ class UtilisateurController extends Controller
 
     /**
      * Logout the specified user
-     * 
+     *
      * @param Request request with idUser & bearer token
      */
     public function logout(Request $request)
@@ -205,10 +207,10 @@ class UtilisateurController extends Controller
             'message' => 'Utilisateur deleted'
         ], 200);
     }
-    
+
     /**
      * Set the specified user as disabled (banned) in the database
-     * 
+     *
      * @param int $id_uti
      * @return \Illuminate\Http\Response
      */
@@ -219,7 +221,7 @@ class UtilisateurController extends Controller
         $utilisateur->raison_banni_uti = $request->raison_banni_uti;
         $utilisateur->save();
         $id = $utilisateur->id_uti;
-        
+
         return response()->json([
             'message' => 'Utilisateur disabled',
         ], 200);
