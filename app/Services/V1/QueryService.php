@@ -62,7 +62,7 @@ class QueryService
      * @param array $columnMap
      * @return array
      */
-    public function translateOrderBy(?string $orderByField, string $defaultColumn, array $columnMap): array
+    function translateOrderBy(?string $orderByField, string $defaultColumn, array $columnMap): array
     {
         $orderByColumn = $defaultColumn;
         $orderByType = 'asc';
@@ -91,10 +91,10 @@ class QueryService
 
     /**
      * Includes related data in query
-     *
-     * @param request $request
+     * 
+     * @param request $request 
      * @param  $allowedIncludes
-     * @return array
+     * @return array 
      */
     public function include($request, $allowedIncludes)
     {

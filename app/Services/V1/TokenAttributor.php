@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 namespace App\Services\V1;
 
@@ -6,7 +6,7 @@ class TokenAttributor
 {
     /**
      * Create a token for a user
-     *
+     * 
      * @param \App\Models\Utilisateur $user
      * @return \Illuminate\Http\JsonResponse
      */

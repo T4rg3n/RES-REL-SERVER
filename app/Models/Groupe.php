@@ -18,9 +18,9 @@ class Groupe extends Model
         'description_groupe',
         'est_prive_groupe',
     ];
-
+    
     public function Utilisateur()
     {
         return $this->hasMany(Utilisateur::class);
-    }
+    }  
 }

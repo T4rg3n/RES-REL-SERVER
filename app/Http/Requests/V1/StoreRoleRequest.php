@@ -4,7 +4,8 @@ namespace App\Http\Requests\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Validation\ValidationException;
+use \Illuminate\Validation\ValidationException;
+
 
 class StoreRoleRequest extends FormRequest
 {
@@ -35,7 +36,7 @@ class StoreRoleRequest extends FormRequest
 
     /**
      * Get the error messages for the defined validation rules.
-     *
+     * 
      * @return array<string, string>
      */
     public function messages()
@@ -46,7 +47,7 @@ class StoreRoleRequest extends FormRequest
             'ascendant.required' => 'ascendant is required',
             'ascendant.string' => 'ascendant must be a string',
             'descendant.required' => 'descendant is required',
-            'descendant.string' => 'descendant must be a string',
+            'descendant.string' => 'descendant must be a string',        
         ];
     }
 

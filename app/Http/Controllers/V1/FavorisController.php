@@ -54,21 +54,20 @@ class FavorisController extends Controller
         $favoris = Favoris::where($eloquentQuery);
 
         // Order by
-        [$fieldOrder, $typeOrder] = (new QueryService())->translateOrderBy($request->query('orderBy'), 'id_favoris', $this->columnMap);
+        [$fieldOrder, $typeOrder] = (new QueryService)->translateOrderBy($request->query('orderBy'), 'id_favoris', $this->columnMap); 
         $favoris = Favoris::where($eloquentQuery)->orderBy($fieldOrder, $typeOrder);
 
         // Include
-        $include = (new QueryService())->include(request(), $this->allowedIncludes);
-        if ($include) {
+        $include = (new QueryService)->include(request(), $this->allowedIncludes);
+        if ($include)
             $favoris->with($include);
-        }
-
+        
         return new FavorisCollection($favoris->paginate($perPage)->appends($request->query()));
     }
 
     /**
      * Store a newly created resource in storage.
-     *
+     * 
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -77,10 +76,10 @@ class FavorisController extends Controller
         $favoris = Favoris::create($request->all());
         $favoris->save();
         $id = $favoris->id_favoris;
-
+        
         return response()->json($this->show($id), 201);
     }
-
+    
     /**
      * Display the specified resource.
      *
@@ -91,10 +90,9 @@ class FavorisController extends Controller
     {
         $favoris = Favoris::findOrfail($id_favoris);
 
-        $include = (new QueryService())->include(request(), $this->allowedIncludes);
-        if ($include) {
+        $include = (new QueryService)->include(request(), $this->allowedIncludes);
+        if ($include)
             $favoris->loadMissing($include);
-        }
 
         return new FavorisResource($favoris);
     }

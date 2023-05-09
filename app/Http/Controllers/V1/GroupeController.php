@@ -43,7 +43,7 @@ class GroupeController extends Controller
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
 
         // Order by
-        [$fieldOrder, $typeOrder] = (new QueryService())->translateOrderBy($request->query('orderBy'), 'id_groupe', $this->columnMap);
+        [$fieldOrder, $typeOrder] = (new QueryService)->translateOrderBy($request->query('orderBy'), 'id_groupe', $this->columnMap); 
         $groupe = Groupe::where($eloquentQuery)->orderBy($fieldOrder, $typeOrder);
 
         return new GroupeCollection($groupe->paginate($perPage)->appends($request->query()));
@@ -51,7 +51,7 @@ class GroupeController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
+     * 
      * @param  \Illuminate\Http\StoreGroupeRequest  $request
      * @return \Illuminate\Http\Response
      */

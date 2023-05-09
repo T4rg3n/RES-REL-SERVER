@@ -9,9 +9,7 @@ use Illuminate\Notifications\Notifiable;
 
 class Utilisateur extends Authenticatable
 {
-    use HasApiTokens;
-    use HasFactory;
-    use Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     public $timestamps = false;
     protected $table = 'utilisateurs';

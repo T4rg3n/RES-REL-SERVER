@@ -93,7 +93,7 @@ class CategorieController extends Controller
      */
     // public function update(UpdateCategorieRequest $request, Categorie $categorie)
     // {
-    //
+    //     
     // }
 
     /**

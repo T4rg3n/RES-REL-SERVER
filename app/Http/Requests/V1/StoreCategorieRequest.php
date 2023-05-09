@@ -4,7 +4,8 @@ namespace App\Http\Requests\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Validation\ValidationException;
+use \Illuminate\Validation\ValidationException;
+
 
 class StoreCategorieRequest extends FormRequest
 {
@@ -44,7 +45,7 @@ class StoreCategorieRequest extends FormRequest
     }
 
     /**
-     * Translate request parameters to database columns
+     * Translate request parameters to database columns 
      * for the columns that need to be translated
      */
     protected function prepareForValidation()

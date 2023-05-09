@@ -55,22 +55,21 @@ class ReponseCommentaireController extends Controller
         $queryContent = $request->all();
         $filter = new QueryService();
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
-
+        
         // Order by
-        [$fieldOrder, $typeOrder] = (new QueryService())->translateOrderBy($request->query('orderBy'), 'id_reponse', $this->columnMap);
-        $reponsesCommentaires = ReponseCommentaire::where($eloquentQuery)->orderBy($fieldOrder, $typeOrder);
+        [$fieldOrder, $typeOrder] = (new QueryService)->translateOrderBy($request->query('orderBy'), 'id_reponse', $this->columnMap); 
+        $reponsesCommentaires = ReponseCommentaire::where($eloquentQuery)->orderBy($fieldOrder, $typeOrder); 
 
-        $include = (new QueryService())->include(request(), $this->allowedIncludes);
-        if ($include) {
+        $include = (new QueryService)->include(request(), $this->allowedIncludes);
+        if ($include)
             $reponsesCommentaires->with($include);
-        }
 
-        return new ReponseCommentaireCollection($reponsesCommentaires->paginate($perPage)->appends($request->query()));
+        return new ReponseCommentaireCollection($reponsesCommentaires->paginate($perPage)->appends($request->query())); 
     }
 
     /**
      * Store a newly created resource in storage.
-     *
+     * 
      * @param  \Illuminate\Http\StoreReponseCommentaireRequest  $request
      * @return \Illuminate\Http\Response
      */
@@ -93,10 +92,9 @@ class ReponseCommentaireController extends Controller
     {
         $reponseCommentaire = ReponseCommentaire::findorFail($id_reponse);
 
-        $ $include = (new QueryService())->include(request(), $this->allowedIncludes);
-        if ($include) {
+        $ $include = (new QueryService)->include(request(), $this->allowedIncludes);
+        if ($include)
             $reponsesCommentaires->loadMissing($include);
-        }
 
         return new ReponseCommentaireResource($reponseCommentaire);
     }
@@ -119,7 +117,7 @@ class ReponseCommentaireController extends Controller
 
     /**
      * Disable the specified resource in databas
-     *
+     * 
      * @param int id_reponse
      */
     public function disable($id_reponse)

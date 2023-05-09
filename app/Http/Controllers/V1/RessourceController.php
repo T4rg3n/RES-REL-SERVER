@@ -59,9 +59,9 @@ class RessourceController extends Controller
     {
         $perPage = request()->input('perPage', 15);
         $queryContent = $request->all();
-        $eloquentQuery = (new QueryService())->transform($queryContent, $this->allowedParams, $this->columnMap);
+        $eloquentQuery = (new QueryService)->transform($queryContent, $this->allowedParams, $this->columnMap);
 
-        // Allows multiple filters on the same column (ex: ?id[equals]=1&id[equals]=2)
+        // Allows multiple filters on the same column (ex: ?id[equals]=1&id[equals]=2) 
         // Used for infinite scroll on the front-end, only on RessourceController
         $ressources = Ressource::query();
         foreach ($eloquentQuery as $columnName => $operators) {
@@ -75,14 +75,13 @@ class RessourceController extends Controller
         }
 
         // Order by
-        [$fieldOrder, $typeOrder] = (new QueryService())->translateOrderBy($request->query('orderBy'), 'id_ressource', $this->columnMap);
+        [$fieldOrder, $typeOrder] = (new QueryService)->translateOrderBy($request->query('orderBy'), 'id_ressource', $this->columnMap);
         $ressources->orderBy($fieldOrder, $typeOrder);
 
         // Include
-        $include = (new QueryService())->include(request(), $this->allowedIncludes);
-        if ($include) {
+        $include = (new QueryService)->include(request(), $this->allowedIncludes);
+        if ($include)
             $ressources->with($include);
-        }
 
         return new RessourceCollection($ressources->paginate($perPage)->appends($request->query()));
     }
@@ -111,11 +110,10 @@ class RessourceController extends Controller
     public function show($id_ressource)
     {
         $ressource = Ressource::findOrfail($id_ressource);
-
-        $include = (new QueryService())->include(request(), $this->allowedIncludes);
-        if ($include) {
+        
+        $include = (new QueryService)->include(request(), $this->allowedIncludes);
+        if ($include)
             $ressource->load($include);
-        }
 
         return new RessourceResource($ressource);
     }
@@ -129,7 +127,7 @@ class RessourceController extends Controller
     public function disable(RefuseRessourceRequest $request)
     {
         $ressource = Ressource::findOrfail($request->id_ressource);
-
+    
         if($ressource->status != 'PENDING') {
             return response()->json([
                 'message' => 'Ressource is not pending'
@@ -171,7 +169,7 @@ class RessourceController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
+     * 
      * @param  int  $id_ressource
      * @return \Illuminate\Http\Response
      */

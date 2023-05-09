@@ -8,7 +8,7 @@ class PromoteController extends Controller
 {
     /**
      * Edit the specified resource in storage.
-     *
+     * 
      * @param  \Illuminate\Http\Request  $request
      */
     public function patch(Request $request)

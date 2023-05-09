@@ -6,11 +6,11 @@ use App\Models\Role;
 use App\Models\Utilisateur;
 use Illuminate\Support\Facades\DB;
 
-class TokenHierarchy
+class TokenHierarchy 
 {
     /**
      * Check if a role is superior to another
-     *
+     * 
      * @param int $id_role
      * @param int $id_utilisateur
      * @return bool

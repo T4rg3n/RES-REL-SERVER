@@ -4,7 +4,8 @@ namespace App\Http\Requests\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Validation\ValidationException;
+use \Illuminate\Validation\ValidationException;
+
 
 class StorePieceJointeRequest extends FormRequest
 {
@@ -39,9 +40,9 @@ class StorePieceJointeRequest extends FormRequest
         ];
     }
 
-    /**
+    /** 
      * Get the error messages for the defined validation rules.
-     *
+     * 
      * @return array<string, string>
      */
     public function messages()
@@ -73,7 +74,7 @@ class StorePieceJointeRequest extends FormRequest
     }
 
     /**
-     * Translate request parameters to database columns
+     * Translate request parameters to database columns 
      * for the columns that need to be translated
      */
     protected function prepareForValidation()

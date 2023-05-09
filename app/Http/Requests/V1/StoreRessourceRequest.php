@@ -4,7 +4,7 @@ namespace App\Http\Requests\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Validation\ValidationException;
+use \Illuminate\Validation\ValidationException;
 
 class StoreRessourceRequest extends FormRequest
 {
@@ -54,9 +54,9 @@ class StoreRessourceRequest extends FormRequest
             'idPieceJointe.integer' => 'IdPieceJointe must be an integer',
         ];
     }
-
+    
     /**
-     * Translate request parameters to database columns
+     * Translate request parameters to database columns 
      * for the columns that need to be translated
      */
     protected function prepareForValidation()
