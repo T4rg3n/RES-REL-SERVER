@@ -21,3 +21,4 @@ database/migrations/.old/2019_08_19_000000_create_failed_jobs_table.php.old
 database/migrations/.old/2019_12_14_000001_create_personal_access_tokens_table.php.old
 public/user-files
 public/swagger/swagger-initializer.js
+/tools/php-cs-fixer/vendor
