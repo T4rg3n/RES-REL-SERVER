@@ -26,49 +26,8 @@ class SearchController extends Controller
     public function rechercher(SearchRequest $request)
     {
         $formatted = $request->formatted();
-
-        $ressourcesResult = [];
-        $utilisateursResult = [];
-
-        //TODO refactor this
-        if (isset($formatted['ressourceQuery'])) {
-            $ressourceSearch = Ressource::where('titre_ressource', 'LIKE', "%{$formatted['ressourceQuery']}%")
-                //->orWhere('contenu_texte_ressource', 'LIKE', "%{$formatted['ressourceQuery']}%")
-                ->where('status', '=', "APPROVED")
-                ->orderBy('date_publication_ressource', 'asc')
-                ->take(25);
-
-            $includes = $formatted['ressourceInclude'];
-            if ($includes) {
-                foreach ($includes as $includedRessource) {
-                    if (in_array($includedRessource, $this->allowedIncludes)) {
-                        $ressourceSearch->with($includedRessource);
-                    } else {
-                        return response()->json([
-                            'message' => 'Invalid include'
-                        ], 400);
-                    }
-                }
-            }
-
-            $ressourceSearch = $ressourceSearch->get();
-
-            foreach ($ressourceSearch as $result) {
-                array_push($ressourcesResult, $result);
-            }
-        }
-
-        if (isset($formatted['utilisateurQuery'])) {
-            $utilisateurSearch = Utilisateur::where('nom_uti', 'LIKE', "%{$formatted['utilisateurQuery']}%")
-                ->orWhere('prenom_uti', 'LIKE', "%{$formatted['utilisateurQuery']}%")
-                ->where('compte_actif_uti', '=', 1)
-                ->take(25)
-                ->get();
-
-            foreach ($utilisateurSearch as $result) {
-                array_push($utilisateursResult, $result);
-            }
-        }
+        $ressourcesResult = $this->searchRessources($formatted);
+        $utilisateursResult = $this->searchUtilisateurs($formatted);
 
         if (empty($ressourcesResult) && empty($utilisateursResult)) {
             return response(null, 204);
@@ -77,23 +36,44 @@ class SearchController extends Controller
         $utilisateurCollection = new UtilisateurCollection($utilisateursResult);
         $ressourceCollection = new RessourceCollection($ressourcesResult);
 
-        // if one or the other is empty
-        if (count($ressourceCollection) === 0) {
-            return response()->json([
-                'utilisateurs' => $utilisateurCollection,
-            ], 200);
+        $response = ['ressources' => $ressourceCollection, 'utilisateurs' => $utilisateurCollection];
+        return response()->json($response, 200);
+    }
+
+    private function searchRessources($formatted)
+    {
+        if (!isset($formatted['ressourceQuery'])) {
+            return [];
         }
 
-        if (count($utilisateurCollection) === 0) {
-            return response()->json([
-                'ressources' => $ressourceCollection,
-            ], 200);
+        $ressourceSearch = Ressource::where('titre_ressource', 'LIKE', "%{$formatted['ressourceQuery']}%")
+            ->where('status', '=', "APPROVED")
+            ->orderBy('date_publication_ressource', 'asc')
+            ->take(25);
+
+        $includes = $formatted['ressourceInclude'];
+        if ($includes) {
+            foreach ($includes as $includedRessource) {
+                if (!in_array($includedRessource, $this->allowedIncludes)) {
+                    return response()->json(['message' => 'Invalid include'], 400);
+                }
+                $ressourceSearch->with($includedRessource);
+            }
         }
 
-        // if both are full
-        return response()->json([
-            'ressources' => $ressourceCollection,
-            'utilisateurs' => $utilisateurCollection,
-        ], 200);
+        return $ressourceSearch->get();
+    }
+
+    private function searchUtilisateurs($formatted)
+    {
+        if (!isset($formatted['utilisateurQuery'])) {
+            return [];
+        }
+
+        return Utilisateur::where('nom_uti', 'LIKE', "%{$formatted['utilisateurQuery']}%")
+            ->orWhere('prenom_uti', 'LIKE', "%{$formatted['utilisateurQuery']}%")
+            ->where('compte_actif_uti', '=', 1)
+            ->take(25)
+            ->get();
     }
 }
