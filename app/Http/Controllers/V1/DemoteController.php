@@ -13,7 +13,7 @@ class DemoteController extends Controller
 {
     /**
      * Edit the specified resource in storage.
-     * 
+     *
      * @param  \Illuminate\Http\Request  $request
      */
     public function patch(Request $request)
@@ -23,14 +23,14 @@ class DemoteController extends Controller
             'idRole' => 'required|integer',
         ]);
 
-        if((new TokenHierarchy)->isSuperior($request->idRole, $request->idUtilisateur)) {
+        if((new TokenHierarchy())->isSuperior($request->idRole, $request->idUtilisateur)) {
             return response()->json([
                 'message' => 'Unauthorized (isSuperior)'
             ], 403);
         }
 
         $utilisateur = Utilisateur::find($request->idUtilisateur);
-        
+
         if(!$utilisateur->tokenCan(['admin', 'super-admin'])) {
             return response()->json([
                 'message' => 'Unauthorized (tokenCan)'
@@ -38,18 +38,18 @@ class DemoteController extends Controller
         }
 
         $role = Role::find($request->idRole);
-/*
-        if($utilisateur == null || $role == null) {
-            return response()->json([
-                'message' => 'Utilisateur introuvable'
-            ], 404);
-        }
-*/
+        /*
+                if($utilisateur == null || $role == null) {
+                    return response()->json([
+                        'message' => 'Utilisateur introuvable'
+                    ], 404);
+                }
+        */
         $utilisateur->role_id = $role->id;
         $utilisateur->save();
 
         $utilisateur->currentAccessToken()->delete();
-        $token = (new TokenAttributor)->createToken($utilisateur);
+        $token = (new TokenAttributor())->createToken($utilisateur);
 
         return response()->json([
             'message' => 'Utilisateur demoted',

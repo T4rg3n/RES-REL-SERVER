@@ -4,8 +4,7 @@ namespace App\Http\Requests\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
-use \Illuminate\Validation\ValidationException;
-
+use Illuminate\Validation\ValidationException;
 
 class RefuseRessourceRequest extends FormRequest
 {
@@ -36,7 +35,7 @@ class RefuseRessourceRequest extends FormRequest
 
     /**
      * Get the error messages for the defined validation rules.
-     * 
+     *
      * @return array<string, string>
      */
     public function messages()

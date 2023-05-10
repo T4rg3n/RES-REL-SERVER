@@ -37,14 +37,14 @@ class RoleController extends Controller
         $queryContent = $request->all();
         $filter = new QueryService();
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
-        $roles = Role::where($eloquentQuery); 
+        $roles = Role::where($eloquentQuery);
 
         return new RoleCollection($roles->paginate($perPage)->appends($request->query()));
     }
 
     /**
      * Store a newly created resource in storage.
-     * 
+     *
      * @param  \Illuminate\Http\StoreRoleRequest  $request
      * @return \Illuminate\Http\Response
      */
@@ -56,7 +56,7 @@ class RoleController extends Controller
 
         return response()->json($this->show($id), 201);
     }
-    
+
     /**
      * Display the specified resource.
      *

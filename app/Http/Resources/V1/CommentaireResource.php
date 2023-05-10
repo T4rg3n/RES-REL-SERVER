@@ -25,6 +25,6 @@ class CommentaireResource extends JsonResource
             'utilisateur' => new UtilisateurResource($this->whenLoaded('utilisateur')),
             'idRessource' => $this->fk_id_ressource,
             'ressource' => new RessourceResource($this->whenLoaded('ressource')),
-        ];   
+        ];
     }
 }

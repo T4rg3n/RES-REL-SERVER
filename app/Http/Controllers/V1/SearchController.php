@@ -19,7 +19,7 @@ class SearchController extends Controller
 
     /**
      * Search trough the database for a specific ressource or user
-     * 
+     *
      * @param SearchRequest $request
      * @return array
      */
@@ -94,6 +94,6 @@ class SearchController extends Controller
         return response()->json([
             'ressources' => $ressourceCollection,
             'utilisateurs' => $utilisateurCollection,
-        ], 200); 
+        ], 200);
     }
 }
