@@ -4,8 +4,7 @@ namespace App\Http\Requests\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
-use \Illuminate\Validation\ValidationException;
-
+use Illuminate\Validation\ValidationException;
 
 class StoreRelationRequest extends FormRequest
 {
@@ -30,6 +29,7 @@ class StoreRelationRequest extends FormRequest
         return [
             'idDemandeur' => ['required', 'integer'],
             'idReceveur' => ['required', 'integer'],
+            'typeRelation' => ['required', 'integer'],
         ];
     }
 
@@ -45,6 +45,8 @@ class StoreRelationRequest extends FormRequest
             'idDemandeur.integer' => 'idDemandeur must be an integer',
             'idReceveur.required' => 'idReceveur is required',
             'idReceveur.integer' => 'idReceveur must be an integer',
+            'typeRelation.required' => 'typeRelation is required',
+            'typeRelation.integer' => 'typeRelation must be an integer',
         ];
     }
 
@@ -57,6 +59,7 @@ class StoreRelationRequest extends FormRequest
         $this->merge([
             'demandeur_id' => $this->idDemandeur,
             'receveur_id' => $this->idReceveur,
+            'fk_id_type_relation' => $this->typeRelation,
         ]);
     }
 

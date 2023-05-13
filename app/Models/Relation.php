@@ -16,6 +16,7 @@ class Relation extends Model
     protected $fillable = [
         'demandeur_id',
         'receveur_id',
+        'fk_id_type_relation',
         'accepte',
     ];
 
