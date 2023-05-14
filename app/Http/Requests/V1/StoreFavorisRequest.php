@@ -5,6 +5,7 @@ namespace App\Http\Requests\V1;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\ValidationException;
+use App\Models\Favoris;
 
 class StoreFavorisRequest extends FormRequest
 {
@@ -27,7 +28,17 @@ class StoreFavorisRequest extends FormRequest
     public function rules()
     {
         return [
-            'idUtilisateur' => ['required', 'integer'],
+            'idUtilisateur' => ['required', function ($attribute, $value, $fail) {
+                if ($this->idRessource) {
+                    $exists = Favoris::where('fk_id_uti', $value)
+                                      ->where('fk_id_ressource', $this->idRessource)
+                                      ->exists();
+    
+                    if ($exists) {
+                        $fail('You can\'t add this resource to your favorites because it\'s already in it.');
+                    }
+                }
+            }],
             'idRessource' => ['required', 'integer'],
         ];
     }
