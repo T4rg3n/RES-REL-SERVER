@@ -164,7 +164,6 @@ class PieceJointeController extends Controller
             ];
 
             if (array_key_exists($pieceJointe->type_pj, $fileTypes)) {
-                //FIXME files arent found
                 $path = public_path('assets/fake-' . strtolower($pieceJointe->type_pj) . 's');
                 $files = File::files($path);
                 $filteredFiles = array_filter($files, function ($file) use ($fileTypes, $pieceJointe) {
