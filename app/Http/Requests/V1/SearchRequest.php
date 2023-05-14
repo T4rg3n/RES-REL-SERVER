@@ -4,7 +4,7 @@ namespace App\Http\Requests\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
-use \Illuminate\Validation\ValidationException;
+use Illuminate\Validation\ValidationException;
 
 class SearchRequest extends FormRequest
 {
@@ -48,7 +48,7 @@ class SearchRequest extends FormRequest
             'utilisateurQuery.max' => 'Ressource query must be less than 255 characters',
         ];
     }
-    
+
     public function formatted()
     {
         $data = $this->validated();

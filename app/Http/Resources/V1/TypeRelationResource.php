@@ -17,7 +17,6 @@ class TypeRelationResource extends JsonResource
         return [
             'id' => $this->id_type_relation,
             'nom' => $this->nom_type_relation,
-            'dateCreation' => $this->date_creation,
         ];
     }
 }

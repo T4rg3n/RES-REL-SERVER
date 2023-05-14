@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests\V1;
 
+use App\Models\Relation;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
-use \Illuminate\Validation\ValidationException;
-
+use Illuminate\Validation\ValidationException;
 
 class StoreRelationRequest extends FormRequest
 {
@@ -28,8 +28,19 @@ class StoreRelationRequest extends FormRequest
     public function rules()
     {
         return [
-            'idDemandeur' => ['required', 'integer'],
+            'idDemandeur' => ['required', 'integer', function ($attribute, $value, $fail) {
+                if ($this->idReceveur) {
+                    $exists = Relation::where('demandeur_id', $value)
+                                      ->where('receveur_id', $this->idReceveur)
+                                      ->exists();
+    
+                    if ($exists) {
+                        $fail('This friend request already exists.');
+                    }
+                }
+            }],
             'idReceveur' => ['required', 'integer'],
+            'typeRelation' => ['required', 'integer'],
         ];
     }
 
@@ -45,6 +56,8 @@ class StoreRelationRequest extends FormRequest
             'idDemandeur.integer' => 'idDemandeur must be an integer',
             'idReceveur.required' => 'idReceveur is required',
             'idReceveur.integer' => 'idReceveur must be an integer',
+            'typeRelation.required' => 'typeRelation is required',
+            'typeRelation.integer' => 'typeRelation must be an integer',
         ];
     }
 
@@ -57,6 +70,7 @@ class StoreRelationRequest extends FormRequest
         $this->merge([
             'demandeur_id' => $this->idDemandeur,
             'receveur_id' => $this->idReceveur,
+            'fk_id_type_relation' => $this->typeRelation,
         ]);
     }
 

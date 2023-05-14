@@ -1,9 +1,8 @@
 <p align="center"><a target="_blank"><img src="/logo-resrel.png?raw=true" width="400" alt="ResRel Logo"></a></p>
 
-<p align="center">
 <img src="https://badgen.net/badge/version/1.0/green?icon=github" alt="Build Status">
-</p>
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/dedf39496d3c4236a3fdf02a42c82a50)](https://app.codacy.com/gh/T4rg3n/RES-REL-SERVER/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 # Table of contents 
 

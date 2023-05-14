@@ -2,35 +2,35 @@ site_name: RESREL-SERVER Documentation
 
 nav:
   - Getting started: index.md
-  - Errors: 
-    - Request errors: errors/#request-errors
-    - Server errors: errors/#server-errors
-  - Operations: 
-    - Pagination: operations/#pagination
-    - Sorting: operations/#sorting
-    - Filtering: operations/#filtering
-    - Aggregating: operations/#aggregating
-  - Endpoints: 
-    - Summary: endpoints-summary.md
-    - List of endpoints:
-      - Authentification: endpoints/authentication.md
-      - Categories: endpoints/categories.md
-      - Comments: endpoints/comments.md
-      - Favorites: endpoints/favorites.md
-      - Groups: endpoints/groups.md
-      - Pieces jointes: endpoints/pieces-jointes.md 
-      - Relations: endpoints/relations.md
-      - Comment responses: endpoints/reponses-commentaire.md
-      - Resources: endpoints/resources.md
-      - Roles: endpoints/roles.md
-      - Search: endpoints/search.md
-      - Relation types: endpoints/types-relation.md #TODO
-      - Users: endpoints/users.md #TODO
+  - Errors:
+      - Request errors: errors/#request-errors
+      - Server errors: errors/#server-errors
+  - Operations:
+      - Pagination: operations/#pagination
+      - Sorting: operations/#sorting
+      - Filtering: operations/#filtering
+      - Aggregating: operations/#aggregating
+  - Endpoints:
+      - Summary: endpoints-summary.md
+      - List of endpoints:
+          - Authentification: endpoints/authentication.md
+          - Categories: endpoints/categories.md
+          - Comments: endpoints/comments.md
+          - Favorites: endpoints/favorites.md
+          - Groups: endpoints/groups.md
+          - Pieces jointes: endpoints/pieces-jointes.md
+          - Relations: endpoints/relations.md
+          - Comment responses: endpoints/reponses-commentaire.md
+          - Resources: endpoints/resources.md
+          - Roles: endpoints/roles.md
+          - Search: endpoints/search.md
+          - Relation types: endpoints/types-relation.md #TODO
+          - Users: endpoints/users.md #TODO
 
 theme:
-  name: 'material'
-  logo: 'docs-favicon.png'
-  favicon: 'docs-favicon.png'
+  name: "material"
+  logo: "docs-favicon.png"
+  favicon: "docs-favicon.png"
   features:
     - navigation.instant
     - navigation.tracking

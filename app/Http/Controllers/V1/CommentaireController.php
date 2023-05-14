@@ -59,20 +59,21 @@ class CommentaireController extends Controller
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
 
         // Order by
-        [$fieldOrder, $typeOrder] = (new QueryService)->translateOrderBy($request->query('orderBy'), 'id_commentaire', $this->columnMap); 
+        [$fieldOrder, $typeOrder] = (new QueryService())->translateOrderBy($request->query('orderBy'), 'id_commentaire', $this->columnMap);
         $commentaires = Commentaire::where($eloquentQuery)->orderBy($fieldOrder, $typeOrder);
-     
+
         // Include
-        $include = (new QueryService)->include(request(), $this->allowedIncludes);
-        if ($include)
+        $include = (new QueryService())->include(request(), $this->allowedIncludes);
+        if ($include) {
             $commentaires->with($include);
+        }
 
         return new CommentaireCollection($commentaires->paginate($perPage)->appends($request->query()));
     }
 
     /**
      * Store a newly created resource in storage.
-     * 
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -95,9 +96,10 @@ class CommentaireController extends Controller
     {
         $commentaire = Commentaire::findOrfail($id_commentaire);
 
-        $include = (new QueryService)->include(request(), $this->allowedIncludes);
-        if ($include)
+        $include = (new QueryService())->include(request(), $this->allowedIncludes);
+        if ($include) {
             $commentaire->load($include);
+        }
 
         return new CommentaireResource($commentaire);
     }

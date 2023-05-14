@@ -56,15 +56,15 @@ class RelationController extends Controller
         $eloquentQuery = $filter->transform($queryContent, $this->allowedParams, $this->columnMap);
 
         // Order by
-        [$fieldOrder, $typeOrder] = (new QueryService)->translateOrderBy($request->query('orderBy'), 'id_relation', $this->columnMap); 
-        $relations = Relation::where($eloquentQuery)->orderBy($fieldOrder, $typeOrder); 
-        
+        [$fieldOrder, $typeOrder] = (new QueryService())->translateOrderBy($request->query('orderBy'), 'id_relation', $this->columnMap);
+        $relations = Relation::where($eloquentQuery)->orderBy($fieldOrder, $typeOrder);
+
         return new RelationCollection($relations->paginate($perPage)->appends($request->query()));
     }
 
     /**
      * Store a newly created resource in storage.
-     * 
+     *
      * @param  \Illuminate\Http\StoreRelationRequest  $request
      * @return \Illuminate\Http\Response
      */
@@ -73,7 +73,7 @@ class RelationController extends Controller
         $relation = Relation::create($request->all());
         $relation->save();
         $id = $relation->id_relation;
-        
+
         return response()->json($this->show($id), 201);
     }
 

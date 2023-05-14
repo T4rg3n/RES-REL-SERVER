@@ -15,7 +15,7 @@ class LoginController extends Controller
 {
     /**
      * Login a user and get a bearer token
-     * 
+     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -34,7 +34,7 @@ class LoginController extends Controller
             ], 401);
         }
 
-        $token = (new TokenAttributor)->createToken($user);
+        $token = (new TokenAttributor())->createToken($user);
 
         Mail::to('vic.gombert@gmail.com')->send(new RegistrationMail());
 

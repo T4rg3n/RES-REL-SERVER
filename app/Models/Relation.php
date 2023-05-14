@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Relation extends Model
 {
     use HasFactory;
-    
+
     public $timestamps = false;
     protected $table = 'relations';
     protected $primaryKey = 'id_relation';
@@ -16,10 +16,11 @@ class Relation extends Model
     protected $fillable = [
         'demandeur_id',
         'receveur_id',
+        'fk_id_type_relation',
         'accepte',
     ];
 
-    public function TypeRelation ()
+    public function TypeRelation()
     {
         return $this->belongsTo(TypeRelation::class);
     }
