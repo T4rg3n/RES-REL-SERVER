@@ -18,6 +18,11 @@ class Authenticate extends Middleware
      */
     protected function unauthenticated($request, array $guards)
     {
-        throw new AuthenticationException('Unauthenticated', $guards);
+        if (! $request->expectsJson()) {
+            return route('login');
+        }
+        
+        //TODO : uncomment this code to handle unauthenticated exception
+        // throw new AuthenticationException('Unauthenticated', $guards);
     }
 }

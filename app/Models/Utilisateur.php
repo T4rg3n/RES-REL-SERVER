@@ -35,22 +35,18 @@ class Utilisateur extends Authenticatable implements MustVerifyEmail
      *
      * @var array<string>
      */
-    /*
     protected $hidden = [
-        'password',
-        'remember_token',
+        'mdp_uti',
     ];
-    */
+    
     /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
-    /*
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'email_verified_at' => 'timestamp',
     ];
-    */
 
     public function role()
     {
