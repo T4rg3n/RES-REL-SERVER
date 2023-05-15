@@ -4,7 +4,7 @@
 Nous sommes heureux de vous compter parmi nos membres.
 Afin de compléter votre inscription, veuillez cliquer sur le bouton ci-dessous.
 
-<x-mail::button :url="''">
+<x-mail::button :url="$verificationEmail">
 Confirmer mon inscription
 </x-mail::button>
 

@@ -12,8 +12,11 @@ use App\Http\Requests\V1\BanUtilisateurRequest;
 use App\Services\V1\QueryService;
 use App\Services\V1\TokenAttributor;
 use Illuminate\Support\Facades\File;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Carbon;
+use App\Mail\RegistrationMail;
 
 class UtilisateurController extends Controller
 {
@@ -111,9 +114,17 @@ class UtilisateurController extends Controller
         $token = (new TokenAttributor())->createToken($utilisateur);
         $id = $utilisateur->id_uti;
 
-        event(new Registered($utilisateur));
-        Log::info('User created with id: ' . $id);
-        //Mail::to('vic.gombert@gmail.com')->send(new RegistrationMail());
+        //TODO refactor this
+        //email notification event doesnt work so we send a mail manually
+        $verificationUrl = URL::temporarySignedRoute(
+            'verification.verify', // the route name, it must be the same as in your `routes/web.php`
+            Carbon::now()->addMinutes(60), // the expiration time (here 60 minutes)
+            [
+                'id' => $utilisateur->getKey(),
+                'hash' => sha1($utilisateur->mail_uti),
+            ]
+        );
+        Mail::to($utilisateur->mail_uti)->send(new RegistrationMail($verificationUrl));
 
         return response()->json(['response' => $this->show($id), 'token' => $token], 201);
     }

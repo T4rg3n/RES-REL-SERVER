@@ -13,14 +13,26 @@ class RegistrationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    protected $verificationUrl;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($verificationUrl)
     {
-        //
+        $this->verificationUrl = $verificationUrl;
+    }
+
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
+    public function build()
+    {
+        return $this->markdown('emails.registration.blade', ['verificationEmail' => $this->verificationUrl]);
     }
 
     /**

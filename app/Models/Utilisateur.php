@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Mail;
 use App\Notifications\CustomVerifyEmail;
 
-class Utilisateur extends Authenticatable implements MustVerifyEmail
+class Utilisateur extends Authenticatable
 {
     use HasApiTokens;
     use HasFactory;
@@ -84,13 +84,13 @@ class Utilisateur extends Authenticatable implements MustVerifyEmail
         // $user = Utilisateur::find(1);
         // $user->notify(new \App\Notifications\CustomVerifyEmail);
 
-        Log::info('Starting to send verification email for user ' . $this->id);
-        try {
-            $this->notify(new CustomVerifyEmail);
-        } catch (\Exception $e) {
-            Log::error('Error while sending verification email: ' . $e->getMessage());
-        }
-        Log::info('Finished sending verification email for user ' . $this->id);
+        // Log::info('Starting to send verification email for user ' . $this->id);
+        // try {
+        //     $this->notify(new CustomVerifyEmail);
+        // } catch (\Exception $e) {
+        //     Log::error('Error while sending verification email: ' . $e->getMessage());
+        // }
+        // Log::info('Finished sending verification email for user ' . $this->id);
 
 
         //Log some information
