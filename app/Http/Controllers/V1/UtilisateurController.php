@@ -12,7 +12,6 @@ use App\Http\Requests\V1\BanUtilisateurRequest;
 use App\Services\V1\QueryService;
 use App\Services\V1\TokenAttributor;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Carbon;
@@ -56,6 +55,25 @@ class UtilisateurController extends Controller
     protected $allowedIncludes = [
         'role'
     ];
+
+    /**
+     * Send verification email to the user
+     * 
+     * @param \App\Models\Utilisateur $utilisateur
+     */
+    protected function sendVerificationMail(Utilisateur $utilisateur)
+    {
+        $verificationUrl = URL::temporarySignedRoute(
+            'verification.verify',
+            Carbon::now()->addMinutes(60),
+            [
+                'id' => $utilisateur->getKey(),
+                'hash' => sha1($utilisateur->getEmailForVerification())
+            ]
+        );
+
+        Mail::to($utilisateur->mail_uti)->send(new RegistrationMail($verificationUrl, $utilisateur->prenom_uti));
+    }
 
     /**
      * Display a listing of the resource.
@@ -114,17 +132,7 @@ class UtilisateurController extends Controller
         $token = (new TokenAttributor())->createToken($utilisateur);
         $id = $utilisateur->id_uti;
 
-        //TODO refactor this
-        //email notification event doesnt work so we send a mail manually
-        $verificationUrl = URL::temporarySignedRoute(
-            'verification.verify', // the route name, it must be the same as in your `routes/web.php`
-            Carbon::now()->addMinutes(60), // the expiration time (here 60 minutes)
-            [
-                'id' => $utilisateur->getKey(),
-                'hash' => sha1($utilisateur->mail_uti),
-            ]
-        );
-        Mail::to($utilisateur->mail_uti)->send(new RegistrationMail($verificationUrl));
+        $this->sendVerificationMail($utilisateur);
 
         return response()->json(['response' => $this->show($id), 'token' => $token], 201);
     }

@@ -14,14 +14,16 @@ class RegistrationMail extends Mailable
     use Queueable, SerializesModels;
 
     protected $verificationUrl;
+    protected $userName;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($verificationUrl)
+    public function __construct($verificationUrl, $userName)
     {
+        $this->userName = $userName;
         $this->verificationUrl = $verificationUrl;
     }
 
@@ -32,7 +34,10 @@ class RegistrationMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.registration.blade', ['verificationEmail' => $this->verificationUrl]);
+        return $this->markdown('emails.registration.blade', [
+            'verificationEmail' => $this->verificationUrl,
+            'userName' => $this->userName
+        ]);
     }
 
     /**
@@ -43,7 +48,7 @@ class RegistrationMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Registration Mail',
+            subject: 'Bienvenue sur Ressources Relationnelles, ' . $this->userName . '!',
         );
     }
 
