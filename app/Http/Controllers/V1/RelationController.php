@@ -39,8 +39,8 @@ class RelationController extends Controller
      * Allowed includes
      */
     protected $allowedIncludes = [
-        'idDemandeur',
-        'idReceveur'
+        'demandeur',
+        'receveur'
     ];
 
     /**
@@ -58,6 +58,13 @@ class RelationController extends Controller
         // Order by
         [$fieldOrder, $typeOrder] = (new QueryService())->translateOrderBy($request->query('orderBy'), 'id_relation', $this->columnMap);
         $relations = Relation::where($eloquentQuery)->orderBy($fieldOrder, $typeOrder);
+
+        // Include
+        $include = (new QueryService())->include(request(), $this->allowedIncludes);
+        if ($include) {
+            $relations->with($include);
+        }
+
 
         return new RelationCollection($relations->paginate($perPage)->appends($request->query()));
     }
@@ -86,6 +93,11 @@ class RelationController extends Controller
     public function show($id_relation)
     {
         $relation = Relation::findOrfail($id_relation);
+
+        $include = (new QueryService())->include(request(), $this->allowedIncludes);
+        if ($include) {
+            $relation->load($include);
+        }
 
         return new RelationResource($relation);
     }

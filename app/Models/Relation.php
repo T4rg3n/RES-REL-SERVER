@@ -24,4 +24,14 @@ class Relation extends Model
     {
         return $this->belongsTo(TypeRelation::class);
     }
+
+    public function demandeur()
+    {
+        return $this->belongsTo(Utilisateur::class, 'demandeur_id', 'id_uti');
+    }
+
+    public function receveur()
+    {
+        return $this->belongsTo(Utilisateur::class, 'receveur_id', 'id_uti');
+    }
 }

@@ -61,6 +61,7 @@ class RessourceController extends Controller
         $queryContent = $request->all();
         $eloquentQuery = (new QueryService())->transform($queryContent, $this->allowedParams, $this->columnMap);
 
+        //TODO review this
         // Allows multiple filters on the same column (ex: ?id[equals]=1&id[equals]=2)
         // Used for infinite scroll on the front-end, only on RessourceController
         $ressources = Ressource::query();
