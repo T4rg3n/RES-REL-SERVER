@@ -40,7 +40,8 @@ class RelationController extends Controller
      */
     protected $allowedIncludes = [
         'demandeur',
-        'receveur'
+        'receveur',
+        'typeRelation'
     ];
 
     /**
@@ -64,7 +65,6 @@ class RelationController extends Controller
         if ($include) {
             $relations->with($include);
         }
-
 
         return new RelationCollection($relations->paginate($perPage)->appends($request->query()));
     }

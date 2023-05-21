@@ -20,9 +20,9 @@ class Relation extends Model
         'accepte',
     ];
 
-    public function TypeRelation()
+    public function typeRelation()
     {
-        return $this->belongsTo(TypeRelation::class);
+        return $this->belongsTo(TypeRelation::class, 'fk_id_type_relation', 'id_type_relation');
     }
 
     public function demandeur()
