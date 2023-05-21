@@ -85,6 +85,60 @@ class RelationController extends Controller
     }
 
     /**
+     * Accept a pending relation.
+     * 
+     * @param  \Illuminate\Http\StoreRelationRequest  $request
+     * @param  int  $id_relation
+     * @return \Illuminate\Http\Response
+     */
+    public function accept($id_relation)
+    {
+        $relation = Relation::findOrfail($id_relation);
+
+        if($relation->accepte != null) {
+            return response()->json([
+                'message' => 'Relation already fulfilled'
+            ], 400);
+        }
+
+        $relation->accepte = true;
+        //TODO rename date_acceptation to a more generic name
+        $relation->date_acceptation = now();
+        $relation->save();
+
+        return response()->json([
+            'message' => 'Relation accepted'
+        ], 200);
+    }
+
+    /**
+     * Refuse a pending relation.
+     * 
+     * @param  \Illuminate\Http\StoreRelationRequest  $request
+     * @param  int  $id_relation
+     * @return \Illuminate\Http\Response
+     */
+    public function refuse($id_relation)
+    {
+        $relation = Relation::findOrfail($id_relation);
+
+        if($relation->accepte != null) {
+            return response()->json([
+                'message' => 'Relation already fulfilled'
+            ], 400);
+        }
+
+        $relation->accepte = false;
+        //TODO rename date_acceptation to a more generic name
+        $relation->date_acceptation = now();
+        $relation->save();
+
+        return response()->json([
+            'message' => 'Relation refused'
+        ], 200);
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  int  $id_commentaire

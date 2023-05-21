@@ -32,6 +32,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1', 'middl
         Route::patch('retrograder', 'DemoteController@patch');
         //Promote
         Route::patch('promouvoir', 'PromoteController@patch');
+        //Accepter une relation
+        Route::patch('relations/{id}/accepter', 'RelationController@accept');
+        //Refuser une relation
+        Route::patch('relations/{id}/refuser', 'RelationController@refuse');
 
     //PUT / PATCH / DELETE
         //only/except: index, create, store, show, edit, update, destroy

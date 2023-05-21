@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('demandeur_id');
             $table->integer('receveur_id');
             $table->boolean('accepte')->nullable();
+            //TODO rename date_acceptation to a more generic name
             $table->dateTime('date_acceptation')->nullable();
             $table->timestamp('date_demande')->useCurrent();
         });
