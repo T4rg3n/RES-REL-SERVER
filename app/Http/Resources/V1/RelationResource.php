@@ -16,9 +16,12 @@ class RelationResource extends JsonResource
     {
         return [
             'id' => $this->id_relation,
-            'typeRelation' => $this->fk_id_type_relation,
+            'idTypeRelation' => $this->fk_id_type_relation,
+            'typeRelation' => new TypeRelationResource($this->whenLoaded('typeRelation')),
             'idDemandeur' => $this->demandeur_id,
+            'demandeur' => new UtilisateurResource($this->whenLoaded('demandeur')),
             'idReceveur' => $this->receveur_id,
+            'receveur' => new UtilisateurResource($this->whenLoaded('receveur')),
             'dateDemande' => $this->date_demande,
             'dateAcceptation' => $this->date_acceptation,
             'accepte' => $this->accepte,
