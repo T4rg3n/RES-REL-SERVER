@@ -10,6 +10,7 @@ use App\Http\Resources\V1\RessourceResource;
 use App\Http\Resources\V1\RessourceCollection;
 use App\Http\Requests\V1\StoreRessourceRequest;
 use App\Services\V1\QueryService;
+use App\Models\Utilisateur;
 
 class RessourceController extends Controller
 {
@@ -61,19 +62,48 @@ class RessourceController extends Controller
         $queryContent = $request->all();
         $eloquentQuery = (new QueryService())->transform($queryContent, $this->allowedParams, $this->columnMap);
 
+        $ressources = Ressource::query();
+        $ressources->where($eloquentQuery);
+
+        //get the ressources from the relations of the user
+        $fromRelations = $request->query('fromRelations');
+        if ($fromRelations) {
+            //list the relations of other users that have a relation with the user in $fromRelations
+
+            // Get the user with the provided id
+            $utilisateur = Utilisateur::findOrFail($fromRelations);
+
+            // Get the ids of all users that have a relation with the user
+            $relatedUserIds = array_merge(
+                $utilisateur->relationsAsDemandeur->pluck('receveur_id')->toArray(),
+                $utilisateur->relationsAsReceveur->pluck('demandeur_id')->toArray()
+            );
+
+            // Add a whereIn clause to get the resources from the related users
+            $ressources->whereIn('utilisateur_id', $relatedUserIds);
+            // $ressources->whereHas('utilisateur', function ($query) use ($fromRelations) {
+            //     $query->whereHas('relations', function ($query) use ($fromRelations) {
+            //         $query->whereIn('fk_id_uti', $fromRelations);
+            //     });
+            // });
+        }
+
+
+        #region oldscroll
         //TODO review this
         // Allows multiple filters on the same column (ex: ?id[equals]=1&id[equals]=2)
         // Used for infinite scroll on the front-end, only on RessourceController
-        $ressources = Ressource::query();
-        foreach ($eloquentQuery as $columnName => $operators) {
-            foreach ($operators as $operator => $values) {
-                $ressources->where(function ($query) use ($columnName, $operator, $values) {
-                    foreach ($values as $value) {
-                        $query->orWhere($columnName, $operator, $value);
-                    }
-                });
-            }
-        }
+        // 
+        // foreach ($eloquentQuery as $columnName => $operators) {
+        //     foreach ($operators as $operator => $values) {
+        //         $ressources->where(function ($query) use ($columnName, $operator, $values) {
+        //             foreach ($values as $value) {
+        //                 $query->orWhere($columnName, $operator, $value);
+        //             }
+        //         });
+        //     }
+        // }
+        #endregion
 
         // Order by
         [$fieldOrder, $typeOrder] = (new QueryService())->translateOrderBy($request->query('orderBy'), 'id_ressource', $this->columnMap);
@@ -131,7 +161,7 @@ class RessourceController extends Controller
     {
         $ressource = Ressource::findOrfail($request->id_ressource);
 
-        if($ressource->status != 'PENDING') {
+        if ($ressource->status != 'PENDING') {
             return response()->json([
                 'message' => 'Ressource is not pending'
             ], 400);
@@ -156,7 +186,7 @@ class RessourceController extends Controller
     {
         $ressource = Ressource::findOrfail($id_ressource);
 
-        if($ressource->status != 'PENDING') {
+        if ($ressource->status != 'PENDING') {
             return response()->json([
                 'message' => 'Ressource is not pending'
             ], 400);

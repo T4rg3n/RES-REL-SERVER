@@ -36,24 +36,37 @@ class Utilisateur extends Authenticatable
      */
     /*
     protected $hidden = [
-        'password',
+        'mdp_uti',
         'remember_token',
     ];
-    */
+    
     /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
-    /*
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    */
-
+    
     public function role()
     {
         return $this->belongsTo(Role::class, 'fk_id_role', 'id_role');
+    }
+
+    public function relation()
+    {
+        return $this->hasMany(Relation::class);
+    }
+
+    public function relationsAsDemandeur()
+    {
+        return $this->hasMany(Relation::class, 'demandeur_id')->where('accepte', 1);
+    }
+
+    public function relationsAsReceveur()
+    {
+        return $this->hasMany(Relation::class, 'receveur_id')->where('accepte', 1);
     }
 
     public function groupe()
