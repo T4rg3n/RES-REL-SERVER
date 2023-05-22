@@ -34,12 +34,10 @@ class Utilisateur extends Authenticatable
      *
      * @var array<string>
      */
-    /*
     protected $hidden = [
-        'mdp_uti',
-        'remember_token',
+        'mdp_uti'
     ];
-    
+
     /**
      * The attributes that should be cast.
      *
@@ -48,7 +46,7 @@ class Utilisateur extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    
+
     public function role()
     {
         return $this->belongsTo(Role::class, 'fk_id_role', 'id_role');
@@ -61,12 +59,12 @@ class Utilisateur extends Authenticatable
 
     public function relationsAsDemandeur()
     {
-        return $this->hasMany(Relation::class, 'demandeur_id')->where('accepte', 1);
+        return $this->hasMany(Relation::class, 'demandeur_id');
     }
 
     public function relationsAsReceveur()
     {
-        return $this->hasMany(Relation::class, 'receveur_id')->where('accepte', 1);
+        return $this->hasMany(Relation::class, 'receveur_id');
     }
 
     public function groupe()

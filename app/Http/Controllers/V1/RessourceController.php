@@ -65,45 +65,20 @@ class RessourceController extends Controller
         $ressources = Ressource::query();
         $ressources->where($eloquentQuery);
 
-        //get the ressources from the relations of the user
+        //Ressources from relations
         $fromRelations = $request->query('fromRelations');
         if ($fromRelations) {
-            //list the relations of other users that have a relation with the user in $fromRelations
-
-            // Get the user with the provided id
-            $utilisateur = Utilisateur::findOrFail($fromRelations);
-
-            // Get the ids of all users that have a relation with the user
-            $relatedUserIds = array_merge(
-                $utilisateur->relationsAsDemandeur->pluck('receveur_id')->toArray(),
-                $utilisateur->relationsAsReceveur->pluck('demandeur_id')->toArray()
-            );
-
-            // Add a whereIn clause to get the resources from the related users
-            $ressources->whereIn('utilisateur_id', $relatedUserIds);
-            // $ressources->whereHas('utilisateur', function ($query) use ($fromRelations) {
-            //     $query->whereHas('relations', function ($query) use ($fromRelations) {
-            //         $query->whereIn('fk_id_uti', $fromRelations);
-            //     });
-            // });
+            $ressources = Ressource::whereHas('utilisateur.relationsAsDemandeur', function ($query) use ($fromRelations) {
+                $query->where('receveur_id', $fromRelations)
+                    ->where('accepte', true);
+                })
+                ->orWhereHas('utilisateur.relationsAsReceveur', function ($query) use ($fromRelations) {
+                    $query->where('demandeur_id', $fromRelations)
+                        ->where('accepte', true);
+                })
+                ->where('partage_ressource', '!=', 'PRIVATE')
+                ->orderBy('date_publication_ressource', 'desc');
         }
-
-
-        #region oldscroll
-        //TODO review this
-        // Allows multiple filters on the same column (ex: ?id[equals]=1&id[equals]=2)
-        // Used for infinite scroll on the front-end, only on RessourceController
-        // 
-        // foreach ($eloquentQuery as $columnName => $operators) {
-        //     foreach ($operators as $operator => $values) {
-        //         $ressources->where(function ($query) use ($columnName, $operator, $values) {
-        //             foreach ($values as $value) {
-        //                 $query->orWhere($columnName, $operator, $value);
-        //             }
-        //         });
-        //     }
-        // }
-        #endregion
 
         // Order by
         [$fieldOrder, $typeOrder] = (new QueryService())->translateOrderBy($request->query('orderBy'), 'id_ressource', $this->columnMap);
