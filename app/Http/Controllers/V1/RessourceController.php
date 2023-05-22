@@ -10,6 +10,7 @@ use App\Http\Resources\V1\RessourceResource;
 use App\Http\Resources\V1\RessourceCollection;
 use App\Http\Requests\V1\StoreRessourceRequest;
 use App\Services\V1\QueryService;
+use App\Models\Utilisateur;
 
 class RessourceController extends Controller
 {
@@ -61,18 +62,22 @@ class RessourceController extends Controller
         $queryContent = $request->all();
         $eloquentQuery = (new QueryService())->transform($queryContent, $this->allowedParams, $this->columnMap);
 
-        //TODO review this
-        // Allows multiple filters on the same column (ex: ?id[equals]=1&id[equals]=2)
-        // Used for infinite scroll on the front-end, only on RessourceController
         $ressources = Ressource::query();
-        foreach ($eloquentQuery as $columnName => $operators) {
-            foreach ($operators as $operator => $values) {
-                $ressources->where(function ($query) use ($columnName, $operator, $values) {
-                    foreach ($values as $value) {
-                        $query->orWhere($columnName, $operator, $value);
-                    }
-                });
-            }
+        $ressources->where($eloquentQuery);
+
+        //Ressources from relations
+        $fromRelations = $request->query('fromRelations');
+        if ($fromRelations) {
+            $ressources = Ressource::whereHas('utilisateur.relationsAsDemandeur', function ($query) use ($fromRelations) {
+                $query->where('receveur_id', $fromRelations)
+                    ->where('accepte', true);
+                })
+                ->orWhereHas('utilisateur.relationsAsReceveur', function ($query) use ($fromRelations) {
+                    $query->where('demandeur_id', $fromRelations)
+                        ->where('accepte', true);
+                })
+                ->where('partage_ressource', '!=', 'PRIVATE')
+                ->orderBy('date_publication_ressource', 'desc');
         }
 
         // Order by
@@ -131,7 +136,7 @@ class RessourceController extends Controller
     {
         $ressource = Ressource::findOrfail($request->id_ressource);
 
-        if($ressource->status != 'PENDING') {
+        if ($ressource->status != 'PENDING') {
             return response()->json([
                 'message' => 'Ressource is not pending'
             ], 400);
@@ -156,7 +161,7 @@ class RessourceController extends Controller
     {
         $ressource = Ressource::findOrfail($id_ressource);
 
-        if($ressource->status != 'PENDING') {
+        if ($ressource->status != 'PENDING') {
             return response()->json([
                 'message' => 'Ressource is not pending'
             ], 400);

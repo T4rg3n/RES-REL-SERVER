@@ -25,6 +25,16 @@ class Ressource extends Model
         'raison_refus_ressource',
     ];
 
+    public function relationsAsDemandeur()
+    {
+        return $this->belongsToMany(Utilisateur::class, 'relations', 'demandeur_id', 'id_relation');
+    }
+
+    public function relationsAsReceveur()
+    {
+        return $this->belongsToMany(Utilisateur::class, 'relations', 'receveur_id', 'id_relation');
+    }
+
     public function utilisateur()
     {
         return $this->belongsTo(Utilisateur::class, 'fk_id_uti', 'id_uti');
