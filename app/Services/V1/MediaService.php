@@ -19,6 +19,8 @@ class MediaService
             $img->save($path);
 
             return $path;
+        } else {
+            return $path;
         }
         // if ($typePj == 'VIDEO') {
         //     $ffmpeg = FFMpeg::create();
@@ -42,6 +44,8 @@ class MediaService
             $img->save($thumbPath); 
 
             return $thumbPath;
+        } else {
+            return $path;
         }
         // if ($typePj == 'VIDEO') {
         //     $ffmpeg = FFMpeg::create();
