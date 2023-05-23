@@ -6,10 +6,10 @@
 
 This endpoint is used to get all pieces jointes. It accepts a GET request with optional query parameters.
 
-| Parameter                        | Type    | Required | Description                                                                              |
-|----------------------------------|---------|----------|------------------------------------------------------------------------------------------|
-| `perPage`                        |`integer`| `false`  | Set the number of categories per page.                                                   |
-| `<key>[<operator>]=<value>`      |`string` | `false`  | Filter categories with operators like `equals`, `notEquals`, `lowerThan`, `lowerThanEquals`, `greaterThan`, `greaterThanEquals`. |
+| Parameter                   | Type      | Required | Description                                                                                                                      |
+| --------------------------- | --------- | -------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `perPage`                   | `integer` | `false`  | Set the number of categories per page.                                                                                           |
+| `<key>[<operator>]=<value>` | `string`  | `false`  | Filter categories with operators like `equals`, `notEquals`, `lowerThan`, `lowerThanEquals`, `greaterThan`, `greaterThanEquals`. |
 
 **Example request:**
 
@@ -102,8 +102,8 @@ Content-Type: application/json
 
 This endpoint is used to get a piece jointe by it's id. It accepts a GET request with the piece jointe's id as a path parameter.
 
-| Parameter | Type      | Required | Description                |
-| --------- | --------- | -------- | -------------------------- |
+| Parameter | Type      | Required | Description                 |
+| --------- | --------- | -------- | --------------------------- |
 | `id`      | `integer` | `true`   | The id of the piece jointe. |
 
 **Example request:**
@@ -137,8 +137,8 @@ Content-Type: application/json
 
 This endpoint is used to delete a piece jointe by it's id. It accepts a DELETE request with the piece jointe's id as a path parameter.
 
-| Parameter | Type      | Required | Description                |
-| --------- | --------- | -------- | -------------------------- |
+| Parameter | Type      | Required | Description                 |
+| --------- | --------- | -------- | --------------------------- |
 | `id`      | `integer` | `true`   | The id of the piece jointe. |
 
 **Example request:**
@@ -159,3 +159,42 @@ Content-Type: application/json
 ```
 
 ### `/piecesJointes/{id}/download`
+
+#### GET
+
+This endpoint is used to download a piece jointe by it's id. It accepts a GET request with the piece jointe's id as a path parameter.
+
+As pictures can be large sometimes, you can pass two optional query parameters to resize the image. The `?size=<number>` parameter will reduce the image to a percentage of it's original quality. The `?getThumbnail=true` parameter will return a 125x125 thumbnail of the image.
+Keep in mind that images sizes doesnt scale linearly, so a 50% size image will not be half the size of the original image.
+
+!!! warning "Warnings"
+
+    The `size` parameter is ignored if `getThumbnail` is set to `true`. 
+    
+    For now only images can be resized, so if you try to resize a PDF or a video, the API will return the original file.
+
+| Parameter      | Type      | Required | Description                                         |
+| -------------- | --------- | -------- | --------------------------------------------------- |
+| `id`           | `integer` | `true`   | The id of the piece jointe.                         |
+| `getThumbnail` | `boolean` | `false`  | Returns a thumbnail version of the profile picture. |
+| `size`         | `integer` | `false`  | Allows you to resize the media to a percentage.     |
+
+
+**Example request:**
+
+```http
+GET /api/v1/piecesJointes/1/download HTTP/1.1
+Accept: application/json
+```
+
+**Example response:**
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/pdf
+Content-Disposition: attachment; filename="1_ressource.pdf"
+
+(binary pdf data)
+```
+
+
