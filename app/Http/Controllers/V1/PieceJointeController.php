@@ -10,6 +10,8 @@ use App\Http\Resources\V1\PieceJointeCollection;
 use App\Http\Requests\V1\StorePieceJointeRequest;
 use App\Services\V1\QueryService;
 use Illuminate\Support\Facades\File;
+use Intervention\Image\Facades\Image;
+use App\Services\V1\MediaService;
 
 class PieceJointeController extends Controller
 {
@@ -141,12 +143,12 @@ class PieceJointeController extends Controller
     }
 
     /**
-    * Launch download from an ID
-    *
-    * @param int $idPieceJointe
-    * @return file
-    */
-    public function download($idPieceJointe)
+     * Launch download from an ID
+     *
+     * @param int $idPieceJointe
+     * @return file
+     */
+    public function download($idPieceJointe, Request $request)
     {
         $pieceJointe = PieceJointe::findOrfail($idPieceJointe);
 
@@ -186,17 +188,29 @@ class PieceJointeController extends Controller
             $path = $filePath;
         }
 
+        $mediaService = new MediaService();
+        $quality = $request->query('quality', 90);
+        $quality = max(0, min(100, intval($quality)));
+        if ($quality != 90) {
+            $path = $mediaService->resize($quality, $pieceJointe->type_pj, $path);
+        }
+
+        $thumbnail = $request->query('getThumbnail', false);
+        if ($thumbnail) {
+            $path = $mediaService->getThumbnail($pieceJointe->type_pj, $path);
+        }
+
         $response = response();
 
         return $response->download($path);
     }
 
     /**
-    * Remove the specified resource from storage.
-    *
-    * @param  int  $id_pj
-    * @return \Illuminate\Http\Response
-    */
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id_pj
+     * @return \Illuminate\Http\Response
+     */
     public function destroy($id_pj)
     {
         $groupe = PieceJointe::findOrfail($id_pj);
