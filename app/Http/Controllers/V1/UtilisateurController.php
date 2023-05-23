@@ -68,6 +68,7 @@ class UtilisateurController extends Controller
         [$fieldOrder, $typeOrder] = (new QueryService())->translateOrderBy($request->query('orderBy'), 'id_uti', $this->columnMap);
         $utilisateurs = Utilisateur::where($eloquentQuery)->orderBy($fieldOrder, $typeOrder);
 
+        // Include
         $include = (new QueryService())->include(request(), $this->allowedIncludes);
         if ($include) {
             $utilisateurs->with($include);

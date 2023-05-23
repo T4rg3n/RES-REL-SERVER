@@ -66,6 +66,19 @@ class RelationController extends Controller
             $relations->with($include);
         }
 
+        //FromUtilisateur
+        $fromUtilisateur = $request->query('fromUtilisateur');
+        if($fromUtilisateur) {
+            $relations = Relation::whereHas('demandeur', function ($query) use ($fromUtilisateur) {
+                $query->where('receveur_id', $fromUtilisateur)
+                    ->where('accepte', true);
+                })
+                ->orWhereHas('receveur', function ($query) use ($fromUtilisateur) {
+                    $query->where('demandeur_id', $fromUtilisateur)
+                        ->where('accepte', true);
+                });
+        }
+
         return new RelationCollection($relations->paginate($perPage)->appends($request->query()));
     }
 
