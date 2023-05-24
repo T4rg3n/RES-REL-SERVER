@@ -2,10 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Mail;
+use App\Notifications\CustomVerifyEmail;
 
 class Utilisateur extends Authenticatable
 {
@@ -35,7 +41,7 @@ class Utilisateur extends Authenticatable
      * @var array<string>
      */
     protected $hidden = [
-        'mdp_uti'
+        'mdp_uti',
     ];
 
     /**
@@ -44,8 +50,40 @@ class Utilisateur extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'email_verified_at' => 'timestamp',
     ];
+
+    /**
+     * Override the method from MustVerifyEmail trait to accept a different email column
+     * 
+     * @return string
+     */
+    public function getEmailForVerification()
+    {
+        return $this->mail_uti;
+    }
+
+    /**
+     * Override the method from MustVerifyEmail trait to accept a different primary key
+     * 
+     * @return string
+     */
+    public function getKey()
+    {
+        return $this->id_uti;
+    }
+  
+    /**
+     * Override the method from markEmailAsVerified trait to accept unlogged users
+     * 
+     * @return string
+     */
+    public function markEmailAsVerified()
+    {
+        return $this->forceFill([
+            'email_verified_at' => $this->freshTimestamp(),
+        ])->save();
+    }
 
     public function role()
     {

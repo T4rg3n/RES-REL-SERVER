@@ -12,6 +12,10 @@ use App\Http\Requests\V1\BanUtilisateurRequest;
 use App\Services\V1\QueryService;
 use App\Services\V1\TokenAttributor;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Carbon;
+use App\Mail\RegistrationMail;
 use App\Services\V1\MediaService;
 
 class UtilisateurController extends Controller
@@ -52,6 +56,25 @@ class UtilisateurController extends Controller
     protected $allowedIncludes = [
         'role'
     ];
+
+    /**
+     * Send verification email to the user
+     * 
+     * @param \App\Models\Utilisateur $utilisateur
+     */
+    protected function sendVerificationMail(Utilisateur $utilisateur)
+    {
+        $verificationUrl = URL::temporarySignedRoute(
+            'verification.verify',
+            Carbon::now()->addMinutes(60),
+            [
+                'id' => $utilisateur->getKey(),
+                'hash' => sha1($utilisateur->getEmailForVerification())
+            ]
+        );
+
+        Mail::to($utilisateur->mail_uti)->send(new RegistrationMail($verificationUrl, $utilisateur->prenom_uti));
+    }
 
     /**
      * Display a listing of the resource.
@@ -111,6 +134,8 @@ class UtilisateurController extends Controller
         $token = (new TokenAttributor())->createToken($utilisateur);
         $id = $utilisateur->id_uti;
 
+        $this->sendVerificationMail($utilisateur);
+
         return response()->json(['response' => $this->show($id), 'token' => $token], 201);
     }
 
@@ -142,9 +167,6 @@ class UtilisateurController extends Controller
     {
         $utilisateur = Utilisateur::findOrfail($idUtilisateur);
         $filePath = $utilisateur->photo_uti;
-
-        //  $fileName = $utilisateur->id_uti . "_photoProfil." . pathinfo($filePath, PATHINFO_EXTENSION);
-        //check if file exists
 
         //TODO refactor this
         if (file_exists(public_path() . $filePath)) {
