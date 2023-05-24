@@ -168,9 +168,6 @@ class UtilisateurController extends Controller
         $utilisateur = Utilisateur::findOrfail($idUtilisateur);
         $filePath = $utilisateur->photo_uti;
 
-        //  $fileName = $utilisateur->id_uti . "_photoProfil." . pathinfo($filePath, PATHINFO_EXTENSION);
-        //check if file exists
-
         //TODO refactor this
         if (file_exists(public_path() . $filePath)) {
             $fileMimeType = pathinfo($filePath, PATHINFO_EXTENSION);
