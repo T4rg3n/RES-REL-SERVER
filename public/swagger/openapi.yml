@@ -947,14 +947,14 @@ paths:
               example:
                 data:
                   - id: 1
-                    typeRelation: 1
+                    idTypeRelation: 1
                     idDemandeur: 1
                     idReceveur: 2
                     dateDemande: 2023-01-02 21:16:55
                     dateAcceptation: 2023-02-02 13:18:02
                     accepte: true
                   - id: 2
-                    typeRelation: 3
+                    idTypeRelation: 3
                     idDemandeur: 178
                     idReceveur: 918
                     dateDemande: 2023-01-02 21:16:55

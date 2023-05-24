@@ -24,8 +24,8 @@ nav:
           - Resources: endpoints/resources.md
           - Roles: endpoints/roles.md
           - Search: endpoints/search.md
-          - Relation types: endpoints/types-relation.md #TODO
-          - Users: endpoints/users.md #TODO
+          - Relation types: endpoints/types-relation.md
+          - Users: endpoints/utilisateurs.md
 
 theme:
   name: "material"
@@ -61,3 +61,5 @@ markdown_extensions:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
   - abbr #tooltips
+  - admonition
+  - pymdownx.details

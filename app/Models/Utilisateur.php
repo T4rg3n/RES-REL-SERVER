@@ -123,6 +123,21 @@ class Utilisateur extends Authenticatable
         return $this->belongsTo(Role::class, 'fk_id_role', 'id_role');
     }
 
+    public function relation()
+    {
+        return $this->hasMany(Relation::class);
+    }
+
+    public function relationsAsDemandeur()
+    {
+        return $this->hasMany(Relation::class, 'demandeur_id');
+    }
+
+    public function relationsAsReceveur()
+    {
+        return $this->hasMany(Relation::class, 'receveur_id');
+    }
+
     public function groupe()
     {
         return $this->belongsTo(Groupe::class);

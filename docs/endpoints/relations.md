@@ -8,6 +8,7 @@ This endpoint is used to get all relations. It accepts a GET request with option
 | --------------------------- | --------- | -------- | -------------------------------------------------------------------------------------------------------------------------------- |
 | `perPage`                   | `integer` | `false`  | Set the number of categories per page.                                                                                           |
 | `<key>[<operator>]=<value>` | `string`  | `false`  | Filter categories with operators like `equals`, `notEquals`, `lowerThan`, `lowerThanEquals`, `greaterThan`, `greaterThanEquals`. |
+| `fromUtilisateur`           | `integer` | `false`  | Get the completed relations that the used passed in parameters have                                                              |
 
 **Example request:**
 

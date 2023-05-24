@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Carbon;
 use App\Mail\RegistrationMail;
+use App\Services\V1\MediaService;
 
 class UtilisateurController extends Controller
 {
@@ -90,6 +91,7 @@ class UtilisateurController extends Controller
         [$fieldOrder, $typeOrder] = (new QueryService())->translateOrderBy($request->query('orderBy'), 'id_uti', $this->columnMap);
         $utilisateurs = Utilisateur::where($eloquentQuery)->orderBy($fieldOrder, $typeOrder);
 
+        // Include
         $include = (new QueryService())->include(request(), $this->allowedIncludes);
         if ($include) {
             $utilisateurs->with($include);
@@ -106,7 +108,7 @@ class UtilisateurController extends Controller
      */
     public function store(StoreUtilisateurRequest $request)
     {
-        if(Utilisateur::where('mail_uti', $request->mail)->first()) {
+        if (Utilisateur::where('mail_uti', $request->mail)->first()) {
             return response()->json([
                 'message' => 'User with same email already exists'
             ], 401);
@@ -115,7 +117,7 @@ class UtilisateurController extends Controller
         $utilisateur = Utilisateur::create($request->all());
 
         //users can optionally upload a photo
-        if($request->hasFile('photoProfil')) {
+        if ($request->hasFile('photoProfil')) {
             $filePath = 'user-files/' . $utilisateur->id_uti;
             $uploadedFile = $request->file('photoProfil');
             $utilisateur->photo_uti = $filePath;
@@ -161,7 +163,7 @@ class UtilisateurController extends Controller
      *
      * @param int $idUtilisateur
      */
-    public function download($idUtilisateur)
+    public function download($idUtilisateur, Request $request)
     {
         $utilisateur = Utilisateur::findOrfail($idUtilisateur);
         $filePath = $utilisateur->photo_uti;
@@ -170,13 +172,13 @@ class UtilisateurController extends Controller
         //check if file exists
 
         //TODO refactor this
-        if(file_exists(public_path() . $filePath)) {
+        if (file_exists(public_path() . $filePath)) {
             $fileMimeType = pathinfo($filePath, PATHINFO_EXTENSION);
             header('Content-Type: image/' . $fileMimeType);
             //header('Content-Disposition: attachment; filename="filename.extension"');
             return response()->download(public_path() . $filePath);
         } else {
-            if(config('app.debug') && $utilisateur->photo_uti == 'fake user photo') {
+            if (config('app.debug') && $utilisateur->photo_uti == 'fake user photo') {
                 //TODO determine user gender an return a fake profile picture
                 $path = public_path() . '/assets/fake-profile-pictures/female';
                 $files = File::files($path);
@@ -186,16 +188,31 @@ class UtilisateurController extends Controller
 
                 $filePath = null;
                 $fileCount = count($profilePictures);
-                if($fileCount > 0) {
+                if ($fileCount > 0) {
                     $imagePath = $profilePictures[$utilisateur->id_uti % $fileCount];
                     $fileMimeType = mime_content_type($imagePath->getRealPath());
                     $filePath = $imagePath->getRealPath();
+                }
+
+                $mediaService = new MediaService();
+                $quality = $request->query('quality', 90);
+                $quality = max(0, min(100, intval($quality)));
+                if ($quality != 90) {
+                    $filePath = $mediaService->resize($quality, 'IMAGE', $filePath);
+                }
+
+                $thumbnail = $request->query('getThumbnail', false);
+                if ($thumbnail) {
+                    $filePath = $mediaService->getThumbnail('IMAGE', $filePath);
                 }
 
                 header('Content-Type: image/' . $fileMimeType);
                 header('Content-Disposition: attachment; filename="filename.extension"');
                 return response()->download($filePath);
             } else {
+
+                
+
                 header('Content-Type: image/png');
                 header('Content-Disposition: attachment; filename="filename.extension"');
                 return response()->download(public_path() . '/assets/default-assets/default-user.png');

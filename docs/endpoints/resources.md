@@ -4,6 +4,10 @@
 
 This endpoint is used to get all ressources. It accepts optional query parameters to set the number of ressources per page and to filter ressources using operators.
 
+You can for example use the path parameter `?fromRelations=1` to get all ressources that are related to the user with the id 1 (this can be used in an infinite scroll for example). 
+The resources shown in this case will be the ones that are public or restricted. The result is ordered by date of creation (newest first). 
+The result is paginated and you can use the `?page=2` parameter to get the second page of the result.
+
 **Example request:**
 
 ```http

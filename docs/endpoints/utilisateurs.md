@@ -70,6 +70,21 @@ Content-Type: application/json
 
 This endpoint is used to download a user's profile picture by its id. It accepts a GET request with the user's id as a path parameter.
 
+As user profiles picture can be large sometimes, you can pass two optional query parameters to resize the image. The `?size=<number>` parameter will reduce the image to a percentage of it's original quality. The `?getThumbnail=true` parameter will return a 125x125 thumbnail of the image.
+Keep in mind that images sizes doesnt scale linearly, so a 50% size image will not be half the size of the original image.
+
+!!! warning "Warnings"
+
+    The `size` parameter is ignored if `getThumbnail` is set to `true`. 
+    
+    For now only images can be resized, so if you try to resize a PDF or a video, the API will return the original file.
+
+| Parameter      | Type      | Required | Description                                         |
+| -------------- | --------- | -------- | --------------------------------------------------- |
+| `id`           | `integer` | `true`   | The id of the utilisateur.                          |
+| `getThumbnail` | `boolean` | `false`  | Returns a thumbnail version of the profile picture. |
+| `size`         | `integer` | `false`  | Allows you to resize the media to a percentage.     |
+
 **Example request:**
 
 ```http

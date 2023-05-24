@@ -39,8 +39,9 @@ class RelationController extends Controller
      * Allowed includes
      */
     protected $allowedIncludes = [
-        'idDemandeur',
-        'idReceveur'
+        'demandeur',
+        'receveur',
+        'typeRelation'
     ];
 
     /**
@@ -58,6 +59,25 @@ class RelationController extends Controller
         // Order by
         [$fieldOrder, $typeOrder] = (new QueryService())->translateOrderBy($request->query('orderBy'), 'id_relation', $this->columnMap);
         $relations = Relation::where($eloquentQuery)->orderBy($fieldOrder, $typeOrder);
+
+        // Include
+        $include = (new QueryService())->include(request(), $this->allowedIncludes);
+        if ($include) {
+            $relations->with($include);
+        }
+
+        //FromUtilisateur
+        $fromUtilisateur = $request->query('fromUtilisateur');
+        if($fromUtilisateur) {
+            $relations = Relation::whereHas('demandeur', function ($query) use ($fromUtilisateur) {
+                $query->where('receveur_id', $fromUtilisateur)
+                    ->where('accepte', true);
+                })
+                ->orWhereHas('receveur', function ($query) use ($fromUtilisateur) {
+                    $query->where('demandeur_id', $fromUtilisateur)
+                        ->where('accepte', true);
+                });
+        }
 
         return new RelationCollection($relations->paginate($perPage)->appends($request->query()));
     }
@@ -78,6 +98,60 @@ class RelationController extends Controller
     }
 
     /**
+     * Accept a pending relation.
+     * 
+     * @param  \Illuminate\Http\StoreRelationRequest  $request
+     * @param  int  $id_relation
+     * @return \Illuminate\Http\Response
+     */
+    public function accept($id_relation)
+    {
+        $relation = Relation::findOrfail($id_relation);
+
+        if($relation->accepte != null) {
+            return response()->json([
+                'message' => 'Relation already fulfilled'
+            ], 400);
+        }
+
+        $relation->accepte = true;
+        //TODO rename date_acceptation to a more generic name
+        $relation->date_acceptation = now();
+        $relation->save();
+
+        return response()->json([
+            'message' => 'Relation accepted'
+        ], 200);
+    }
+
+    /**
+     * Refuse a pending relation.
+     * 
+     * @param  \Illuminate\Http\StoreRelationRequest  $request
+     * @param  int  $id_relation
+     * @return \Illuminate\Http\Response
+     */
+    public function refuse($id_relation)
+    {
+        $relation = Relation::findOrfail($id_relation);
+
+        if($relation->accepte != null) {
+            return response()->json([
+                'message' => 'Relation already fulfilled'
+            ], 400);
+        }
+
+        $relation->accepte = false;
+        //TODO rename date_acceptation to a more generic name
+        $relation->date_acceptation = now();
+        $relation->save();
+
+        return response()->json([
+            'message' => 'Relation refused'
+        ], 200);
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  int  $id_commentaire
@@ -86,6 +160,11 @@ class RelationController extends Controller
     public function show($id_relation)
     {
         $relation = Relation::findOrfail($id_relation);
+
+        $include = (new QueryService())->include(request(), $this->allowedIncludes);
+        if ($include) {
+            $relation->load($include);
+        }
 
         return new RelationResource($relation);
     }

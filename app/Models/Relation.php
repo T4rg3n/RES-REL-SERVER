@@ -20,8 +20,18 @@ class Relation extends Model
         'accepte',
     ];
 
-    public function TypeRelation()
+    public function typeRelation()
     {
-        return $this->belongsTo(TypeRelation::class);
+        return $this->belongsTo(TypeRelation::class, 'fk_id_type_relation', 'id_type_relation');
+    }
+
+    public function demandeur()
+    {
+        return $this->belongsTo(Utilisateur::class, 'demandeur_id', 'id_uti');
+    }
+
+    public function receveur()
+    {
+        return $this->belongsTo(Utilisateur::class, 'receveur_id', 'id_uti');
     }
 }
