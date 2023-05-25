@@ -27,6 +27,7 @@ class UtilisateurResource extends JsonResource
             'raisonBan' => $this->raison_banni_uti,
             'idRole' => $this->fk_id_role,
             'role' => new RoleResource($this->whenLoaded('role')),
+            'dateVerification' => $this->email_verified_at,
         ];
     }
 }
