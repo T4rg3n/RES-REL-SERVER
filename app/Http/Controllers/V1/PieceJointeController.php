@@ -87,16 +87,22 @@ class PieceJointeController extends Controller
         $pieceJointe = PieceJointe::create($request->all());
         $id = $pieceJointe->id_piece_jointe;
 
-        //For any case but 'ACTIVITE', the content is the path to the file
-        if ($request->input('type_pj') != 'ACTIVITE') {
-            $filePath = 'user-files/' . $pieceJointe->fk_id_uti;
+        if ($request->input('type_pj') == 'ACTIVITE') {
+            return response()->json([
+                'message' => 'Can\'t upload a file for an activity (for now)',
+            ], 400);
+        }
 
-            $uploadedFile = $request->file('file');
-            if (!$uploadedFile) {
-                return response()->json([
-                    'message' => 'No file uploaded'
-                ], 400);
-            }
+        if (!in_array($request->input('type_pj'), ['IMAGE', 'VIDEO', 'PDF'])) {
+            return response()->json([
+                'message' => 'File type not supported',
+            ], 400);
+        }
+
+        //normal file
+        if ($request->hasFile('file')) {
+            //TODO use MediaService
+            $filePath = 'user-files/' . $pieceJointe->fk_id_uti;
 
             switch ($request->input('type_pj')) {
                 case ('IMAGE'):
@@ -118,6 +124,19 @@ class PieceJointeController extends Controller
 
             $fileName = $id . '_' . $uploadedFile->getClientOriginalName();
             $request->file->move(public_path($filePath), $fileName);
+        }
+
+        //base64 file
+        if ($request->has('base64')) {
+            $mediaService = new MediaService();
+            $debugStatus = $mediaService->saveBase64File($request, $id);
+            
+            //debug
+            return response()->json([
+                'message' => 'File uploaded',
+                'id' => $id,
+                'debug' => $debugStatus
+            ], 201);
         }
 
         $pieceJointe->save();
