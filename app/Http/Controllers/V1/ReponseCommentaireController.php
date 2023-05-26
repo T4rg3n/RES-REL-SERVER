@@ -93,9 +93,9 @@ class ReponseCommentaireController extends Controller
     {
         $reponseCommentaire = ReponseCommentaire::findorFail($id_reponse);
 
-        $ $include = (new QueryService())->include(request(), $this->allowedIncludes);
+        $include = (new QueryService())->include(request(), $this->allowedIncludes);
         if ($include) {
-            $reponsesCommentaires->loadMissing($include);
+            $reponseCommentaire->loadMissing($include);
         }
 
         return new ReponseCommentaireResource($reponseCommentaire);
