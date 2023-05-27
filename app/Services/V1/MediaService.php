@@ -73,7 +73,6 @@ class MediaService
         return $path;
     }
 
-
     /**
      * Save base64 file
      * 
@@ -86,7 +85,7 @@ class MediaService
         $file = $request->input('base64File');
 
         $filePath = $this->getFilePath($request->input('name'), $type, $id);
-        Storage::put('user-files/' . $filePath, $file);
+        Storage::put($filePath, $file);
     }
 
     /**
@@ -97,8 +96,8 @@ class MediaService
      */
     public function getFilePath($typePj, $userId, $attachmentId)
     {
-        // user-files/1/1_123456789012345.jpg
-        $filePath = 'user-files/' . $userId . '/' . $attachmentId . '_' . Str::random(15);
+        //user_files/1/1_123456789012345.jpg
+        $filePath = 'user_files/' . $userId . '/' . $attachmentId . '_' . Str::random(15);
         
         switch($typePj) {
             case 'IMAGE':
@@ -115,5 +114,17 @@ class MediaService
         }
 
         return $filePath . $fileExtension;
+    }
+
+    /**
+     * Save base64 profile picture
+     * 
+     * @param Request $request
+     * @param int $id
+     */
+    public function saveBase64ProfilePicture($request, $id)
+    {
+        $file = $request->input('photoProfilBase64');
+        Storage::put('user-profiles/' . $id . '/profile_picture.jpg', $file);
     }
 }

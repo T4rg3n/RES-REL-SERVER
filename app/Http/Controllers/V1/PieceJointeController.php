@@ -12,6 +12,7 @@ use App\Services\V1\QueryService;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 use App\Services\V1\MediaService;
+use Illuminate\Support\Str;
 
 class PieceJointeController extends Controller
 {
@@ -122,7 +123,7 @@ class PieceJointeController extends Controller
             //dont seem to work [edit : maybe after moving the file?]
             // $request->merge(['contenu_pj' => $filePath . $uploadedFile->getClientOriginalName()]);
 
-            $fileName = $id . '_' . $uploadedFile->getClientOriginalName();
+            $fileName = $id . '_' . Str::random(10) . '.' . $request->file->getClientOriginalExtension();
             $request->file->move(public_path($filePath), $fileName);
         }
 

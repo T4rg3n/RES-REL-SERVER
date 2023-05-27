@@ -108,15 +108,10 @@ class UtilisateurController extends Controller
      */
     public function store(StoreUtilisateurRequest $request)
     {
-        if (Utilisateur::where('mail_uti', $request->mail)->first()) {
-            return response()->json([
-                'message' => 'User with same email already exists'
-            ], 401);
-        }
-
         $utilisateur = Utilisateur::create($request->all());
 
         //users can optionally upload a photo
+        //TODO works the same for base64 or jpg so no need to check theorically
         if ($request->hasFile('photoProfil')) {
             $filePath = 'user-files/' . $utilisateur->id_uti;
             $uploadedFile = $request->file('photoProfil');
@@ -124,7 +119,11 @@ class UtilisateurController extends Controller
 
             $fileName = $utilisateur->id_uti . "_photoProfil." . $uploadedFile->getClientOriginalExtension();
             $request->photoProfil->move(public_path($filePath), $fileName);
-        } else {
+        } elseif($request->has('photoProfilBase64')) {
+            //TODO store path in database
+            (new MediaService())->saveBase64File($request, $utilisateur->id_uti);
+        } 
+        else {
             $utilisateur->photo_uti = public_path() . '/assets/default-assets/default-user.png';
         }
 
