@@ -36,7 +36,7 @@ class StorePieceJointeRequest extends FormRequest
             'codePostal' => ['nullable', 'string', 'max:255'],
             'idUtilisateur' => ['required', 'integer'],
             'file' => ['nullable', 'file', 'mimes:png,jpg,jpeg,gif,mp4,pdf', 'max:15000', 'required_without:base64File'],
-            'base64File' => ['nullable', 'string', 'max:21000', 'required_without:file'],
+            'base64File' => ['nullable', 'string', 'max:20000000', 'required_without:file'], 
         ];
     }
 

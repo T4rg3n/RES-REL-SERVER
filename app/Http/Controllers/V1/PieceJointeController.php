@@ -10,9 +10,9 @@ use App\Http\Resources\V1\PieceJointeCollection;
 use App\Http\Requests\V1\StorePieceJointeRequest;
 use App\Services\V1\QueryService;
 use Illuminate\Support\Facades\File;
-use Intervention\Image\Facades\Image;
 use App\Services\V1\MediaService;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class PieceJointeController extends Controller
 {
@@ -128,16 +128,9 @@ class PieceJointeController extends Controller
         }
 
         //base64 file
-        if ($request->has('base64')) {
+        if ($request->has('base64File')) {
             $mediaService = new MediaService();
-            $debugStatus = $mediaService->saveBase64File($request, $id);
-            
-            //debug
-            return response()->json([
-                'message' => 'File uploaded',
-                'id' => $id,
-                'debug' => $debugStatus
-            ], 201);
+            $mediaService->saveBase64File($request, $id);
         }
 
         $pieceJointe->save();

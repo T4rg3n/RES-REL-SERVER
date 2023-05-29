@@ -81,11 +81,12 @@ class MediaService
      */
     public function saveBase64File($request, $id)
     {
-        $type = $request->input('type_pj');
-        $file = $request->input('base64File');
+        $encodedFile = $request->input('base64File');
+        $cleanBase64 = preg_replace('#^data:image/[^;]+;base64,#', '', $encodedFile);
+        $decodedFile = base64_decode($cleanBase64);
 
-        $filePath = $this->getFilePath($request->input('name'), $type, $id);
-        Storage::put($filePath, $file);
+        $filePath = $this->getFilePath($encodedFile, $request->input('type'), $request->input('idUtilisateur'), $id);
+        Storage::put($filePath, $decodedFile);
     }
 
     /**
@@ -94,26 +95,13 @@ class MediaService
      * @param string $fileName
      * @return string
      */
-    public function getFilePath($typePj, $userId, $attachmentId)
+    public function getFilePath($encodedFile, $typePj, $userId, $attachmentId)
     {
         //user_files/1/1_123456789012345.jpg
-        $filePath = 'user_files/' . $userId . '/' . $attachmentId . '_' . Str::random(15);
-        
-        switch($typePj) {
-            case 'IMAGE':
-                $fileExtension = '.jpg';
-                break;
-            case 'VIDEO':
-                $fileExtension = '.mp4';
-                break;
-            case 'PDF':
-                $fileExtension = '.pdf';
-                break;
-            default:
-                break;
-        }
+        $filePath = 'user_files/' . $userId . '/' . $typePj . '/' . $attachmentId . '_' . Str::random(15);
+        $fileExtension = explode('/', explode(':', substr($encodedFile, 0, strpos($encodedFile, ';')))[1])[1];
 
-        return $filePath . $fileExtension;
+        return $filePath . '.' . $fileExtension;
     }
 
     /**
@@ -124,7 +112,29 @@ class MediaService
      */
     public function saveBase64ProfilePicture($request, $id)
     {
-        $file = $request->input('photoProfilBase64');
-        Storage::put('user-profiles/' . $id . '/profile_picture.jpg', $file);
+        $encodedFile = $request->input('photoProfilBase64');
+        $fileExtension = explode('/', explode(':', substr($encodedFile, 0, strpos($encodedFile, ';')))[1])[1];
+        $cleanBase64 = preg_replace('#^data:image/[^;]+;base64,#', '', $encodedFile);
+        $decodedFile = base64_decode($cleanBase64);
+
+        //Storage::put('user-profiles/' . $id . '/profile_picture' . $fileExtension, $decodedFile);
+        //save to public folder
+        Storage::disk('public')->put('user_profiles/' . $id . '/profile_picture' . $fileExtension, $decodedFile);
+    }
+
+    /**
+     * Save profile picture
+     * 
+     * @param Request $request
+     * @param int $id
+     */
+    public function saveProfilePicture($request, $id)
+    {
+        $file = $request->file('photoProfil');
+        $fileExtension = $file->getClientOriginalExtension();
+        $filePath = 'user_profiles/' . $id . '/profile_picture.' . $fileExtension;
+
+        //Storage::put($filePath, file_get_contents($file));
+        Storage::disk('public')->put($filePath, file_get_contents($file));
     }
 }
