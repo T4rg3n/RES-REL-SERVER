@@ -29,7 +29,7 @@ class StorePieceJointeRequest extends FormRequest
         return [
             'type' => ['required', 'string', 'max:255'],
             'titre' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:255'],
             'contenu' => ['nullable', 'string', 'max:255'],
             'dateActivite' => ['nullable', 'string', 'max:255'],
             'lieu' => ['nullable', 'string', 'max:255'],
