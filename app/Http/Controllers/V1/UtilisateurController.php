@@ -170,13 +170,10 @@ class UtilisateurController extends Controller
 
         //TODO refactor this
         if (file_exists(public_path() . $filePath)) {
-            $fileMimeType = pathinfo($filePath, PATHINFO_EXTENSION);
-            header('Content-Type: image/' . $fileMimeType);
-            //header('Content-Disposition: attachment; filename="filename.extension"');
             return response()->download(public_path() . $filePath);
         } else {
-            if (config('app.debug') && $utilisateur->photo_uti == 'fake user photo') {
-                //TODO determine user gender an return a fake profile picture
+            //Only for demo purposes
+            if ($utilisateur->photo_uti == 'fake user photo') {
                 $path = public_path() . '/assets/fake-profile-pictures/female';
                 $files = File::files($path);
                 $profilePictures = array_filter($files, function ($file) {
@@ -202,16 +199,8 @@ class UtilisateurController extends Controller
                 if ($thumbnail) {
                     $filePath = $mediaService->getThumbnail('IMAGE', $filePath);
                 }
-
-                header('Content-Type: image/' . $fileMimeType);
-                header('Content-Disposition: attachment; filename="filename.extension"');
                 return response()->download($filePath);
             } else {
-
-                
-
-                header('Content-Type: image/png');
-                header('Content-Disposition: attachment; filename="filename.extension"');
                 return response()->download(public_path() . '/assets/default-assets/default-user.png');
             }
         }

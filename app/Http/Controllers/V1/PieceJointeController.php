@@ -158,7 +158,9 @@ class PieceJointeController extends Controller
 
         $path = null;
 
-        if (config('app.debug') && $pieceJointe->contenu_pj == 'fake file') {
+        //For demo purposes 
+        //TODO Use Mediaservice
+        if ($pieceJointe->contenu_pj == 'fake file') {
             $fileTypes = [
                 'IMAGE' => ['png', 'jpg', 'jpeg', 'gif'],
                 'VIDEO' => ['mp4'],
@@ -179,18 +181,23 @@ class PieceJointeController extends Controller
                 }
             }
         } else {
-            $filePath = public_path() . $pieceJointe->contenu_pj;
+            //TODO refactor and use Mediaservice
+            $filePath = public_path() . '/user-files/' . $pieceJointe->fk_id_uti . '/' . $pieceJointe->type_pj . '/';
 
-            if (!File::exists($filePath)) {
-                return response()->json(['message' => 'This piece jointe doesnt have any attachement'], 404);
+            $fileList = glob($filePath . $idPieceJointe . '_*');
+
+            // Check if the glob function found any file
+            if (!$fileList) {
+                return response()->json(['message' => 'This piece jointe doesnt have any attachement >"' . $filePath . $idPieceJointe . '_*"'], 404);    
             }
 
-            $path = $filePath;
+            $path = $fileList[0];
         }
 
         $mediaService = new MediaService();
         $quality = $request->query('quality', 90);
         $quality = max(0, min(100, intval($quality)));
+
         if ($quality != 90) {
             $path = $mediaService->resize($quality, $pieceJointe->type_pj, $path);
         }
