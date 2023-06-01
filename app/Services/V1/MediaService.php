@@ -90,6 +90,20 @@ class MediaService
     }
 
     /**
+     * Save file (binary encoded)
+     * 
+     * @param Request $request
+     * @param int $id
+     */
+    public function saveFile($request, $id)
+    {
+        $file = $request->file('file');
+        $filePath = $this->getFilePath($file, $request->input('type'), $request->input('idUtilisateur'), $id);
+        
+        Storage::put($filePath, file_get_contents($file));
+    }
+
+    /**
      * Get file path
      * 
      * @param string $fileName

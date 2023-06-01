@@ -88,49 +88,15 @@ class PieceJointeController extends Controller
         $pieceJointe = PieceJointe::create($request->all());
         $id = $pieceJointe->id_piece_jointe;
 
+        //WIP error handling
         if ($request->input('type_pj') == 'ACTIVITE') {
             return response()->json([
                 'message' => 'Can\'t upload a file for an activity (for now)',
             ], 400);
         }
 
-        if (!in_array($request->input('type_pj'), ['IMAGE', 'VIDEO', 'PDF'])) {
-            return response()->json([
-                'message' => 'File type not supported',
-            ], 400);
-        }
-
-        //normal file
         if ($request->hasFile('file')) {
-            //TODO use MediaService
-            $filePath = 'user-files/' . $pieceJointe->fk_id_uti;
-
-            switch ($request->input('type_pj')) {
-                case ('IMAGE'):
-                    $filePath .= '//image//';
-                    break;
-                case ('VIDEO'):
-                    $filePath .= '//video//';
-                    break;
-                case ('PDF'):
-                    $filePath .= '//pdf//';
-                    // no break
-                default:
-                    break;
-            }
-
-            //TODO fill contenu with the path to the file
-            //dont seem to work [edit : maybe after moving the file?]
-            // $request->merge(['contenu_pj' => $filePath . $uploadedFile->getClientOriginalName()]);
-
-            $fileName = $id . '_' . Str::random(10) . '.' . $request->file->getClientOriginalExtension();
-            $request->file->move(public_path($filePath), $fileName);
-        }
-
-        //base64 file
-        if ($request->has('base64File')) {
-            $mediaService = new MediaService();
-            $mediaService->saveBase64File($request, $id);
+            (new MediaService)->saveFile($request, $id);
         }
 
         $pieceJointe->save();
