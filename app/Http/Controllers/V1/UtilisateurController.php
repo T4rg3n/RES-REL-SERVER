@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Carbon;
 use App\Mail\RegistrationMail;
 use App\Services\V1\MediaService;
+use Illuminate\Support\Facades\Storage;
 
 class UtilisateurController extends Controller
 {
@@ -157,8 +158,13 @@ class UtilisateurController extends Controller
         $utilisateur = Utilisateur::findOrfail($idUtilisateur);
         $mediaService = new MediaService();
 
+        //User uploaded profile picture)
+        if(Storage::disk('public')->exists('profilePictures/' . $utilisateur->id_uti . '/' . $utilisateur->photo_uti)){
+            $pfpPath = $mediaService->getProfilePicturePath($utilisateur->id_uti);
+        } 
+
         //Default profile picture
-        if ($utilisateur->photo_uti == 'default-user-picture') {
+        if ($utilisateur->photo_uti === 'default-user-picture') {
             $pfpPath = $mediaService->getProfilePicturePath($utilisateur->id_uti, true);
         }
 
@@ -177,9 +183,6 @@ class UtilisateurController extends Controller
                 $pfpPath = $imagePath->getRealPath();
             }
         }
-
-        //User uploaded profile picture
-        $pfpPath = $mediaService->getProfilePicturePath($utilisateur->id_uti);
 
         //Quality
         $quality = $request->query('quality', 90);
@@ -239,7 +242,6 @@ class UtilisateurController extends Controller
         $utilisateur->compte_actif_uti = false;
         $utilisateur->raison_banni_uti = $request->raison_banni_uti;
         $utilisateur->save();
-        $id = $utilisateur->id_uti;
 
         return response()->json([
             'message' => 'Utilisateur disabled',
