@@ -1030,6 +1030,52 @@ paths:
                 type: object
               example:
                 message: "Relation deleted"
+  /relations/{id}/accept:
+    post:
+      summary: Accept a relation by id
+      security:
+        - bearerAuth: []
+      tags:
+        - Relations
+      parameters:
+        - name: id
+          in: path
+          description: ID of the relation
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Accept a relation by id
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: "Relation accepted"
+  /relations/{id}/refuse:
+    post:
+      summary: Refuse a relation by id
+      security:
+        - bearerAuth: []
+      tags:
+        - Relations
+      parameters:
+        - name: id
+          in: path
+          description: ID of the relation
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Refuse a relation by id
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: "Relation refused"
   #endregion
 
   #region Reponses commentaires (review ok)

@@ -138,3 +138,60 @@ Content-Type: application/json
 "message": "Relation deleted"
 }
 ```
+
+### `/relations/{id}/accept`
+
+### PATCH
+
+This endpoint is used to accept a relation by its id. It accepts a PATCH request with the relation's id as a path parameter.
+
+| Parameter | Type      | Required | Description            |
+| --------- | --------- | -------- | ---------------------- |
+| `id`      | `integer` | `true`   | The id of the relation |
+
+**Example request:**
+
+```http
+PATCH /api/v1/relations/1/accept HTTP/1.1
+Accept: application/json
+```
+
+**Example response:**
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+"message": "Relation accepted"
+}
+```
+
+### `/relations/{id}/refuse`
+
+### PATCH
+
+This endpoint is used to refuse a relation by its id. It accepts a PATCH request with the relation's id as a path parameter.
+
+| Parameter | Type      | Required | Description            |
+| --------- | --------- | -------- | ---------------------- |
+| `id`      | `integer` | `true`   | The id of the relation |
+
+
+**Example request:**
+
+```http
+PATCH /api/v1/relations/1/refuse HTTP/1.1
+Accept: application/json
+```
+
+**Example response:**
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+"message": "Relation refused"
+}
+```
