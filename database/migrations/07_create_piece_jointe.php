@@ -13,7 +13,7 @@ return new class extends Migration
             $table->enum('type_pj', ['IMAGE', 'VIDEO', 'PDF', 'ACTIVITE']);
             $table->string('titre_pj');
             $table->timestamp('date_creation_pj')->useCurrent();
-            $table->text('description_pj');
+            $table->text('description_pj')->nullable();
             $table->string('contenu_pj')->nullable();
             $table->dateTime('date_activite_pj')->nullable();
             $table->string('lieu_pj')->nullable();

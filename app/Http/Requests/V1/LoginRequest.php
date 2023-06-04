@@ -28,6 +28,7 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
+            //'exists:resrel.utilisateurs.mail_uti',
             'mail' => ['required','email', 'max:255'],
             'motDePasse' => ['required', 'string', 'min:8', 'max:255']
         ];
