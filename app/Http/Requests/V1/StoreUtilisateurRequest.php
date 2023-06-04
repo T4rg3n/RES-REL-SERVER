@@ -36,7 +36,6 @@ class StoreUtilisateurRequest extends FormRequest
             'prenom' => ['required', 'string', 'max:255'],
             'bio' => ['nullable', 'string', 'max:255'],
             'photoProfil' => ['nullable', 'file', 'mimes:png,jpg,jpeg', 'max:5000'],
-            'photoProfilBase64' => ['nullable', 'string', 'max:8000'],
         ];
     }
 

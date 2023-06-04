@@ -36,11 +36,4 @@ class UtilisateurFactory extends Factory
             'fk_id_role' => Role::all()->random()->id_role,
         ];
     }
-
-    public function configure()
-    {
-        return $this->afterCreating(function (Utilisateur $utilisateur) {
-            $utilisateur->url_profil_uti = public_path() . '//user-files/' . $utilisateur->id_uti . '/';
-        });
-    }
 }
