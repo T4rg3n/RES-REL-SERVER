@@ -27,7 +27,7 @@ class StorePieceJointeRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => ['required', 'string', 'max:255'],
+            'type' => ['required', 'string', 'max:255', 'in:IMAGE,VIDEO,PDF,ACTIVITE'],
             'titre' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:255'],
             'contenu' => ['nullable', 'string', 'max:255'],
@@ -35,7 +35,7 @@ class StorePieceJointeRequest extends FormRequest
             'lieu' => ['nullable', 'string', 'max:255'],
             'codePostal' => ['nullable', 'string', 'max:255'],
             'idUtilisateur' => ['required', 'integer'],
-            'file' => ['nullable', 'file', 'mimes:png,jpg,jpeg,gif,mp4,pdf', 'max:15000'],
+            'file' => ['nullable', 'file', 'mimes:png,jpg,jpeg,gif,mp4,pdf', 'max:15000', 'required_without:base64File'],
         ];
     }
 

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 // authenticated routes
+//TODO middleware verified (email) for testing 
 Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1', 'middleware' => 'auth:sanctum'], function () {
     //PATCH 
         //(Disable)
@@ -53,7 +54,6 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1', 'middl
     Route::apiResource('utilisateurs', UtilisateurController::class)->except(['index', 'show']);
     
     Route::get('deconnexion', 'UtilisateurController@logout');
-
 });
 
 // public routes (no favorites or relations)
@@ -79,9 +79,4 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1'], funct
     //GET / HEAD / POST
     Route::apiResource('utilisateurs', UtilisateurController::class)->only(['index', 'show']);
         Route::get('utilisateurs/{id}/download', 'UtilisateurController@download');
-
-    //Dev only
-    Route::get('/test-email', function() {
-        return new RegistrationMail();
-     });
 });

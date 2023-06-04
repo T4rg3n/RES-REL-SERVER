@@ -28,7 +28,7 @@ class StoreUtilisateurRequest extends FormRequest
     public function rules()
     {
         return [
-            'mail' => ['required', 'string', 'email', 'max:255'],
+            'mail' => ['unique:utilisateurs,mail_uti', 'required', 'string', 'email', 'max:255'],
             'motDePasse' => ['required', 'string', 'min:8', 'max:255'],
             'dateNaissance' => ['required', 'date'],
             'codePostal' => ['required', 'string', 'max:255'],
@@ -36,8 +36,6 @@ class StoreUtilisateurRequest extends FormRequest
             'prenom' => ['required', 'string', 'max:255'],
             'bio' => ['nullable', 'string', 'max:255'],
             'photoProfil' => ['nullable', 'file', 'mimes:png,jpg,jpeg', 'max:5000'],
-            //'exists:roles,id_role'
-            //'role' => ['required', 'integer'],
         ];
     }
 
@@ -53,7 +51,7 @@ class StoreUtilisateurRequest extends FormRequest
             'mail.string' => 'mail must be a string',
             'mail.email' => 'mail must be a valid email address',
             'mail.max' => 'mail must not be greater than 255 characters',
-            'mail.unique' => 'mail must be unique',
+            'mail.unique' => 'Another user is already registered with this email address',
             'motDePasse.required' => 'motDePasse is required',
             'motDePasse.string' => 'motDePasse must be a string',
             'motDePasse.min' => 'motDePasse must be at least 8 characters',

@@ -108,24 +108,13 @@ class UtilisateurController extends Controller
      */
     public function store(StoreUtilisateurRequest $request)
     {
-        if (Utilisateur::where('mail_uti', $request->mail)->first()) {
-            return response()->json([
-                'message' => 'User with same email already exists'
-            ], 401);
-        }
-
         $utilisateur = Utilisateur::create($request->all());
 
         //users can optionally upload a photo
         if ($request->hasFile('photoProfil')) {
-            $filePath = 'user-files/' . $utilisateur->id_uti;
-            $uploadedFile = $request->file('photoProfil');
-            $utilisateur->photo_uti = $filePath;
-
-            $fileName = $utilisateur->id_uti . "_photoProfil." . $uploadedFile->getClientOriginalExtension();
-            $request->photoProfil->move(public_path($filePath), $fileName);
+            $utilisateur->photoProfil = (new MediaService())->saveProfilePicture($request, $utilisateur->id_uti);
         } else {
-            $utilisateur->photo_uti = public_path() . '/assets/default-assets/default-user.png';
+            $utilisateur->photo_uti = 'default-user.png';
         }
 
         $utilisateur->fk_id_role = 4;
@@ -134,7 +123,7 @@ class UtilisateurController extends Controller
         $token = (new TokenAttributor())->createToken($utilisateur);
         $id = $utilisateur->id_uti;
 
-        $this->sendVerificationMail($utilisateur);
+        // $this->sendVerificationMail($utilisateur);
 
         return response()->json(['response' => $this->show($id), 'token' => $token], 201);
     }
@@ -166,44 +155,46 @@ class UtilisateurController extends Controller
     public function download($idUtilisateur, Request $request)
     {
         $utilisateur = Utilisateur::findOrfail($idUtilisateur);
-        $filePath = $utilisateur->photo_uti;
+        $mediaService = new MediaService();
 
-        //TODO refactor this
-        if (file_exists(public_path() . $filePath)) {
-            return response()->download(public_path() . $filePath);
-        } else {
-            //Only for demo purposes
-            if ($utilisateur->photo_uti == 'fake user photo') {
-                $path = public_path() . '/assets/fake-profile-pictures/female';
-                $files = File::files($path);
-                $profilePictures = array_filter($files, function ($file) {
-                    return in_array(File::extension($file), ['png', 'jpg', 'jpeg', 'gif']);
-                });
+        //Default profile picture
+        if ($utilisateur->photo_uti == 'default-user-picture') {
+            $pfpPath = $mediaService->getProfilePicturePath($utilisateur->id_uti, true);
+        }
 
-                $filePath = null;
-                $fileCount = count($profilePictures);
-                if ($fileCount > 0) {
-                    $imagePath = $profilePictures[$utilisateur->id_uti % $fileCount];
-                    $fileMimeType = mime_content_type($imagePath->getRealPath());
-                    $filePath = $imagePath->getRealPath();
-                }
+        //For demo purposes 
+        if ($utilisateur->photo_uti == 'fake user photo') {
+            $path = public_path() . '/assets/fake-profile-pictures';
+            $files = File::files($path);
+            $profilePictures = array_filter($files, function ($file) {
+                return in_array(File::extension($file), ['png', 'jpg', 'jpeg', 'gif']);
+            });
 
-                $mediaService = new MediaService();
-                $quality = $request->query('quality', 90);
-                $quality = max(0, min(100, intval($quality)));
-                if ($quality != 90) {
-                    $filePath = $mediaService->resize($quality, 'IMAGE', $filePath);
-                }
-
-                $thumbnail = $request->query('getThumbnail', false);
-                if ($thumbnail) {
-                    $filePath = $mediaService->getThumbnail('IMAGE', $filePath);
-                }
-                return response()->download($filePath);
-            } else {
-                return response()->download(public_path() . '/assets/default-assets/default-user.png');
+            $pfpPath = null;
+            $fileCount = count($profilePictures);
+            if ($fileCount > 0) {
+                $imagePath = $profilePictures[$utilisateur->id_uti % $fileCount];
+                $pfpPath = $imagePath->getRealPath();
             }
         }
+
+        //User uploaded profile picture
+        $pfpPath = $mediaService->getProfilePicturePath($utilisateur->id_uti);
+
+        //Quality
+        $quality = $request->query('quality', 90);
+        $quality = max(0, min(100, intval($quality)));
+        if ($quality != 90) {
+            $pfpPath = $mediaService->resize($quality, 'IMAGE', $pfpPath);
+        }
+
+        //Thumbnail
+        $thumbnail = $request->query('getThumbnail', false);
+        if ($thumbnail) {
+            $pfpPath = $mediaService->getThumbnail('IMAGE', $pfpPath);
+        }
+
+        return response()->download($pfpPath);
     }
 
     /**
