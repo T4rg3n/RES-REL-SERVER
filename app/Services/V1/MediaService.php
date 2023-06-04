@@ -5,6 +5,7 @@ namespace App\Services\V1;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Models\Utilisateur;
 
 class MediaService
 {
@@ -74,22 +75,6 @@ class MediaService
     }
 
     /**
-     * Save base64 file
-     * 
-     * @param Request $request
-     * @param int $id
-     */
-    public function saveBase64File($request, $id)
-    {
-        $encodedFile = $request->input('base64File');
-        $cleanBase64 = preg_replace('#^data:image/[^;]+;base64,#', '', $encodedFile);
-        $decodedFile = base64_decode($cleanBase64);
-
-        $filePath = $this->getFilePath($encodedFile, $request->input('type'), $request->input('idUtilisateur'), $id);
-        Storage::put($filePath, $decodedFile);
-    }
-
-    /**
      * Save file (binary encoded)
      * 
      * @param Request $request
@@ -109,31 +94,13 @@ class MediaService
      * @param string $fileName
      * @return string
      */
-    public function getFilePath($encodedFile, $typePj, $userId, $attachmentId)
+    private function getFilePath($encodedFile, $typePj, $userId, $attachmentId)
     {
         //user_files/1/1_123456789012345.jpg
         $filePath = 'user_files/' . $userId . '/' . $typePj . '/' . $attachmentId . '_' . Str::random(15);
         $fileExtension = explode('/', explode(':', substr($encodedFile, 0, strpos($encodedFile, ';')))[1])[1];
 
         return $filePath . '.' . $fileExtension;
-    }
-
-    /**
-     * Save base64 profile picture
-     * 
-     * @param Request $request
-     * @param int $id
-     */
-    public function saveBase64ProfilePicture($request, $id)
-    {
-        $encodedFile = $request->input('photoProfilBase64');
-        $fileExtension = explode('/', explode(':', substr($encodedFile, 0, strpos($encodedFile, ';')))[1])[1];
-        $cleanBase64 = preg_replace('#^data:image/[^;]+;base64,#', '', $encodedFile);
-        $decodedFile = base64_decode($cleanBase64);
-
-        //Storage::put('user-profiles/' . $id . '/profile_picture' . $fileExtension, $decodedFile);
-        //save to public folder
-        Storage::disk('public')->put('user_profiles/' . $id . '/profile_picture' . $fileExtension, $decodedFile);
     }
 
     /**
@@ -148,7 +115,19 @@ class MediaService
         $fileExtension = $file->getClientOriginalExtension();
         $filePath = 'user_profiles/' . $id . '/profile_picture.' . $fileExtension;
 
-        //Storage::put($filePath, file_get_contents($file));
         Storage::disk('public')->put($filePath, file_get_contents($file));
+        return "profile_picture." . $fileExtension;
+    }
+
+    public function getProfilePicturePath($id, $default = false)
+    {
+        if ($default) {
+            $filePath = Storage::disk('public')->path('default/default-profile-picture.png');
+            return $filePath;
+        }
+
+        $utilisateur = Utilisateur::findOrFail($id);
+        $filePath = Storage::disk('public')->path('user_profiles/' . $id . '/' . $utilisateur->photo_uti) ;     
+        return $filePath;
     }
 }
