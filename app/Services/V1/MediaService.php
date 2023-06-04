@@ -17,6 +17,7 @@ class MediaService
      * @param int $quality
      * @param string $typePj
      * @param string $path
+     * @return string Resized image or video path
      */
     public function resize($quality, $typePj, $path)
     {
@@ -47,6 +48,7 @@ class MediaService
      * 
      * @param string $typePj
      * @param string $path
+     * @return string Thumbnail path
      */
     public function getThumbnail($typePj, $path)
     {
@@ -79,6 +81,7 @@ class MediaService
      * 
      * @param Request $request
      * @param int $id
+     * @return string File path
      */
     public function saveFile($request, $id)
     {
@@ -91,8 +94,11 @@ class MediaService
     /**
      * Get file path
      * 
-     * @param string $fileName
-     * @return string
+     * @param string $encodedFile
+     * @param string $typePj
+     * @param int $userId
+     * @param int $attachmentId
+     * @return string File path
      */
     private function getFilePath($encodedFile, $typePj, $userId, $attachmentId)
     {
@@ -108,6 +114,7 @@ class MediaService
      * 
      * @param Request $request
      * @param int $id
+     * @return string File name
      */
     public function saveProfilePicture($request, $id)
     {
@@ -119,6 +126,13 @@ class MediaService
         return "profile_picture." . $fileExtension;
     }
 
+    /**
+     * Get profile picture path
+     * 
+     * @param int $id
+     * @param bool $default (optional)
+     * @return string File path
+     */
     public function getProfilePicturePath($id, $default = false)
     {
         if ($default) {
