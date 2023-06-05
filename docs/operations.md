@@ -51,4 +51,20 @@ Sometimes it's useful to include related data in a request. For example, you mig
 /ressources?include=utilisateurs,categories
 ```
 
+## Media Controls
+
+You can control the medias (images for now) returned by the API using the `quality` or `getThumbnail `query parameter. 
+
+The `quality` query parameter takes a value between 0 and 100 and will return the image with the specified quality. The default value is 90.
+
+```
+/piecesJointes/1?quality=50
+```
+
+The `getThumbnail` query parameter takes a boolean value and will return the thumbnail of the image if set to true. The default value is false.
+
+```
+/utilisateurs/1/download?getThumbnail=true
+```
+
 <br>
