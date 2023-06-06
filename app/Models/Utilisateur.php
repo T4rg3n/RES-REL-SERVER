@@ -12,12 +12,11 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Mail;
 use App\Notifications\CustomVerifyEmail;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class Utilisateur extends Authenticatable
 {
-    use HasApiTokens;
-    use HasFactory;
-    use Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     public $timestamps = false;
     protected $table = 'utilisateurs';
