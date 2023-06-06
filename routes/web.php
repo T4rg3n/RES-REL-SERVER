@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\V1\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
+
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
@@ -28,4 +30,15 @@ Route::middleware('auth:sanctum')->group(function () {
         return "Email verified successfully";
     })->middleware('signed')->name('verification.verify');
 
+
+    
 });
+
+// Per token role based access control
+// Route::middleware(['auth:sanctum','can:viewModelStats'])->get('/testPage', function (Request $request) {
+    
+//     return "Test Page";
+//     // Route::get('/testPage', function () {
+       
+//     // });
+// });

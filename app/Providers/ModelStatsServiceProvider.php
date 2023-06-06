@@ -19,25 +19,12 @@ class ModelStatsServiceProvider extends Provider
      */
     protected function gate(): void
     {
-        Gate::define('viewModelStats', function ($user) {
-
-            $request = request();
-            $token = $request->bearerToken();
-
-            //check if token is valid
-            if (empty($token)) {
-                return false;
+        Gate::define('viewModelStats', function ($user = null) {
+            if ($user && $user->role->nom_role == 'admin' || $user->role->nom_role == 'super-admin') {
+                return true;
             }
 
-            //get user from token
-            $token = PersonalAccessToken::findToken($token);
-            return $token->tokenable->id == $user->id;
-            Log::debug("User: " . $user->id . " Token: " . $token->tokenable->id);
-
-
-            // return in_array($user->email, [
-            //     //
-            // ]);
+            return false;
         });
     }
 }
