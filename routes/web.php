@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\V1\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,11 +35,27 @@ Route::middleware('auth:sanctum')->group(function () {
     
 });
 
-// Per token role based access control
-// Route::middleware(['auth:sanctum','can:viewModelStats'])->get('/testPage', function (Request $request) {
-    
-//     return "Test Page";
-//     // Route::get('/testPage', function () {
-       
+// Route::middleware(['can:isAdminOrHigher'])->name('/statistiques')->group(function () {
+//         Route::prefix('api')->name('api.')->group(function () {
+//             Route::apiResource('dashboards', \Jhumanj\LaravelModelStats\Http\Controllers\DashboardController::class);
+//             Route::post('widgets/data',
+//                 [\Jhumanj\LaravelModelStats\Http\Controllers\StatController::class, 'widgetData']);
+//             Route::post('widgets/custom-code/data',
+//                 [\Jhumanj\LaravelModelStats\Http\Controllers\CustomCodeController::class, 'widgetData']);
+
+//             Route::post('widgets/custom-code/execute',
+//                 [\Jhumanj\LaravelModelStats\Http\Controllers\CustomCodeController::class, 'executeCustomCode']);
+//         });
+
+//         Route::get('/{view?}', [\Jhumanj\LaravelModelStats\Http\Controllers\HomeController::class, 'home'])
+//             ->name('dashboard')
+//             ->where('view', '^(?!api).*$');
+//     });
+
+
+//Per token role based access control
+// Route::middleware(['auth:sanctum','can:isAdminOrHigher'])->get('/stats', function (Request $request) {
+//     //Route::get('/testPage', function () {
+//         return "Test Page";
 //     // });
 // });
