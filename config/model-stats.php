@@ -31,7 +31,9 @@ return [
     */
     'middleware'         => [
         'web',
-        \Jhumanj\LaravelModelStats\Http\Middleware\Authorize::class,
+        'auth:sanctum',
+        //App\Http\Middleware\CheckAdmin::class,
+        //\Jhumanj\LaravelModelStats\Http\Middleware\Authorize::class,
     ],
 
     /*
