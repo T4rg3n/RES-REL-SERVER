@@ -1,6 +1,5 @@
 <?php
 
-use App\Mail\RegistrationMail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +13,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 // authenticated routes
-//TODO middleware verified (email) for testing 
 Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1', 'middleware' => 'auth:sanctum'], function () {
     //PATCH 
         //(Disable)
@@ -52,6 +50,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1', 'middl
     Route::apiResource('roles', RoleController::class)->except(['index', 'show']);
     Route::apiResource('typesRelation', TypeRelationController::class)->except(['index', 'show']);
     Route::apiResource('utilisateurs', UtilisateurController::class)->except(['index', 'show']);
+    Route::apiResource('marquePages', BookmarkController::class)->except(['index', 'show']);
     
     Route::get('deconnexion', 'UtilisateurController@logout');
 });
@@ -70,6 +69,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1'], funct
     Route::apiResource('categories', CategorieController::class)->only(['index', 'show']);
     Route::apiResource('commentaires', CommentaireController::class)->only(['index', 'show']);
     Route::apiResource('piecesJointes', PieceJointeController::class)->only(['index', 'show']);
+    Route::apiResource('marquePages', BookmarkController::class)->only(['index', 'show']);
         //to download file attachement
         Route::get('piecesJointes/{id}/download', 'PieceJointeController@download');
     Route::apiResource('reponsesCommentaires', ReponseCommentaireController::class)->only(['index', 'show']);

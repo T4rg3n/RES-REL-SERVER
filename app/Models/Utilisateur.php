@@ -119,6 +119,11 @@ class Utilisateur extends Authenticatable
         return $this->hasMany(Favoris::class);
     }
 
+    public function bookmark()
+    {
+        return $this->hasMany(Bookmark::class);
+    }
+
     public function commentaire()
     {
         return $this->hasMany(Commentaire::class);

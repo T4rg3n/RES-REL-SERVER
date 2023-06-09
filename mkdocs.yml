@@ -18,6 +18,7 @@ nav:
           - Comments: endpoints/comments.md
           - Favorites: endpoints/favorites.md
           - Groups: endpoints/groups.md
+          - Marque Pages: endpoints/marque-pages.md
           - Pieces jointes: endpoints/pieces-jointes.md
           - Relations: endpoints/relations.md
           - Comment responses: endpoints/reponses-commentaire.md
@@ -56,7 +57,7 @@ markdown_extensions:
   - pymdownx.snippets
   - pymdownx.superfences
   - attr_list
-  - md_in_html #grids (to test)
+  - md_in_html #grids
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg

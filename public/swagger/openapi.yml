@@ -407,6 +407,13 @@ paths:
         - bearerAuth: []
       tags:
         - Commentaires
+      parameters:
+        - name: id
+          in: path
+          description: ID of the commentaire
+          required: true
+          schema:
+            type: integer
       responses:
         '200':
           description: Disable a commentaire
@@ -742,6 +749,125 @@ paths:
                 message: "Groupe deleted"
   #endregion
  
+  #region MarquePages
+  /marquePages:
+    get:
+      summary: Get all marquePages
+      security:
+        - bearerAuth: []
+      tags: 
+        - MarquePages
+      parameters:
+            - name: perPage
+              in: query
+              description: Set the number of marquePages per page
+              required: false
+              schema:
+                type: integer
+            - name: <key>[<operator>]=<value>
+              in: query
+              description: Allow to filter marquePages with operators like equals, greater than, less than, greater than equals, less than equals
+              required: false
+              schema:
+                type: string
+      responses:
+        '200':
+          description: Get all marquePages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+              example:
+                data:
+                  - id: 1
+                    idUtilisateur: 1
+                    idRessource: 2
+                  - id: 2
+                    idUtilisateur: 1
+                    idRessource: 3
+    post:
+      summary: Create a marquePage
+      security:
+        - bearerAuth: []
+      tags:
+        - MarquePages
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                idUtilisateur:
+                  type: integer
+                  description: Id of the user
+                  example: 1
+                idRessource:
+                  type: integer
+                  description: Id of the ressource
+                  example: 2
+      responses:
+        '201':
+          description: Create a marquePage
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - id: 10
+                  idUtilisateur : 1
+                  idRessource : 2
+  /marquePages/{id}:
+    get:
+      summary: Get a marquePage by id
+      security:
+        - bearerAuth: []
+      tags:
+        - MarquePages
+      parameters:
+        - name: id
+          in: path
+          description: ID of the marquePage
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Get a marquePage by id
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  - id: 1
+                    idUtilisateur: 1
+                    idRessource: 2
+    delete:
+      summary: Delete a marquePage by id
+      security:
+        - bearerAuth: []
+      tags:
+        - MarquePages
+      parameters:
+        - name: id
+          in: path
+          description: ID of the marquePage
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Delete a marquePage by id
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: "MarquePage deleted"
+  #endregion
+
   #region Pieces jointes (review ok)
   #TODO Add type ressource texte (dans contenu)
   #TODO Add dossier "activites" (dans contenu)
