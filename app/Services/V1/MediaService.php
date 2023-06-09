@@ -88,7 +88,7 @@ class MediaService
         $file = $request->file('file');
         $filePath = $this->getFilePath($file, $request->input('type'), $request->input('idUtilisateur'), $id);
         
-        Storage::put($filePath, file_get_contents($file));
+        Storage::put($filePath . '.'. $file->extension(), file_get_contents($file));
     }
 
     /**
@@ -104,9 +104,8 @@ class MediaService
     {
         //user_files/1/1_123456789012345.jpg
         $filePath = 'user_files/' . $userId . '/' . $typePj . '/' . $attachmentId . '_' . Str::random(15);
-        $fileExtension = explode('/', explode(':', substr($encodedFile, 0, strpos($encodedFile, ';')))[1])[1];
 
-        return $filePath . '.' . $fileExtension;
+        return $filePath;
     }
 
     /**
