@@ -15,7 +15,7 @@ class FavorisSeeder extends Seeder
     public function run()
     {
         Favoris::factory()
-            ->count(100)
+            ->count(10000)
             ->create();
     }
 }
