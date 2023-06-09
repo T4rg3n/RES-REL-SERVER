@@ -124,7 +124,7 @@ class UtilisateurController extends Controller
         $token = (new TokenAttributor())->createToken($utilisateur);
         $id = $utilisateur->id_uti;
 
-        // $this->sendVerificationMail($utilisateur);
+        $this->sendVerificationMail($utilisateur);
 
         return response()->json(['response' => $this->show($id), 'token' => $token], 201);
     }
