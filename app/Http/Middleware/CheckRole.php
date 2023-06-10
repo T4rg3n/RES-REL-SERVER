@@ -2,10 +2,13 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Auth\Access\Gate;
+use Illuminate\Support\Facades\Gate;
 use Closure;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
+use App\Models\Utilisateur;
 
-class CheckRole
+class CheckAdmin
 {
     /**
      * Handle an incoming request.
@@ -15,12 +18,26 @@ class CheckRole
      * @param  string  $role
      * @return mixed
      */
-    public function handle($request, Closure $next, $role)
+    public function handle(Request $request, Closure $next)
     {
-        if (Gate::denies($role)) {
-            abort(403, 'Unauthorized action.');
+        $user = $request->utilisateur();
+
+        if (Gate::allows('isSuperAdmin', $user->role->nom_role)) {
+            return $next($request);
         }
 
-        return $next($request);
+        if (Gate::allows('isAdmin', $user->id_uti)) {
+            return $next($request);
+        }
+
+        if (Gate::allows('isModerator', $user->id_uti)) {
+            return $next($request);
+        }
+
+        if (Gate::allows('isUser', $user->id_uti)) {
+            return $next($request);
+        }
+
+        abort(403);
     }
 }

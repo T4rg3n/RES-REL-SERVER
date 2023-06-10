@@ -27,11 +27,28 @@ class StatisticsServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
     
-        Gate::define('isAdminOrHigher', function ($userId) {
+        Gate::define('isSuperAdmin', function ($userId) {
 
             $user = Utilisateur::find($userId);
-            return $user->role->nom_role == 'admin' || $user->role->nom_role == 'super-admin';
-           // return in_array($user->role->nom_role, ['admin', 'super-admin']);
+            return $user->role->nom_role == 'super-admin';
+        });
+
+        Gate::define('isAdmin', function ($userId) {
+
+            $user = Utilisateur::find($userId);
+            return $user->role->nom_role == 'admin';
+        });
+
+        Gate::define('isModerator', function ($userId) {
+
+            $user = Utilisateur::find($userId);
+            return $user->role->nom_role == 'moderateur';
+        });
+
+        Gate::define('isUser', function ($userId) {
+
+            $user = Utilisateur::find($userId);
+            return $user->role->nom_role == 'utilisateur';
         });
     }
 }
