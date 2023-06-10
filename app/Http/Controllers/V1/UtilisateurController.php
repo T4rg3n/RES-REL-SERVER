@@ -115,7 +115,7 @@ class UtilisateurController extends Controller
         if ($request->hasFile('photoProfil')) {
             $utilisateur->photoProfil = (new MediaService())->saveProfilePicture($request, $utilisateur->id_uti);
         } else {
-            $utilisateur->photo_uti = 'default-user.png';
+            $utilisateur->photo_uti = 'default-user-picture';
         }
 
         $utilisateur->fk_id_role = 4;
