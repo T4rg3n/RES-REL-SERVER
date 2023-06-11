@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Models\Utilisateur;
 
-class CheckAdmin
+class CheckRole
 {
     /**
      * Handle an incoming request.
@@ -18,26 +18,12 @@ class CheckAdmin
      * @param  string  $role
      * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, ...$roles)
     {
-        $user = $request->utilisateur();
-
-        if (Gate::allows('isSuperAdmin', $user->role->nom_role)) {
-            return $next($request);
+        if (!in_array($request->user()->role->nom_role, $roles)) {
+            abort(403);
         }
 
-        if (Gate::allows('isAdmin', $user->id_uti)) {
-            return $next($request);
-        }
-
-        if (Gate::allows('isModerator', $user->id_uti)) {
-            return $next($request);
-        }
-
-        if (Gate::allows('isUser', $user->id_uti)) {
-            return $next($request);
-        }
-
-        abort(403);
+        return $next($request);
     }
 }

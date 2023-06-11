@@ -26,29 +26,37 @@ class StatisticsServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-    
-        Gate::define('isSuperAdmin', function ($userId) {
+        //TODO delete this file
 
-            $user = Utilisateur::find($userId);
-            return $user->role->nom_role == 'super-admin';
-        });
+        // Gate::define('isSuperAdmin', function ($user) {
 
-        Gate::define('isAdmin', function ($userId) {
+        //     //$user = Utilisateur::find($userId);
+            
+        //     Log::debug($user->role->nom_role);
+        //     return $user->role->nom_role == 'super-admin';
+        // });
 
-            $user = Utilisateur::find($userId);
-            return $user->role->nom_role == 'admin';
-        });
+        // Gate::define('isAdmin', function ($user) {
 
-        Gate::define('isModerator', function ($userId) {
+        //    // $user = Utilisateur::find($user);
+           
+        //    Log::debug($user->role->nom_role);
+        //     return $user->role->nom_role == 'admin';
+        // });
 
-            $user = Utilisateur::find($userId);
-            return $user->role->nom_role == 'moderateur';
-        });
+        // Gate::define('isModerator', function ($user) {
 
-        Gate::define('isUser', function ($userId) {
+        //    // $user = Utilisateur::find($userId);
+           
+        //    Log::debug($user->role->nom_role);
+        //     return $user->role->nom_role == 'moderateur';
+        // });
 
-            $user = Utilisateur::find($userId);
-            return $user->role->nom_role == 'utilisateur';
-        });
+        // Gate::define('isUser', function ($user) {
+
+        //   //  $user = Utilisateur::find($userId);
+        //     Log::debug($user->role->nom_role);
+        //     return $user->role->nom_role == 'utilisateur';
+        // });
     }
 }

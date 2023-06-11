@@ -16,14 +16,14 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1', 'middleware' => 'auth:sanctum'], function () {
     
     //Super Admin
-    Route::group(['middleware' => 'can:isSuperAdmin'], function () {
+    Route::group(['middleware' => ['roles:super-admin']], function () {
         Route::apiResource('roles', RoleController::class);
         Route::apiResource('utilisateurs', UtilisateurController::class);
         Route::apiResource('typesRelation', TypeRelationController::class);
     });
 
     //Admin
-    Route::group(['middleware' => 'can:isAdmin'], function () {
+    Route::group(['middleware' => ['roles:admin,super-admin']], function () {
         //Ressources
         Route::apiResource('categories', CategorieController::class)->except(['index', 'show']);
 
@@ -33,7 +33,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1', 'middl
     });
 
     //Moderator
-    Route::group(['middleware' => 'can:isModerator'], function () {
+    Route::group(['middleware' => ['roles:moderateur,admin,super-admin']], function () {
         //Enable (Accept a pending resource)
         Route::patch('ressources/{id}/enable', 'RessourceController@enable');
 
@@ -45,20 +45,20 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\V1', 'middl
     });
 
     //User
-    Route::group(['middleware' => 'can:isUser'], function () {
+    Route::group(['middleware' => ['roles:utilisateur,moderateur,admin,super-admin']], function () {
         //Like (unlike is a DELETE)
+        //only/except: index, create, store, show, edit, update, destroy
         Route::patch('ressources/like', 'FavorisController@like'); 
-        Route::apiResource('favoris', FavorisController::class)->except(['index', 'show']);
+        Route::apiResource('favoris', FavorisController::class)->only(['store', 'destroy']);
     
         // Bookmark (unbookmark is a DELETE)
-        Route::apiResource('marquePages', BookmarkController::class)->except(['index', 'show']);
+        Route::apiResource('marquePages', BookmarkController::class)->only(['index', 'store', 'destroy']);
 
         //Report
         Route::patch('commentaires/{id}/report', 'CommentaireController@report');
         Route::patch('commentaires/{id}/report', 'CommentaireController@report');
         Route::patch('reponsesCommentaires/{id}/report', 'ReponseCommentaireController@report');
-
-        
+     
         //Relations management
         Route::patch('relations/{id}/accepter', 'RelationController@accept');
         Route::patch('relations/{id}/refuser', 'RelationController@refuse');
