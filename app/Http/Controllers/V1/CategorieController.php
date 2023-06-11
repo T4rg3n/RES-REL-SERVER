@@ -74,29 +74,6 @@ class CategorieController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Categorie  $categorie
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Categorie $categorie)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateCategorieRequest  $request
-     * @param  \App\Models\Categorie  $categorie
-     * @return \Illuminate\Http\Response
-     */
-    // public function update(UpdateCategorieRequest $request, Categorie $categorie)
-    // {
-    //
-    // }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id_categorie
