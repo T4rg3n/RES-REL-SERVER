@@ -10,6 +10,7 @@ nav:
       - Sorting: operations/#sorting
       - Filtering: operations/#filtering
       - Aggregating: operations/#aggregating
+      - Media Controls: operations/#media-controls
   - Endpoints:
       - Summary: endpoints-summary.md
       - List of endpoints:
