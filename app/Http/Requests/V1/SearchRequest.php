@@ -15,7 +15,7 @@ class SearchRequest extends FormRequest
      */
     public function authorize()
     {
-        //only for development
+        //Everyone can search
         return true;
     }
 

@@ -661,8 +661,6 @@ paths:
                     nom: "Groupe 2"
                     description: "Description du groupe 2"
                     estPrive: false
-    #TODO ajouter des gens dans les groupes
-    #TODO check si le nom du groupe est déjà pris
     post:
       summary: Create a groupe
       security:

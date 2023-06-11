@@ -16,7 +16,7 @@ class LoginRequest extends FormRequest
      */
     public function authorize()
     {
-        //Only for development
+        //Everyone can login
         return true;
     }
 
@@ -28,8 +28,7 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            //'exists:resrel.utilisateurs.mail_uti',
-            'mail' => ['required','email', 'max:255'],
+            'mail' => ['required','email', 'max:255', 'exists:utilisateurs,mail_uti'],
             'motDePasse' => ['required', 'string', 'min:8', 'max:255']
         ];
     }
@@ -42,6 +41,7 @@ class LoginRequest extends FormRequest
     public function messages()
     {
         return [
+            'mail.exists' => 'user not found',
             'mail.required' => 'mail is required',
             'mail.string' => 'mail must be a string',
             'mail.email' => 'mail must be a valid email address',

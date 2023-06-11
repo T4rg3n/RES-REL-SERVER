@@ -160,7 +160,6 @@ class PieceJointeController extends Controller
                 }
             }
         } else {
-            //TODO refactor and use Mediaservice
             $filePath = public_path() . '/user-files/' . $pieceJointe->fk_id_uti . '/' . $pieceJointe->type_pj . '/';
 
             $fileList = glob($filePath . $idPieceJointe . '_*');
