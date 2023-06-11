@@ -100,7 +100,7 @@ class FavorisController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Delete the specified resource in storage.
      *
      * @param  int  $id_favoris
      * @return \Illuminate\Http\Response

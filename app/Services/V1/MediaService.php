@@ -12,7 +12,7 @@ class MediaService
     protected $thumbnailSize = 125;
 
     /**
-     * Resize image or video to a given quality in percent
+     * Resize an image to a given quality in percent
      * 
      * @param int $quality
      * @param string $typePj
@@ -34,13 +34,6 @@ class MediaService
         } else {
             return $path;
         }
-        // if ($typePj == 'VIDEO') {
-        //     $ffmpeg = FFMpeg::create();
-        //     $video = $ffmpeg->open($path);
-        //     $path = tempnam(sys_get_temp_dir(), 'video') . '.mp4'; // Adjust the format as needed
-        //     $video->filters()->resize(new \FFMpeg\Coordinate\Dimension(320, 240))->synchronize(); // Adjust the dimensions as needed
-        //     $video->save(new \FFMpeg\Format\Video\X264('libmp3lame', 'libx264'), $path);
-        // }
     }
 
     /**
@@ -66,14 +59,6 @@ class MediaService
         } else {
             return $path;
         }
-        // if ($typePj == 'VIDEO') {
-        //     $ffmpeg = FFMpeg::create();
-        //     $video = $ffmpeg->open($path);
-
-        //     $path = tempnam(sys_get_temp_dir(), 'video') . '.jpg'; // Adjust the format as needed
-        //     $video->frame(\FFMpeg\Coordinate\TimeCode::fromSeconds(10))->save($path);
-        // }
-        return $path;
     }
 
     /**
@@ -87,8 +72,8 @@ class MediaService
     {
         $file = $request->file('file');
         $filePath = $this->getFilePath($file, $request->input('type'), $request->input('idUtilisateur'), $id);
-        
-        Storage::put($filePath . '.'. $file->extension(), file_get_contents($file));
+
+        Storage::put($filePath . '.' . $file->extension(), file_get_contents($file));
     }
 
     /**
@@ -140,7 +125,7 @@ class MediaService
         }
 
         $utilisateur = Utilisateur::findOrFail($id);
-        $filePath = Storage::disk('public')->path('user_profiles/' . $id . '/' . $utilisateur->photo_uti) ;     
+        $filePath = Storage::disk('public')->path('user_profiles/' . $id . '/' . $utilisateur->photo_uti);
         return $filePath;
     }
 }

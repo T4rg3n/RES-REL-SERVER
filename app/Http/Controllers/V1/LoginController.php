@@ -8,8 +8,6 @@ use App\Http\Requests\V1\LoginRequest;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Utilisateur;
 use App\Services\V1\TokenAttributor;
-use Illuminate\Database\DatabaseManager;
-use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
@@ -21,13 +19,7 @@ class LoginController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        //TODO use validation rules instead
         $user = Utilisateur::where('mail_uti', $request->mail)->first();
-        if(!$user) {
-            return response()->json([
-                'message' => 'User not found'
-            ], 401);
-        }
 
         if(!Hash::check($request->motDePasse, $user->mdp_uti)) {
             return response()->json([
@@ -41,6 +33,5 @@ class LoginController extends Controller
             'idUti' => $user->id_uti,
             'token' => $token
         ], 200);
-
     }
 }

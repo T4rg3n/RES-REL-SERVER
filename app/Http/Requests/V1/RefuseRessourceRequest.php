@@ -27,8 +27,7 @@ class RefuseRessourceRequest extends FormRequest
     public function rules()
     {
         return [
-            //'exists:ressources,id_ressource'
-            'id' => ['required', 'integer'],
+            'id' => ['required', 'integer', 'exists:ressources,id_ressource'],
             'raison' => ['required', 'string', 'max:255'],
         ];
     }
@@ -41,6 +40,7 @@ class RefuseRessourceRequest extends FormRequest
     public function messages()
     {
         return [
+            'id.exists' => 'ressource not found',
             'id.required' => 'id is required',
             'id.integer' => 'id must be an integer',
             'id.exists' => 'id must exist in the database',

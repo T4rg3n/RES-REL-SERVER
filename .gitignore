@@ -22,3 +22,4 @@ database/migrations/.old/2019_12_14_000001_create_personal_access_tokens_table.p
 public/user-files
 public/swagger/swagger-initializer.js
 /tools/php-cs-fixer/vendor
+.env.example
